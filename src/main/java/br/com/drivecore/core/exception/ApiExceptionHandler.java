@@ -4,6 +4,7 @@ import br.com.drivecore.core.exception.model.ApiExceptionErrorDTO;
 import br.com.drivecore.domain.contract.exception.ContractNotFoundException;
 import br.com.drivecore.domain.employer.exception.EmployerNotFoundException;
 import br.com.drivecore.domain.user.exception.UserNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -75,6 +76,13 @@ public class ApiExceptionHandler {
         return new ResponseEntity<>(apiExceptionErrorDTO, BAD_REQUEST);
     }
 
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<ApiExceptionErrorDTO> entityNotFoundExceptionHandler(EntityNotFoundException entityNotFoundException) {
+        var apiExceptionErrorDTO = new ApiExceptionErrorDTO(entityNotFoundException.getClass().getSimpleName(),
+                entityNotFoundException.getMessage());
+
+        return new ResponseEntity<>(apiExceptionErrorDTO, NOT_FOUND);
+    }
 
     @ExceptionHandler(EmployerNotFoundException.class)
     public ResponseEntity<ApiExceptionErrorDTO> employerNotFoundExceptionHandler(EmployerNotFoundException employerNotFoundException) {

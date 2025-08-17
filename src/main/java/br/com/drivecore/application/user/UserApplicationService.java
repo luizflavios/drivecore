@@ -1,7 +1,7 @@
 package br.com.drivecore.application.user;
 
-import br.com.drivecore.core.generics.GenericMapper;
-import br.com.drivecore.core.generics.IdReferenceGenericDTO;
+import br.com.drivecore.core.generics.domain.mapper.GenericMapper;
+import br.com.drivecore.core.generics.domain.model.IdReferenceGenericDTO;
 import br.com.drivecore.domain.user.UserService;
 import br.com.drivecore.domain.user.model.CreateUserRequestDTO;
 import br.com.drivecore.infrastructure.authentication.AuthenticationService;

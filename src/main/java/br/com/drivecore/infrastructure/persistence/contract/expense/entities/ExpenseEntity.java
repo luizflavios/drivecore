@@ -1,6 +1,6 @@
 package br.com.drivecore.infrastructure.persistence.contract.expense.entities;
 
-import br.com.drivecore.core.generics.GenericEntity;
+import br.com.drivecore.core.generics.infrastructure.persistence.BaseEntity;
 import br.com.drivecore.infrastructure.persistence.user.entities.UserEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 @Setter
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
-public class ExpenseEntity extends GenericEntity {
+public class ExpenseEntity extends BaseEntity {
 
     @Column(nullable = false)
     private BigDecimal amount;

@@ -30,7 +30,7 @@ public class ContractService {
         return saveContractEntity(contractEntity);
     }
 
-    private ContractEntity saveContractEntity(ContractEntity contractEntity) {
+    public ContractEntity saveContractEntity(ContractEntity contractEntity) {
         return contractRepository.save(contractEntity);
     }
 

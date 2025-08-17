@@ -1,7 +1,7 @@
 package br.com.drivecore.controller;
 
 import br.com.drivecore.application.user.UserApplicationService;
-import br.com.drivecore.core.generics.IdReferenceGenericDTO;
+import br.com.drivecore.core.generics.domain.model.IdReferenceGenericDTO;
 import br.com.drivecore.domain.user.model.CreateUserRequestDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

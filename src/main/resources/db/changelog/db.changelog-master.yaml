@@ -302,3 +302,39 @@ databaseChangeLog:
             referencedTableName: employers
             referencedColumnNames: id
             constraintName: fk_contracts_responsible
+
+  - changeSet:
+      id: 007-create-table-contracts_expenses
+      author: luizflavio_s
+      changes:
+        - createTable:
+            tableName: contracts_expenses
+            columns:
+              - column:
+                  name: contract_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: expense_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+        - addPrimaryKey:
+            columnNames: contract_id, expense_id
+            constraintName: pk_contracts_expenses
+            tableName: contracts_expenses
+        - addForeignKeyConstraint:
+            baseTableName: contracts_expenses
+            baseColumnNames: contract_id
+            referencedTableName: contracts
+            referencedColumnNames: id
+            constraintName: fk_contracts
+            onDelete: CASCADE
+        - addForeignKeyConstraint:
+            baseTableName: contracts_expenses
+            baseColumnNames: expense_id
+            referencedTableName: expenses
+            referencedColumnNames: id
+            constraintName: fk_expenses
+            onDelete: CASCADE

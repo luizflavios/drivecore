@@ -1,4 +1,4 @@
-package br.com.drivecore.core.generics;
+package br.com.drivecore.core.generics.domain.model;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

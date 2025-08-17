@@ -1,7 +1,7 @@
 package br.com.drivecore.controller;
 
 import br.com.drivecore.application.employer.EmployerApplicationService;
-import br.com.drivecore.core.generics.IdReferenceGenericDTO;
+import br.com.drivecore.core.generics.domain.model.IdReferenceGenericDTO;
 import br.com.drivecore.domain.employer.model.CreateEmployerRequestDTO;
 import br.com.drivecore.domain.employer.model.EmployerRequestDTO;
 import br.com.drivecore.domain.employer.model.EmployerResponseDTO;

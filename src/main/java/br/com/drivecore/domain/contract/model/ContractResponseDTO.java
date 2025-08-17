@@ -1,5 +1,6 @@
 package br.com.drivecore.domain.contract.model;
 
+import br.com.drivecore.domain.contract.expense.model.ExpenseResponseDTO;
 import br.com.drivecore.domain.employer.model.EmployerSummaryResponseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,6 +9,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Set;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -25,5 +27,6 @@ public class ContractResponseDTO {
     private BigDecimal commission;
     private BigDecimal contractValue;
     private EmployerSummaryResponseDTO responsible;
+    private Set<ExpenseResponseDTO> expenses;
 
 }

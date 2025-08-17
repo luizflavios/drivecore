@@ -1,6 +1,6 @@
 package br.com.drivecore.domain.user.model;
 
-import br.com.drivecore.core.generics.IdReferenceGenericDTO;
+import br.com.drivecore.core.generics.domain.model.IdReferenceGenericDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

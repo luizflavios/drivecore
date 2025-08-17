@@ -1,6 +1,6 @@
 package br.com.drivecore.infrastructure.persistence.user.entities;
 
-import br.com.drivecore.core.generics.GenericEntity;
+import br.com.drivecore.core.generics.infrastructure.persistence.BaseEntity;
 import br.com.drivecore.domain.user.enums.UserStatus;
 import br.com.drivecore.infrastructure.persistence.authentication.entities.RoleEntity;
 import jakarta.persistence.*;
@@ -22,7 +22,7 @@ import static br.com.drivecore.domain.user.enums.UserStatus.*;
 @Setter
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
-public class UserEntity extends GenericEntity implements UserDetails {
+public class UserEntity extends BaseEntity implements UserDetails {
 
     @Column(nullable = false, unique = true)
     private String username;

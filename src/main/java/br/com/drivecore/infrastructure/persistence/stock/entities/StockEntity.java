@@ -1,6 +1,6 @@
 package br.com.drivecore.infrastructure.persistence.stock.entities;
 
-import br.com.drivecore.core.generics.GenericEntity;
+import br.com.drivecore.core.generics.infrastructure.persistence.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Version;
 import lombok.*;
@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 @Setter
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
-public class StockEntity extends GenericEntity {
+public class StockEntity extends BaseEntity {
 
     @Column(name = "product_code", nullable = false)
     private String productCode;

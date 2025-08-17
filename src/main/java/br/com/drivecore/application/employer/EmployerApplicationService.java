@@ -1,8 +1,8 @@
 package br.com.drivecore.application.employer;
 
 import br.com.drivecore.application.user.UserApplicationService;
-import br.com.drivecore.core.generics.GenericMapper;
-import br.com.drivecore.core.generics.IdReferenceGenericDTO;
+import br.com.drivecore.core.generics.domain.mapper.GenericMapper;
+import br.com.drivecore.core.generics.domain.model.IdReferenceGenericDTO;
 import br.com.drivecore.domain.employer.EmployerService;
 import br.com.drivecore.domain.employer.mapper.EmployerMapper;
 import br.com.drivecore.domain.employer.model.CreateEmployerRequestDTO;

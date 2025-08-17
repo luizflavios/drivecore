@@ -1,6 +1,6 @@
 package br.com.drivecore.infrastructure.persistence.machine.entities;
 
-import br.com.drivecore.core.generics.GenericEntity;
+import br.com.drivecore.core.generics.infrastructure.persistence.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -15,7 +15,7 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
-public class MachineEntity extends GenericEntity {
+public class MachineEntity extends BaseEntity {
 
 
 }

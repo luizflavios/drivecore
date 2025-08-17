@@ -1,6 +1,6 @@
 package br.com.drivecore.infrastructure.persistence.authentication.entities;
 
-import br.com.drivecore.core.generics.GenericEntity;
+import br.com.drivecore.core.generics.infrastructure.persistence.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -16,7 +16,7 @@ import org.springframework.security.core.GrantedAuthority;
 @Entity
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
-public class RoleEntity extends GenericEntity implements GrantedAuthority {
+public class RoleEntity extends BaseEntity implements GrantedAuthority {
 
     @Column(nullable = false)
     private String description;

@@ -1,6 +1,6 @@
 package br.com.drivecore.infrastructure.persistence.employer.entities;
 
-import br.com.drivecore.core.generics.GenericEntity;
+import br.com.drivecore.core.generics.infrastructure.persistence.BaseEntity;
 import br.com.drivecore.infrastructure.persistence.user.entities.UserEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -16,7 +16,7 @@ import java.time.LocalDate;
 @Setter
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
-public class EmployerEntity extends GenericEntity {
+public class EmployerEntity extends BaseEntity {
 
     @Column(nullable = false)
     private String name;

@@ -1,6 +1,7 @@
 package br.com.drivecore.infrastructure.persistence.contract.entities;
 
-import br.com.drivecore.core.generics.GenericEntity;
+import br.com.drivecore.core.generics.infrastructure.persistence.BaseEntity;
+import br.com.drivecore.infrastructure.persistence.contract.expense.entities.ExpenseEntity;
 import br.com.drivecore.infrastructure.persistence.employer.entities.EmployerEntity;
 import br.com.drivecore.infrastructure.persistence.user.entities.UserEntity;
 import jakarta.persistence.*;
@@ -9,6 +10,7 @@ import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 @Table(name = "contracts")
@@ -18,7 +20,7 @@ import java.time.LocalDate;
 @Setter
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
-public class ContractEntity extends GenericEntity {
+public class ContractEntity extends BaseEntity {
 
     @Column(nullable = false)
     private String destiny;
@@ -48,6 +50,12 @@ public class ContractEntity extends GenericEntity {
     @ManyToOne
     @JoinColumn(nullable = false, updatable = false)
     private EmployerEntity responsible;
+
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "contracts_expenses",
+            joinColumns = @JoinColumn(name = "contract_id", referencedColumnName = "id", table = "contracts"),
+            inverseJoinColumns = @JoinColumn(name = "expense_id", referencedColumnName = "id", table = "expenses"))
+    private Set<ExpenseEntity> expenses;
 
     @Version
     private Long version;

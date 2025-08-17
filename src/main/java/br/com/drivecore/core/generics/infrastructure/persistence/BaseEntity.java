@@ -1,4 +1,4 @@
-package br.com.drivecore.core.generics;
+package br.com.drivecore.core.generics.infrastructure.persistence;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -16,7 +16,7 @@ import java.util.UUID;
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @MappedSuperclass
-public abstract class GenericEntity {
+public abstract class BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

@@ -1,7 +1,10 @@
 package br.com.drivecore.controller;
 
 import br.com.drivecore.application.contract.ContractApplicationService;
-import br.com.drivecore.core.generics.IdReferenceGenericDTO;
+import br.com.drivecore.application.contract.expense.ExpenseApplicationService;
+import br.com.drivecore.core.generics.domain.model.IdReferenceGenericDTO;
+import br.com.drivecore.domain.contract.expense.model.ExpenseRequestDTO;
+import br.com.drivecore.domain.contract.expense.model.ExpenseResponseDTO;
 import br.com.drivecore.domain.contract.model.ContractRequestDTO;
 import br.com.drivecore.domain.contract.model.ContractResponseDTO;
 import br.com.drivecore.domain.contract.model.CreateContractRequestDTO;
@@ -22,6 +25,7 @@ import java.util.UUID;
 public class ContractController {
 
     private final ContractApplicationService contractApplicationService;
+    private final ExpenseApplicationService expenseApplicationService;
 
     @PostMapping
     public ResponseEntity<IdReferenceGenericDTO> createContract(@RequestBody @Valid CreateContractRequestDTO createContractRequestDTO) {
@@ -38,7 +42,7 @@ public class ContractController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<ContractResponseDTO> updateContractById(@PathVariable UUID id, @RequestBody ContractRequestDTO contractRequestDTO) {
+    public ResponseEntity<ContractResponseDTO> updateContractById(@PathVariable UUID id, @RequestBody @Valid ContractRequestDTO contractRequestDTO) {
         var contractResponseDTO = contractApplicationService.updateContractById(id, contractRequestDTO);
 
         return ResponseEntity.ok(contractResponseDTO);
@@ -46,12 +50,25 @@ public class ContractController {
 
     @PostMapping("/search")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<List<ContractResponseDTO>> getContractsFiltered(@RequestBody(required = false) List<FilterCriteria> filters) {
+    public ResponseEntity<List<ContractResponseDTO>> getContractsFiltered(@RequestBody(required = false) @Valid List<FilterCriteria> filters) {
         var contractsResponse = contractApplicationService.getContractsFiltered(filters);
 
         return ResponseEntity.ok(contractsResponse);
     }
 
+    @PostMapping("/{id}/expenses")
+    public ResponseEntity<IdReferenceGenericDTO> createExpense(@PathVariable UUID id, @RequestBody @Valid ExpenseRequestDTO expenseRequestDTO) {
+        var expenseIdResponseDTO = contractApplicationService.createExpenseToContract(id, expenseRequestDTO);
+
+        return new ResponseEntity<>(expenseIdResponseDTO, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{contractId}/expenses/{expenseId}")
+    public ResponseEntity<ExpenseResponseDTO> createExpense(@PathVariable UUID contractId, @PathVariable UUID expenseId) {
+        var expenseIdResponseDTO = contractApplicationService.getExpenseById(contractId, expenseId);
+
+        return new ResponseEntity<>(expenseIdResponseDTO, HttpStatus.OK);
+    }
 
 }
 
