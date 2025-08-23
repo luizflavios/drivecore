@@ -11,4 +11,7 @@ public class AppConfiguration {
     @Value("${API.SECRET.KEY}")
     private String secretKey;
 
+    @Value("${API.TEMPORARY.PASSWORD}")
+    private String temporaryPassword;
+
 }

@@ -1,22 +1,36 @@
 package br.com.drivecore.infrastructure.persistence.authentication.entities;
 
-import br.com.drivecore.core.generics.infrastructure.persistence.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Table(name = "roles")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Builder
 @Setter
 @Entity
-@SuperBuilder
-@EqualsAndHashCode(callSuper = true)
-public class RoleEntity extends BaseEntity implements GrantedAuthority {
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+public class RoleEntity implements GrantedAuthority {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(nullable = false, updatable = false)
+    private UUID id;
+
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false, name = "created_at")
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    @Column(nullable = false, updatable = false, name = "updated_at")
+    private LocalDateTime updatedAt;
 
     @Column(nullable = false)
     private String description;

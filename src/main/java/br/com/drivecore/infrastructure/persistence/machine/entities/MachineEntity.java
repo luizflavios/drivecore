@@ -1,21 +1,43 @@
 package br.com.drivecore.infrastructure.persistence.machine.entities;
 
-import br.com.drivecore.core.generics.infrastructure.persistence.BaseEntity;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import br.com.drivecore.domain.machine.enums.MachineType;
+import br.com.drivecore.infrastructure.persistence.employer.entities.EmployerEntity;
+import br.com.drivecore.infrastructure.persistence.generic.BaseEntity;
+import jakarta.persistence.*;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-//@Entity
-//@Table(name = "machines")
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
+@Entity
+@Table(name = "machines")
 @AllArgsConstructor
-//@NoArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 public class MachineEntity extends BaseEntity {
 
+    @Column(nullable = false)
+    private String brand;
+
+    @Column(nullable = false)
+    private String model;
+
+    @Column(nullable = false, name = "paid_amount")
+    private BigDecimal paidAmount;
+
+    @Column(nullable = false, name = "purchase_date")
+    private LocalDate purchaseDate;
+
+    @Enumerated(EnumType.ORDINAL)
+    @Column(nullable = false)
+    private MachineType type;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "created_by", nullable = false)
+    private EmployerEntity createdBy;
 
 }

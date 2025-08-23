@@ -1,12 +1,12 @@
 package br.com.drivecore.infrastructure.persistence.specification.model;
 
-import br.com.drivecore.infrastructure.persistence.specification.enums.Operator;
+import br.com.drivecore.infrastructure.persistence.specification.enums.FilterCriteriaOperator;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 public record FilterCriteria(
         @NotEmpty String field,
-        @NotNull Operator operator,
+        @NotNull FilterCriteriaOperator filterCriteriaOperator,
         Object value
 ) {
 }

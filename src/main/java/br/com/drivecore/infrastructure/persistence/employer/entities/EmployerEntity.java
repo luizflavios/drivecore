@@ -1,7 +1,7 @@
 package br.com.drivecore.infrastructure.persistence.employer.entities;
 
-import br.com.drivecore.core.generics.infrastructure.persistence.BaseEntity;
-import br.com.drivecore.infrastructure.persistence.user.entities.UserEntity;
+import br.com.drivecore.infrastructure.persistence.authentication.entities.UserEntity;
+import br.com.drivecore.infrastructure.persistence.generic.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @SuperBuilder
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 public class EmployerEntity extends BaseEntity {
 
     @Column(nullable = false)
@@ -30,11 +30,8 @@ public class EmployerEntity extends BaseEntity {
     @Column(nullable = false, name = "admission_date")
     private LocalDate admissionDate;
 
-    @OneToOne
-    @JoinColumn(nullable = false, unique = true, name = "user_id")
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(unique = true, name = "user_id")
     private UserEntity user;
-
-    @Version
-    private Long version;
 
 }

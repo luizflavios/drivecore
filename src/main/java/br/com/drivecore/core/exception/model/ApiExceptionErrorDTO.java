@@ -12,4 +12,8 @@ public class ApiExceptionErrorDTO {
     private String error;
     private String detail;
 
+    public String toJson() {
+        return "{" + "\"error\": \"" + getError() + "\", \"detail\": \"" + getDetail() + "\" }";
+    }
+
 }

@@ -1,6 +1,6 @@
 package br.com.drivecore.core.security;
 
-import br.com.drivecore.infrastructure.authentication.provider.TokenProvider;
+import br.com.drivecore.domain.authentication.provider.TokenProvider;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,15 +1,14 @@
 package br.com.drivecore.infrastructure.persistence.contract.entities;
 
-import br.com.drivecore.core.generics.infrastructure.persistence.BaseEntity;
-import br.com.drivecore.infrastructure.persistence.contract.expense.entities.ExpenseEntity;
+import br.com.drivecore.controller.contract.enums.ContractType;
 import br.com.drivecore.infrastructure.persistence.employer.entities.EmployerEntity;
-import br.com.drivecore.infrastructure.persistence.user.entities.UserEntity;
+import br.com.drivecore.infrastructure.persistence.expense.entities.ExpenseEntity;
+import br.com.drivecore.infrastructure.persistence.generic.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
@@ -22,34 +21,20 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 public class ContractEntity extends BaseEntity {
 
-    @Column(nullable = false)
-    private String destiny;
-
-    @Column(name = "start_date")
-    private LocalDate startDate;
-
-    @Column(name = "final_date")
-    private LocalDate finalDate;
-
-    @Column(name = "initial_kilometer")
-    private Long initialKilometer;
-
-    @Column(name = "final_kilometer")
-    private Long finalKilometer;
-
-    @Column(nullable = false)
     private BigDecimal commission;
 
-    @Column(nullable = false, name = "contract_Value")
+    @Column(nullable = false, name = "contract_value")
     private BigDecimal contractValue;
 
     @ManyToOne
     @JoinColumn(name = "created_by", nullable = false, updatable = false)
-    private UserEntity createdBy;
+    private EmployerEntity createdBy;
 
-    @ManyToOne
-    @JoinColumn(nullable = false, updatable = false)
-    private EmployerEntity responsible;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "contracts_responsible",
+            joinColumns = @JoinColumn(name = "contract_id", referencedColumnName = "id", table = "contracts"),
+            inverseJoinColumns = @JoinColumn(name = "responsible_id", referencedColumnName = "id", table = "employers"))
+    private Set<EmployerEntity> responsible;
 
     @OneToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "contracts_expenses",
@@ -57,6 +42,8 @@ public class ContractEntity extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "expense_id", referencedColumnName = "id", table = "expenses"))
     private Set<ExpenseEntity> expenses;
 
-    @Version
-    private Long version;
+    @Enumerated(EnumType.ORDINAL)
+    @Column(nullable = false)
+    private ContractType type;
+
 }
