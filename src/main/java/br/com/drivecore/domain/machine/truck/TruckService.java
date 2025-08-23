@@ -1,7 +1,7 @@
 package br.com.drivecore.domain.machine.truck;
 
-import br.com.drivecore.infrastructure.persistence.machine.TruckRepository;
-import br.com.drivecore.infrastructure.persistence.machine.entities.TruckEntity;
+import br.com.drivecore.infrastructure.persistence.machine.truck.TruckRepository;
+import br.com.drivecore.infrastructure.persistence.machine.truck.entities.TruckEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -6,7 +6,7 @@ import br.com.drivecore.controller.machine.truck.model.TruckResponseDTO;
 import br.com.drivecore.domain.machine.truck.TruckService;
 import br.com.drivecore.domain.machine.truck.mapper.TruckMapper;
 import br.com.drivecore.infrastructure.persistence.machine.entities.MachineEntity;
-import br.com.drivecore.infrastructure.persistence.machine.entities.TruckEntity;
+import br.com.drivecore.infrastructure.persistence.machine.truck.entities.TruckEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

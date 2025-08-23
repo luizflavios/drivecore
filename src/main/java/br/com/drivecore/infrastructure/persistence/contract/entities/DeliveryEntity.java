@@ -1,7 +1,7 @@
 package br.com.drivecore.infrastructure.persistence.contract.entities;
 
 import br.com.drivecore.infrastructure.persistence.generic.BaseEntity;
-import br.com.drivecore.infrastructure.persistence.machine.entities.TruckEntity;
+import br.com.drivecore.infrastructure.persistence.machine.truck.entities.TruckEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;

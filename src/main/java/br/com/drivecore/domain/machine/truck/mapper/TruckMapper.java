@@ -4,7 +4,7 @@ import br.com.drivecore.controller.machine.truck.model.CreateTruckRequestDTO;
 import br.com.drivecore.controller.machine.truck.model.TruckResponseDTO;
 import br.com.drivecore.domain.authentication.enums.UserStatus;
 import br.com.drivecore.infrastructure.persistence.machine.entities.MachineEntity;
-import br.com.drivecore.infrastructure.persistence.machine.entities.TruckEntity;
+import br.com.drivecore.infrastructure.persistence.machine.truck.entities.TruckEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;

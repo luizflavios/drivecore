@@ -1,6 +1,6 @@
-package br.com.drivecore.infrastructure.persistence.machine;
+package br.com.drivecore.infrastructure.persistence.machine.truck;
 
-import br.com.drivecore.infrastructure.persistence.machine.entities.TruckEntity;
+import br.com.drivecore.infrastructure.persistence.machine.truck.entities.TruckEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
