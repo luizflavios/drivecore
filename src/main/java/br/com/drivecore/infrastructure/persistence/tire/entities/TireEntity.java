@@ -39,7 +39,7 @@ public class TireEntity extends BaseEntity {
 
     private Integer reconditioning;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by", nullable = false, updatable = false)
     private EmployerEntity createdBy;
 

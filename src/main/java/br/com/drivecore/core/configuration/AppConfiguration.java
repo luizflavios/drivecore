@@ -14,4 +14,7 @@ public class AppConfiguration {
     @Value("${API.TEMPORARY.PASSWORD}")
     private String temporaryPassword;
 
+    @Value("${API.BUCKET.NAME}")
+    private String apiBucketName;
+
 }

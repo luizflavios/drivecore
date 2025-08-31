@@ -1,16 +1,15 @@
 package br.com.drivecore.controller.contract;
 
 import br.com.drivecore.application.contract.ContractApplicationService;
-import br.com.drivecore.controller.contract.model.ContractResponseDTO;
-import br.com.drivecore.controller.contract.model.CreateContractRequestDTO;
-import jakarta.validation.Valid;
+import br.com.drivecore.controller.attachment.model.AttachmentResponseDTO;
+import br.com.drivecore.controller.model.ObjectReferenceDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/contracts")
@@ -19,11 +18,18 @@ public class ContractController {
 
     private final ContractApplicationService contractApplicationService;
 
-    @PostMapping
-    public ResponseEntity<ContractResponseDTO> createContract(@RequestBody @Valid CreateContractRequestDTO createContractRequestDTO) {
-        ContractResponseDTO contractResponseDTO = contractApplicationService.createContract(createContractRequestDTO);
+    @PostMapping("/{id}/attachments")
+    public ResponseEntity<ObjectReferenceDTO> createNewAttachmentToContract(@PathVariable UUID id, @ModelAttribute MultipartFile file) {
+        ObjectReferenceDTO objectReferenceDTO = contractApplicationService.attachmentToContract(id, file);
 
-        return new ResponseEntity<>(contractResponseDTO, HttpStatus.CREATED);
+        return ResponseEntity.ok(objectReferenceDTO);
+    }
+
+    @GetMapping("/{id}/attachments")
+    public ResponseEntity<List<AttachmentResponseDTO>> createNewAttachmentToContract(@PathVariable UUID id) {
+        List<AttachmentResponseDTO> attachmentResponseDTOS = contractApplicationService.getContractAttachments(id);
+
+        return ResponseEntity.ok(attachmentResponseDTOS);
     }
 
 }

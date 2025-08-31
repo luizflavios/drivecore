@@ -1,6 +1,7 @@
 package br.com.drivecore.infrastructure.persistence.contract.entities;
 
 import br.com.drivecore.controller.contract.enums.ContractType;
+import br.com.drivecore.infrastructure.persistence.attachment.entities.AttachmentEntity;
 import br.com.drivecore.infrastructure.persistence.employer.entities.EmployerEntity;
 import br.com.drivecore.infrastructure.persistence.expense.entities.ExpenseEntity;
 import br.com.drivecore.infrastructure.persistence.generic.BaseEntity;
@@ -13,6 +14,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "contracts")
+@Inheritance(strategy = InheritanceType.JOINED)
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -36,11 +38,17 @@ public class ContractEntity extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "responsible_id", referencedColumnName = "id", table = "employers"))
     private Set<EmployerEntity> responsible;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "contracts_expenses",
             joinColumns = @JoinColumn(name = "contract_id", referencedColumnName = "id", table = "contracts"),
             inverseJoinColumns = @JoinColumn(name = "expense_id", referencedColumnName = "id", table = "expenses"))
     private Set<ExpenseEntity> expenses;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "contracts_attachments",
+            joinColumns = @JoinColumn(name = "contract_id", referencedColumnName = "id", table = "contracts"),
+            inverseJoinColumns = @JoinColumn(name = "attachment_id", referencedColumnName = "id", table = "attachments"))
+    private Set<AttachmentEntity> attachments;
 
     @Enumerated(EnumType.ORDINAL)
     @Column(nullable = false)

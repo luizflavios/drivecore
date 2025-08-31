@@ -1,10 +1,8 @@
 package br.com.drivecore.controller.contract.delivery.exception;
 
-import jakarta.persistence.EntityNotFoundException;
-
 import java.util.UUID;
 
-public class DeliveryNotFoundException extends EntityNotFoundException {
+public class DeliveryNotFoundException extends RuntimeException {
 
     public DeliveryNotFoundException(UUID id) {
         super(

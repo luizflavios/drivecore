@@ -30,7 +30,6 @@ public class CreateMachineRequestDTO {
     @NotNull
     private LocalDate purchaseDate;
 
-    @NotNull
     private MachineType type;
 
 }

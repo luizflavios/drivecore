@@ -16,7 +16,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class DeliveryResponseDTO {
+public class DeliveryResponseDTO extends ContractResponseDTO {
 
     private UUID id;
 
@@ -29,8 +29,6 @@ public class DeliveryResponseDTO {
     private Long initialKilometer;
 
     private Long finalKilometer;
-
-    private ContractResponseDTO contract;
 
     private Set<TruckResponseDTO> trucks;
 

@@ -1,10 +1,8 @@
 package br.com.drivecore.domain.employer.exception;
 
-import jakarta.persistence.EntityNotFoundException;
-
 import java.util.UUID;
 
-public class EmployerNotLocatedByUsernameException extends EntityNotFoundException {
+public class EmployerNotLocatedByUsernameException extends RuntimeException {
 
     public EmployerNotLocatedByUsernameException(UUID id) {
         super(

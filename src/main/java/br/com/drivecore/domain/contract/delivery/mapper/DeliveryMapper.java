@@ -3,8 +3,8 @@ package br.com.drivecore.domain.contract.delivery.mapper;
 import br.com.drivecore.controller.contract.delivery.model.CreateDeliveryRequestDTO;
 import br.com.drivecore.controller.contract.delivery.model.DeliveryResponseDTO;
 import br.com.drivecore.domain.authentication.enums.UserStatus;
-import br.com.drivecore.infrastructure.persistence.contract.entities.ContractEntity;
 import br.com.drivecore.infrastructure.persistence.contract.entities.DeliveryEntity;
+import br.com.drivecore.infrastructure.persistence.employer.entities.EmployerEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -17,8 +17,8 @@ public interface DeliveryMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
-    @Mapping(target = "contract", source = "contract")
-    DeliveryEntity toEntity(CreateDeliveryRequestDTO createDeliveryRequestDTO, ContractEntity contract);
+    @Mapping(target = "createdBy", source = "createdBy")
+    DeliveryEntity toEntity(CreateDeliveryRequestDTO createDeliveryRequestDTO, EmployerEntity createdBy);
 
     DeliveryResponseDTO toContractResponseDTO(DeliveryEntity entity);
 

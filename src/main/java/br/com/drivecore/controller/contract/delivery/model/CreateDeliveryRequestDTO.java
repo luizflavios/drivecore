@@ -15,7 +15,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateDeliveryRequestDTO {
+public class CreateDeliveryRequestDTO extends CreateContractRequestDTO {
 
     @NotBlank
     private String destiny;
@@ -29,7 +29,5 @@ public class CreateDeliveryRequestDTO {
     private Long finalKilometer;
 
     private Set<ObjectReferenceDTO> trucks;
-
-    private CreateContractRequestDTO contract;
 
 }

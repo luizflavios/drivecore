@@ -14,11 +14,9 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class TruckResponseDTO {
+public class TruckResponseDTO extends MachineResponseDTO {
 
     private UUID id;
-
-    private MachineResponseDTO machine;
 
     private Integer axles;
 

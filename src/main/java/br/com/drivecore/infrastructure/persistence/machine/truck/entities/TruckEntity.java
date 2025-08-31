@@ -1,6 +1,5 @@
 package br.com.drivecore.infrastructure.persistence.machine.truck.entities;
 
-import br.com.drivecore.infrastructure.persistence.generic.BaseEntity;
 import br.com.drivecore.infrastructure.persistence.machine.entities.MachineEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -16,14 +15,7 @@ import java.util.List;
 @Setter
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
-public class TruckEntity extends BaseEntity {
-
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "machine_id", nullable = false)
-    private MachineEntity machine;
-
-    @Column(nullable = false)
-    private Integer axles;
+public class TruckEntity extends MachineEntity {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "trucks_equipments",

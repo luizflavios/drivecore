@@ -19,6 +19,7 @@
         <jjwt-impl.version>0.12.6</jjwt-impl.version>
         <jackson-datatype-jsr310.version>2.19.2</jackson-datatype-jsr310.version>
         <mapstruct.version>1.6.0.Beta1</mapstruct.version>
+        <s3.version>2.32.29</s3.version>
     </properties>
 
     <dependencies>
@@ -118,6 +119,12 @@
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-registry-prometheus</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>s3</artifactId>
+            <version>${s3.version}</version>
         </dependency>
     </dependencies>
 

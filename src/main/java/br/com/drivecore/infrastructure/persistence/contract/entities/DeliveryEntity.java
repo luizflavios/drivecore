@@ -1,6 +1,5 @@
 package br.com.drivecore.infrastructure.persistence.contract.entities;
 
-import br.com.drivecore.infrastructure.persistence.generic.BaseEntity;
 import br.com.drivecore.infrastructure.persistence.machine.truck.entities.TruckEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -17,7 +16,7 @@ import java.util.Set;
 @Setter
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
-public class DeliveryEntity extends BaseEntity {
+public class DeliveryEntity extends ContractEntity {
 
     @Column(nullable = false)
     private String destiny;
@@ -39,9 +38,5 @@ public class DeliveryEntity extends BaseEntity {
             joinColumns = @JoinColumn(name = "delivery_id", referencedColumnName = "id", table = "deliveries"),
             inverseJoinColumns = @JoinColumn(name = "truck_id", referencedColumnName = "id", table = "trucks"))
     private Set<TruckEntity> trucks;
-
-    @OneToOne
-    @JoinColumn(name = "contract_id", nullable = false)
-    private ContractEntity contract;
 
 }

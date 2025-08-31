@@ -1,6 +1,9 @@
 package br.com.drivecore.core.exception;
 
+import br.com.drivecore.controller.contract.delivery.exception.DeliveryNotFoundException;
 import br.com.drivecore.core.exception.model.ApiExceptionErrorDTO;
+import br.com.drivecore.domain.contract.delivery.ContractNotFoundException;
+import br.com.drivecore.domain.employer.exception.EmployerNotLocatedByUsernameException;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -18,8 +21,6 @@ import static org.springframework.http.HttpStatus.*;
 
 @RestControllerAdvice
 public class ApiExceptionHandler {
-
-    private static final String DETAIL_REGEX = "Detail:";
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ApiExceptionErrorDTO> badCredentialsExceptionHandler(BadCredentialsException badCredentialsException) {
@@ -91,5 +92,28 @@ public class ApiExceptionHandler {
         return new ResponseEntity<>(apiExceptionErrorDTO, NOT_FOUND);
     }
 
+    @ExceptionHandler(EmployerNotLocatedByUsernameException.class)
+    public ResponseEntity<ApiExceptionErrorDTO> employerNotLocatedByUsernameExceptionHandler(EmployerNotLocatedByUsernameException employerNotLocatedByUsernameException) {
+        ApiExceptionErrorDTO apiExceptionErrorDTO = new ApiExceptionErrorDTO(employerNotLocatedByUsernameException.getClass().getSimpleName(),
+                employerNotLocatedByUsernameException.getMessage());
+
+        return new ResponseEntity<>(apiExceptionErrorDTO, NOT_FOUND);
+    }
+
+    @ExceptionHandler(ContractNotFoundException.class)
+    public ResponseEntity<ApiExceptionErrorDTO> contractNotFoundExceptionHandler(ContractNotFoundException contractNotFoundException) {
+        ApiExceptionErrorDTO apiExceptionErrorDTO = new ApiExceptionErrorDTO(contractNotFoundException.getClass().getSimpleName(),
+                contractNotFoundException.getMessage());
+
+        return new ResponseEntity<>(apiExceptionErrorDTO, NOT_FOUND);
+    }
+
+    @ExceptionHandler(DeliveryNotFoundException.class)
+    public ResponseEntity<ApiExceptionErrorDTO> deliveryNotFoundExceptionHandler(DeliveryNotFoundException deliveryNotFoundException) {
+        ApiExceptionErrorDTO apiExceptionErrorDTO = new ApiExceptionErrorDTO(deliveryNotFoundException.getClass().getSimpleName(),
+                deliveryNotFoundException.getMessage());
+
+        return new ResponseEntity<>(apiExceptionErrorDTO, NOT_FOUND);
+    }
 
 }

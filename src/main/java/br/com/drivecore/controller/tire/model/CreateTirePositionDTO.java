@@ -20,7 +20,7 @@ public class CreateTirePositionDTO {
     private ObjectReferenceDTO tire;
 
     @NotNull
-    private ObjectReferenceDTO truck;
+    private ObjectReferenceDTO machine;
 
     @NotNull
     private TirePositionSide side;

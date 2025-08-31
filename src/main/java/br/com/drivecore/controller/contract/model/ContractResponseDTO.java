@@ -1,5 +1,6 @@
 package br.com.drivecore.controller.contract.model;
 
+import br.com.drivecore.controller.contract.enums.ContractType;
 import br.com.drivecore.controller.employer.model.EmployerResponseDTO;
 import br.com.drivecore.controller.expense.model.ExpenseResponseDTO;
 import lombok.AllArgsConstructor;
@@ -29,5 +30,7 @@ public class ContractResponseDTO {
     private List<ExpenseResponseDTO> expenses;
 
     private LocalDateTime createdAt;
-    
+
+    private ContractType type;
+
 }

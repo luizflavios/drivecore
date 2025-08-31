@@ -12,6 +12,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "machines")
+@Inheritance(strategy = InheritanceType.JOINED)
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
