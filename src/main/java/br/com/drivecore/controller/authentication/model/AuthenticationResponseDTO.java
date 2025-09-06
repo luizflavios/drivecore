@@ -20,14 +20,6 @@ public class AuthenticationResponseDTO {
     private long expiresIn;
 
     private Set<RoleResponseDTO> authorities;
-
-    private boolean accountNonExpired;
-
-    private boolean accountNonLocked;
-
-    private boolean credentialsNonExpired;
-
-    private boolean enabled;
-
+    
 }
 

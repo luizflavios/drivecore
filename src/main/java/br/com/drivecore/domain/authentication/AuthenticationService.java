@@ -4,23 +4,32 @@ import br.com.drivecore.domain.authentication.model.Authentication;
 import br.com.drivecore.domain.authentication.provider.AuthenticationProvider;
 import br.com.drivecore.domain.authentication.provider.PasswordProvider;
 import br.com.drivecore.domain.authentication.provider.TokenProvider;
+import br.com.drivecore.infrastructure.persistence.authentication.RoleRepository;
 import br.com.drivecore.infrastructure.persistence.authentication.UserRepository;
+import br.com.drivecore.infrastructure.persistence.authentication.entities.RoleEntity;
 import br.com.drivecore.infrastructure.persistence.authentication.entities.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+import static br.com.drivecore.domain.authentication.enums.UserStatus.CONFIGURATION;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
 
+
+    private static final int PASSWORD_LENGTH = 8;
+
     private final AuthenticationProvider authenticationProvider;
     private final PasswordProvider passwordProvider;
     private final TokenProvider tokenProvider;
 
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
 
     public void createUser(UserEntity user) {
         checkUserPasswordRequirements(user);
@@ -40,9 +49,13 @@ public class AuthenticationService {
 
     private void checkUserPasswordRequirements(UserEntity user) {
         if (isBlank(user.getPassword())) {
-            String password = passwordProvider.generateTempPassword();
+            String tempPassword = passwordProvider.generateTempPassword(PASSWORD_LENGTH);
 
-            user.setPassword(password);
+            user.setPassword(passwordProvider.encodePassword(tempPassword));
+
+            user.setStatus(CONFIGURATION);
+
+            user.setTemporaryPassword(tempPassword);
         } else {
             String password = passwordProvider.encodePassword(user.getPassword());
 
@@ -56,4 +69,7 @@ public class AuthenticationService {
                 .getPrincipal().toString();
     }
 
+    public List<RoleEntity> findAllRoles() {
+        return roleRepository.findAll();
+    }
 }

@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 
 public record FilterCriteria(
         @NotEmpty String field,
-        @NotNull FilterCriteriaOperator filterCriteriaOperator,
+        @NotNull FilterCriteriaOperator operator,
         Object value
 ) {
 }

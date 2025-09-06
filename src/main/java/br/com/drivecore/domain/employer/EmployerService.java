@@ -3,10 +3,17 @@ package br.com.drivecore.domain.employer;
 import br.com.drivecore.domain.employer.exception.EmployerNotLocatedByUsernameException;
 import br.com.drivecore.infrastructure.persistence.employer.EmployerRepository;
 import br.com.drivecore.infrastructure.persistence.employer.entities.EmployerEntity;
+import br.com.drivecore.infrastructure.persistence.specification.FilterCriteriaSpecification;
+import br.com.drivecore.infrastructure.persistence.specification.model.FilterCriteria;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
+
+import static java.util.Objects.nonNull;
 
 @Service
 @RequiredArgsConstructor
@@ -24,4 +31,11 @@ public class EmployerService {
                 .orElseThrow(() -> new EmployerNotLocatedByUsernameException(userId));
     }
 
+    public Page<EmployerEntity> findEmployersPageableAndFilterable(Pageable pageable, List<FilterCriteria> filterCriteria) {
+        if (nonNull(filterCriteria) && !filterCriteria.isEmpty()) {
+            return employerRepository.findAll(new FilterCriteriaSpecification<>(filterCriteria), pageable);
+        }
+
+        return employerRepository.findAll(pageable);
+    }
 }

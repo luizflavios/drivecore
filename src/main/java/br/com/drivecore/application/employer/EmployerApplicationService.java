@@ -7,11 +7,17 @@ import br.com.drivecore.domain.employer.EmployerService;
 import br.com.drivecore.domain.employer.mapper.EmployerMapper;
 import br.com.drivecore.infrastructure.persistence.authentication.entities.UserEntity;
 import br.com.drivecore.infrastructure.persistence.employer.entities.EmployerEntity;
+import br.com.drivecore.infrastructure.persistence.specification.model.FilterCriteria;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -20,7 +26,6 @@ import java.util.UUID;
 public class EmployerApplicationService {
 
     private final AuthenticationApplicationService authenticationApplicationService;
-
     private final EmployerService employerService;
 
     @Transactional
@@ -42,4 +47,14 @@ public class EmployerApplicationService {
         return employerService.findByUserId(userId);
     }
 
+    public Page<EmployerResponseDTO> listEmployersPageable(int page, int size, @Valid List<FilterCriteria> filterCriteria) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<EmployerEntity> employerEntityPage = employerService
+                .findEmployersPageableAndFilterable(pageable, filterCriteria);
+
+        log.info("Employers successfully list");
+
+        return employerEntityPage.map(EmployerMapper.INSTANCE::toEmployerResponseDTO);
+    }
 }

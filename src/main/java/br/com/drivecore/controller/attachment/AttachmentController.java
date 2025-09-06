@@ -3,6 +3,8 @@ package br.com.drivecore.controller.attachment;
 import br.com.drivecore.application.attachment.AttachmentApplicationService;
 import br.com.drivecore.controller.attachment.model.CreateAttachmentRequestDTO;
 import br.com.drivecore.controller.model.ObjectReferenceDTO;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
@@ -15,11 +17,13 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/attachments")
 @RequiredArgsConstructor
+@Tag(name = "Attachments")
 public class AttachmentController {
 
     private final AttachmentApplicationService attachmentApplicationService;
 
     @PostMapping
+    @Operation(summary = "Create attachment")
     public ResponseEntity<ObjectReferenceDTO> attach(@ModelAttribute @Valid CreateAttachmentRequestDTO createAttachmentRequestDTO) {
         ObjectReferenceDTO objectReferenceDTO = attachmentApplicationService.createAttachment(createAttachmentRequestDTO);
 
@@ -27,6 +31,7 @@ public class AttachmentController {
     }
 
     @GetMapping("/{key}")
+    @Operation(summary = "Attachment download")
     public ResponseEntity<Resource> download(@PathVariable String key) {
         InputStreamResource attachment = attachmentApplicationService.download(key);
 

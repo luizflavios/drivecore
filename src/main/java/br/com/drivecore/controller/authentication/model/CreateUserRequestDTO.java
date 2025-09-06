@@ -18,6 +18,9 @@ public class CreateUserRequestDTO {
     @NotBlank
     private String username;
 
+    @NotBlank
+    private String email;
+
     private String password;
 
     private Set<ObjectReferenceDTO> roles;

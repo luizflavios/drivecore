@@ -11,7 +11,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.Set;
 
-import static br.com.drivecore.domain.authentication.enums.UserStatus.*;
+import static br.com.drivecore.domain.authentication.enums.UserStatus.CONFIGURATION;
+import static br.com.drivecore.domain.authentication.enums.UserStatus.INACTIVE;
 
 @Entity
 @Table(name = "users")
@@ -26,6 +27,9 @@ public class UserEntity extends BaseEntity implements UserDetails {
     @Column(nullable = false, unique = true)
     private String username;
 
+    @Column(nullable = false, unique = true)
+    private String email;
+
     @Column(nullable = false)
     private String password;
 
@@ -39,19 +43,12 @@ public class UserEntity extends BaseEntity implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id", table = "roles"))
     private Set<RoleEntity> roles;
 
+    @Transient
+    private String temporaryPassword;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles();
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return getStatus() != EXPIRED;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return getStatus() != LOCKED;
     }
 
     @Override

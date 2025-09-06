@@ -1,6 +1,7 @@
 package br.com.drivecore.controller.employer.model;
 
 import br.com.drivecore.controller.authentication.model.CreateUserRequestDTO;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -28,6 +29,7 @@ public class CreateEmployerRequestDTO {
     @NotNull
     private LocalDate admissionDate;
 
+    @Valid
     private CreateUserRequestDTO user;
 
 }

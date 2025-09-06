@@ -22,6 +22,14 @@ public class UserDetailImplService implements UserDetailsService {
                 .findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(format("%s does not exists", username)));
 
-        return new User(userEntity.getId().toString(), userEntity.getPassword(), userEntity.getRoles());
+        return new User(
+                userEntity.getId().toString(),
+                userEntity.getPassword(),
+                userEntity.isEnabled(),
+                userEntity.isAccountNonExpired(),
+                userEntity.isCredentialsNonExpired(),
+                userEntity.isAccountNonLocked(),
+                userEntity.getRoles()
+        );
     }
 }

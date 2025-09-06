@@ -10,17 +10,23 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.CredentialsExpiredException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import static java.lang.Boolean.TRUE;
 import static java.util.stream.Collectors.joining;
 import static org.springframework.http.HttpStatus.*;
 
 @RestControllerAdvice
 public class ApiExceptionHandler {
+
+    private static final String USER_IS_DISABLED = "User is disabled";
+    private static final String USER_CREDENTIALS_HAVE_EXPIRED = "User credentials have expired";
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ApiExceptionErrorDTO> badCredentialsExceptionHandler(BadCredentialsException badCredentialsException) {
@@ -34,6 +40,30 @@ public class ApiExceptionHandler {
     public ResponseEntity<ApiExceptionErrorDTO> expiredJwtExceptionHandler(ExpiredJwtException expiredJwtException) {
         ApiExceptionErrorDTO apiExceptionErrorDTO = new ApiExceptionErrorDTO(expiredJwtException.getClass().getSimpleName(),
                 expiredJwtException.getMessage());
+
+        return new ResponseEntity<>(apiExceptionErrorDTO, UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(CredentialsExpiredException.class)
+    public ResponseEntity<ApiExceptionErrorDTO> credentialsExpiredExceptionHandler(CredentialsExpiredException credentialsExpiredException) {
+        ApiExceptionErrorDTO apiExceptionErrorDTO = new ApiExceptionErrorDTO(credentialsExpiredException.getClass().getSimpleName(),
+                credentialsExpiredException.getMessage());
+
+        if (USER_CREDENTIALS_HAVE_EXPIRED.equals(apiExceptionErrorDTO.getDetail())) {
+            apiExceptionErrorDTO.setCredentialsExpired(TRUE);
+        }
+
+        return new ResponseEntity<>(apiExceptionErrorDTO, UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(DisabledException.class)
+    public ResponseEntity<ApiExceptionErrorDTO> disabledExceptionHandler(DisabledException disabledException) {
+        ApiExceptionErrorDTO apiExceptionErrorDTO = new ApiExceptionErrorDTO(disabledException.getClass().getSimpleName(),
+                disabledException.getMessage());
+
+        if (USER_IS_DISABLED.equals(apiExceptionErrorDTO.getDetail())) {
+            apiExceptionErrorDTO.setDisabledUser(TRUE);
+        }
 
         return new ResponseEntity<>(apiExceptionErrorDTO, UNAUTHORIZED);
     }

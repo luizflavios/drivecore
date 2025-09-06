@@ -5,6 +5,7 @@ import br.com.drivecore.controller.authentication.model.CreateUserRequestDTO;
 import br.com.drivecore.controller.authentication.model.RoleResponseDTO;
 import br.com.drivecore.domain.authentication.enums.UserStatus;
 import br.com.drivecore.domain.authentication.model.Authentication;
+import br.com.drivecore.infrastructure.persistence.authentication.entities.RoleEntity;
 import br.com.drivecore.infrastructure.persistence.authentication.entities.UserEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -26,13 +27,12 @@ public interface AuthenticationMapper {
     @Mapping(target = "accessToken", source = "token.accessToken")
     @Mapping(target = "expiresIn", source = "token.expiresIn")
     @Mapping(target = "authorities", source = "user.authorities")
-    @Mapping(target = "credentialsNonExpired", source = "user.credentialsNonExpired")
-    @Mapping(target = "accountNonExpired", source = "user.accountNonExpired")
-    @Mapping(target = "accountNonLocked", source = "user.accountNonLocked")
-    @Mapping(target = "enabled", source = "user.enabled")
     AuthenticationResponseDTO toAuthenticationResponseDTO(Authentication authentication);
 
     @Mapping(target = "name", expression = "java(grantedAuthority.getAuthority())")
     RoleResponseDTO toRoleResponseDTO(GrantedAuthority grantedAuthority);
+
+
+    RoleResponseDTO toRoleResponseDTO(RoleEntity roleEntity);
 
 }

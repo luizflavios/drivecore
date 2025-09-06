@@ -5,6 +5,8 @@ import br.com.drivecore.controller.tire.model.CreateTirePositionDTO;
 import br.com.drivecore.controller.tire.model.CreateTireRequestDTO;
 import br.com.drivecore.controller.tire.model.TirePositionResponseDTO;
 import br.com.drivecore.controller.tire.model.TireResponseDTO;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,11 +19,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/tires")
 @RequiredArgsConstructor
+@Tag(name = "Tires")
 public class TireController {
 
     private final TireApplicationService tireApplicationService;
 
     @PostMapping
+    @Operation(summary = "Create tire")
     public ResponseEntity<TireResponseDTO> createTire(@RequestBody @Valid CreateTireRequestDTO createTireRequestDTO) {
         TireResponseDTO tireResponseDTO = tireApplicationService.createTire(createTireRequestDTO);
 
@@ -29,6 +33,7 @@ public class TireController {
     }
 
     @PostMapping("/positions")
+    @Operation(summary = "Create tire position")
     public ResponseEntity<TirePositionResponseDTO> createTirePosition(@RequestBody @Valid CreateTirePositionDTO createTirePositionDTO) {
         TirePositionResponseDTO tirePositionResponseDTO = tireApplicationService.createTirePosition(createTirePositionDTO);
 

@@ -32,9 +32,9 @@ public class FilterCriteriaSpecification<T> implements Specification<T> {
                 Object value = convertValue(criteria.value(), fieldType);
 
                 log.debug("Processing filter: field='{}', operator='{}', value='{}'",
-                        criteria.field(), criteria.filterCriteriaOperator(), value);
+                        criteria.field(), criteria.operator(), value);
 
-                switch (criteria.filterCriteriaOperator()) {
+                switch (criteria.operator()) {
 
                     case EQUAL -> predicates.add(cb.equal(field, value));
 
@@ -57,19 +57,18 @@ public class FilterCriteriaSpecification<T> implements Specification<T> {
                     case GREATER_THAN, GREATER_THAN_OR_EQUAL_TO, LESS_THAN, LESS_THAN_OR_EQUAL_TO -> {
                         if (!Comparable.class.isAssignableFrom(fieldType)) {
                             log.warn("Comparison operator applied to non-comparable field: {}", criteria.field());
-                            throw new IllegalArgumentException("Operator " + criteria.filterCriteriaOperator() + " cannot be applied to type " + fieldType);
+                            throw new IllegalArgumentException("Operator " + criteria.operator() + " cannot be applied to type " + fieldType);
                         }
 
                         var compValue = (Comparable<Object>) value;
                         Expression<? extends Comparable> typedField = field.as((Class) fieldType);
 
-                        predicates.add(switch (criteria.filterCriteriaOperator()) {
+                        predicates.add(switch (criteria.operator()) {
                             case GREATER_THAN -> cb.greaterThan(typedField, compValue);
                             case GREATER_THAN_OR_EQUAL_TO -> cb.greaterThanOrEqualTo(typedField, compValue);
                             case LESS_THAN -> cb.lessThan(typedField, compValue);
                             case LESS_THAN_OR_EQUAL_TO -> cb.lessThanOrEqualTo(typedField, compValue);
-                            default ->
-                                    throw new IllegalStateException("Unexpected operator: " + criteria.filterCriteriaOperator());
+                            default -> throw new IllegalStateException("Unexpected operator: " + criteria.operator());
                         });
                     }
                 }
