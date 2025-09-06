@@ -10,10 +10,12 @@ import br.com.drivecore.infrastructure.persistence.authentication.entities.RoleE
 import br.com.drivecore.infrastructure.persistence.authentication.entities.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static br.com.drivecore.domain.authentication.enums.UserStatus.ACTIVE;
 import static br.com.drivecore.domain.authentication.enums.UserStatus.CONFIGURATION;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
@@ -71,5 +73,17 @@ public class AuthenticationService {
 
     public List<RoleEntity> findAllRoles() {
         return roleRepository.findAll();
+    }
+
+    public void updatePassword(String username, String password) {
+        UserEntity user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
+
+        user.setPassword(passwordProvider.encodePassword(password));
+
+        if (user.getStatus().equals(CONFIGURATION)) {
+            user.setStatus(ACTIVE);
+        }
+
+        userRepository.save(user);
     }
 }

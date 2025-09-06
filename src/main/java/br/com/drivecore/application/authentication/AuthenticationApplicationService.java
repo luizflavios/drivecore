@@ -1,9 +1,6 @@
 package br.com.drivecore.application.authentication;
 
-import br.com.drivecore.controller.authentication.model.AuthenticationRequestDTO;
-import br.com.drivecore.controller.authentication.model.AuthenticationResponseDTO;
-import br.com.drivecore.controller.authentication.model.CreateUserRequestDTO;
-import br.com.drivecore.controller.authentication.model.RoleResponseDTO;
+import br.com.drivecore.controller.authentication.model.*;
 import br.com.drivecore.controller.model.ObjectReferenceDTO;
 import br.com.drivecore.domain.authentication.AuthenticationService;
 import br.com.drivecore.domain.authentication.mapper.AuthenticationMapper;
@@ -13,6 +10,7 @@ import br.com.drivecore.domain.communication.model.MailDTO;
 import br.com.drivecore.domain.mapper.BaseMapper;
 import br.com.drivecore.infrastructure.persistence.authentication.entities.RoleEntity;
 import br.com.drivecore.infrastructure.persistence.authentication.entities.UserEntity;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -87,5 +85,11 @@ public class AuthenticationApplicationService {
         return roles.stream()
                 .map(AuthenticationMapper.INSTANCE::toRoleResponseDTO)
                 .toList();
+    }
+
+    public void updatePassword(@Valid UpdatePasswordRequestDTO updatePasswordRequestDTO) {
+        authenticationService.updatePassword(updatePasswordRequestDTO.getUsername(), updatePasswordRequestDTO.getPassword());
+
+        log.info("Password successfully updated - username {}", updatePasswordRequestDTO.getUsername());
     }
 }

@@ -3,6 +3,7 @@ package br.com.drivecore.application.employer;
 import br.com.drivecore.application.authentication.AuthenticationApplicationService;
 import br.com.drivecore.controller.employer.model.CreateEmployerRequestDTO;
 import br.com.drivecore.controller.employer.model.EmployerResponseDTO;
+import br.com.drivecore.controller.employer.model.UpdateEmployerRequestDTO;
 import br.com.drivecore.domain.employer.EmployerService;
 import br.com.drivecore.domain.employer.mapper.EmployerMapper;
 import br.com.drivecore.infrastructure.persistence.authentication.entities.UserEntity;
@@ -34,7 +35,7 @@ public class EmployerApplicationService {
 
         EmployerEntity employerEntity = EmployerMapper.INSTANCE.toEntity(createEmployerRequestDTO, userEntity);
 
-        employerService.createEmployer(employerEntity);
+        employerService.saveEmployer(employerEntity);
 
         log.info("Employer successfully created - {}", employerEntity.getId());
 
@@ -56,5 +57,23 @@ public class EmployerApplicationService {
         log.info("Employers successfully list");
 
         return employerEntityPage.map(EmployerMapper.INSTANCE::toEmployerResponseDTO);
+    }
+
+    public EmployerResponseDTO getEmployerDetail(UUID id) {
+        EmployerEntity employerEntity = employerService.findById(id);
+
+        return EmployerMapper.INSTANCE.toEmployerResponseDTO(employerEntity);
+    }
+
+    public EmployerResponseDTO updateEmployer(UUID id, UpdateEmployerRequestDTO updateEmployerRequestDTO) {
+        EmployerEntity employerEntity = employerService.findById(id);
+
+        EmployerMapper.INSTANCE.copyProperties(employerEntity, updateEmployerRequestDTO);
+
+        employerService.saveEmployer(employerEntity);
+
+        log.info("Employer successfully updated - {}", id);
+
+        return EmployerMapper.INSTANCE.toEmployerResponseDTO(employerEntity);
     }
 }

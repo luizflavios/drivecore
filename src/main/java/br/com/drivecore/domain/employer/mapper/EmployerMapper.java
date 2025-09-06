@@ -2,11 +2,11 @@ package br.com.drivecore.domain.employer.mapper;
 
 import br.com.drivecore.controller.employer.model.CreateEmployerRequestDTO;
 import br.com.drivecore.controller.employer.model.EmployerResponseDTO;
+import br.com.drivecore.controller.employer.model.UpdateEmployerRequestDTO;
 import br.com.drivecore.domain.authentication.enums.UserStatus;
 import br.com.drivecore.infrastructure.persistence.authentication.entities.UserEntity;
 import br.com.drivecore.infrastructure.persistence.employer.entities.EmployerEntity;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(imports = {UserStatus.class})
@@ -22,4 +22,6 @@ public interface EmployerMapper {
 
     EmployerResponseDTO toEmployerResponseDTO(EmployerEntity entity);
 
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void copyProperties(@MappingTarget EmployerEntity employerEntity, UpdateEmployerRequestDTO updateEmployerRequestDTO);
 }

@@ -1,5 +1,6 @@
 package br.com.drivecore.domain.employer;
 
+import br.com.drivecore.domain.employer.exception.EmployerNotFoundException;
 import br.com.drivecore.domain.employer.exception.EmployerNotLocatedByUsernameException;
 import br.com.drivecore.infrastructure.persistence.employer.EmployerRepository;
 import br.com.drivecore.infrastructure.persistence.employer.entities.EmployerEntity;
@@ -21,7 +22,7 @@ public class EmployerService {
 
     private final EmployerRepository employerRepository;
 
-    public void createEmployer(EmployerEntity employer) {
+    public void saveEmployer(EmployerEntity employer) {
         employerRepository.save(employer);
     }
 
@@ -38,4 +39,9 @@ public class EmployerService {
 
         return employerRepository.findAll(pageable);
     }
+
+    public EmployerEntity findById(UUID id) {
+        return employerRepository.findById(id).orElseThrow(() -> new EmployerNotFoundException(id));
+    }
+
 }

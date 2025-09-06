@@ -1,10 +1,7 @@
 package br.com.drivecore.controller.authentication;
 
 import br.com.drivecore.application.authentication.AuthenticationApplicationService;
-import br.com.drivecore.controller.authentication.model.AuthenticationRequestDTO;
-import br.com.drivecore.controller.authentication.model.AuthenticationResponseDTO;
-import br.com.drivecore.controller.authentication.model.CreateUserRequestDTO;
-import br.com.drivecore.controller.authentication.model.RoleResponseDTO;
+import br.com.drivecore.controller.authentication.model.*;
 import br.com.drivecore.controller.model.ObjectReferenceDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -16,8 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @RequestMapping("/auth")
@@ -43,6 +39,14 @@ public class AuthenticationController {
         ObjectReferenceDTO objectReferenceDTO = authenticationApplicationService.createUser(createUserRequestDTO);
 
         return new ResponseEntity<>(objectReferenceDTO, CREATED);
+    }
+
+    @PatchMapping("/passwords")
+    @Operation(summary = "Update password")
+    public ResponseEntity<Void> updatePassword(@RequestBody @Valid UpdatePasswordRequestDTO updatePasswordRequestDTO) {
+        authenticationApplicationService.updatePassword(updatePasswordRequestDTO);
+
+        return new ResponseEntity<>(NO_CONTENT);
     }
 
     @GetMapping("/roles")

@@ -3,6 +3,7 @@ package br.com.drivecore.core.exception;
 import br.com.drivecore.controller.contract.delivery.exception.DeliveryNotFoundException;
 import br.com.drivecore.core.exception.model.ApiExceptionErrorDTO;
 import br.com.drivecore.domain.contract.delivery.ContractNotFoundException;
+import br.com.drivecore.domain.employer.exception.EmployerNotFoundException;
 import br.com.drivecore.domain.employer.exception.EmployerNotLocatedByUsernameException;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.persistence.EntityNotFoundException;
@@ -126,6 +127,14 @@ public class ApiExceptionHandler {
     public ResponseEntity<ApiExceptionErrorDTO> employerNotLocatedByUsernameExceptionHandler(EmployerNotLocatedByUsernameException employerNotLocatedByUsernameException) {
         ApiExceptionErrorDTO apiExceptionErrorDTO = new ApiExceptionErrorDTO(employerNotLocatedByUsernameException.getClass().getSimpleName(),
                 employerNotLocatedByUsernameException.getMessage());
+
+        return new ResponseEntity<>(apiExceptionErrorDTO, NOT_FOUND);
+    }
+
+    @ExceptionHandler(EmployerNotFoundException.class)
+    public ResponseEntity<ApiExceptionErrorDTO> employerNotFoundExceptionHandler(EmployerNotFoundException employerNotFoundException) {
+        ApiExceptionErrorDTO apiExceptionErrorDTO = new ApiExceptionErrorDTO(employerNotFoundException.getClass().getSimpleName(),
+                employerNotFoundException.getMessage());
 
         return new ResponseEntity<>(apiExceptionErrorDTO, NOT_FOUND);
     }

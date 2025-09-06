@@ -64,6 +64,7 @@ public class WebSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/auth").permitAll()
+                        .requestMatchers(HttpMethod.PATCH, "/auth/passwords").permitAll()
                         .requestMatchers(HttpMethod.GET, "/actuator/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/swagger-ui/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/v3/api-docs/**").permitAll()
