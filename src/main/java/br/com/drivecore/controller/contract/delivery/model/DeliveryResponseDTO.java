@@ -1,7 +1,7 @@
 package br.com.drivecore.controller.contract.delivery.model;
 
 import br.com.drivecore.controller.contract.model.ContractResponseDTO;
-import br.com.drivecore.controller.machine.truck.model.TruckResponseDTO;
+import br.com.drivecore.controller.machine.wheeling.truck.model.TruckResponseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

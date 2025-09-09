@@ -29,6 +29,7 @@ public interface TireMapper {
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "createdBy", source = "createdBy")
+    @Mapping(target = "inUse", constant = "true")
     TirePositionEntity toTirePositionEntity(CreateTirePositionDTO createTireRequestDTO, EmployerEntity createdBy);
 
     TirePositionResponseDTO toTirePositionResponseDTO(TirePositionEntity tirePositionEntity);

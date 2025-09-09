@@ -35,7 +35,7 @@ public class MachineEntity extends BaseEntity {
 
     @Enumerated(EnumType.ORDINAL)
     @Column(nullable = false)
-    private MachineType type;
+    private MachineType machineType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by", nullable = false)

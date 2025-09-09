@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 
@@ -22,6 +23,7 @@ public class MachineResponseDTO {
     private String model;
     private BigDecimal paidAmount;
     private LocalDate purchaseDate;
-    private MachineType type;
+    private MachineType machineType;
+    private LocalDateTime createdAt;
 
 }

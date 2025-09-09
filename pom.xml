@@ -18,7 +18,7 @@
         <java.version>21</java.version>
         <jjwt-impl.version>0.12.6</jjwt-impl.version>
         <jackson-datatype-jsr310.version>2.19.2</jackson-datatype-jsr310.version>
-        <mapstruct.version>1.6.0.Beta1</mapstruct.version>
+        <mapstruct.version>1.6.3</mapstruct.version>
         <s3.version>2.32.29</s3.version>
     </properties>
 
@@ -148,22 +148,9 @@
                 <configuration>
                     <annotationProcessorPaths>
                         <path>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </path>
-                    </annotationProcessorPaths>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.11.0</version>
-                <configuration>
-                    <annotationProcessorPaths>
-                        <path>
                             <groupId>org.mapstruct</groupId>
                             <artifactId>mapstruct-processor</artifactId>
-                            <version>1.6.0.Beta1</version>
+                            <version>${mapstruct.version}</version>
                         </path>
                         <path>
                             <groupId>org.projectlombok</groupId>

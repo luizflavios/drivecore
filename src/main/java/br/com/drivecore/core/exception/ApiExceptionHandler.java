@@ -5,6 +5,7 @@ import br.com.drivecore.core.exception.model.ApiExceptionErrorDTO;
 import br.com.drivecore.domain.contract.delivery.ContractNotFoundException;
 import br.com.drivecore.domain.employer.exception.EmployerNotFoundException;
 import br.com.drivecore.domain.employer.exception.EmployerNotLocatedByUsernameException;
+import br.com.drivecore.domain.tire.exception.TireInUseException;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -153,6 +154,14 @@ public class ApiExceptionHandler {
                 deliveryNotFoundException.getMessage());
 
         return new ResponseEntity<>(apiExceptionErrorDTO, NOT_FOUND);
+    }
+
+    @ExceptionHandler(TireInUseException.class)
+    public ResponseEntity<ApiExceptionErrorDTO> tireInUseExceptionHandler(TireInUseException tireInUseException) {
+        ApiExceptionErrorDTO apiExceptionErrorDTO = new ApiExceptionErrorDTO(tireInUseException.getClass().getSimpleName(),
+                tireInUseException.getMessage());
+
+        return new ResponseEntity<>(apiExceptionErrorDTO, CONFLICT);
     }
 
 }

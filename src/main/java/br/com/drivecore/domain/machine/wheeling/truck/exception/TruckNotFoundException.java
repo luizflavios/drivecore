@@ -1,4 +1,4 @@
-package br.com.drivecore.domain.machine.truck.exception;
+package br.com.drivecore.domain.machine.wheeling.truck.exception;
 
 import java.util.UUID;
 

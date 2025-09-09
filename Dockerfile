@@ -14,8 +14,6 @@ FROM amazoncorretto:21-alpine3.21-jdk AS runtime
 
 WORKDIR /app
 
-RUN apk add --no-cache curl
-
 COPY --from=build /app/target/drivecore-1.0.0.jar /app/drivecore-1.0.0.jar
 
 EXPOSE 8080

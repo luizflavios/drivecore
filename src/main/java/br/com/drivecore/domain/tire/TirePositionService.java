@@ -5,6 +5,8 @@ import br.com.drivecore.infrastructure.persistence.tire.entities.TirePositionEnt
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 public class TirePositionService {
@@ -15,4 +17,7 @@ public class TirePositionService {
         tirePositionRepository.save(tirePositionEntity);
     }
 
+    public Boolean checkIfTireIsAlreadyInUse(UUID tireId) {
+        return tirePositionRepository.existsByTireAndInUse(tireId, true);
+    }
 }

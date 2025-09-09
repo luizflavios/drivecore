@@ -7,6 +7,7 @@ import br.com.drivecore.controller.tire.model.TirePositionResponseDTO;
 import br.com.drivecore.controller.tire.model.TireResponseDTO;
 import br.com.drivecore.domain.tire.TirePositionService;
 import br.com.drivecore.domain.tire.TireService;
+import br.com.drivecore.domain.tire.exception.TireInUseException;
 import br.com.drivecore.domain.tire.mapper.TireMapper;
 import br.com.drivecore.infrastructure.persistence.employer.entities.EmployerEntity;
 import br.com.drivecore.infrastructure.persistence.tire.entities.TireEntity;
@@ -14,6 +15,8 @@ import br.com.drivecore.infrastructure.persistence.tire.entities.TirePositionEnt
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import static java.lang.Boolean.TRUE;
 
 @Service
 @Slf4j
@@ -39,6 +42,12 @@ public class TireApplicationService {
 
     public TirePositionResponseDTO createTirePosition(CreateTirePositionDTO createTirePositionDTO) {
         EmployerEntity createdBy = employerApplicationService.getLoggedEmployer();
+
+        Boolean tireInUse = tirePositionService.checkIfTireIsAlreadyInUse(createTirePositionDTO.getTire().getId());
+
+        if (TRUE.equals(tireInUse)) {
+            throw new TireInUseException(createTirePositionDTO.getTire().getId());
+        }
 
         TirePositionEntity tirePositionEntity = TireMapper.INSTANCE.toTirePositionEntity(createTirePositionDTO, createdBy);
 
