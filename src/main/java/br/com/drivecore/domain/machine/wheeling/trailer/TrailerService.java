@@ -1,15 +1,17 @@
 package br.com.drivecore.domain.machine.wheeling.trailer;
 
+import br.com.drivecore.core.specification.FilterCriteriaSpecification;
+import br.com.drivecore.core.specification.model.FilterCriteria;
+import br.com.drivecore.domain.machine.wheeling.trailer.exception.TrailerNotFoundException;
 import br.com.drivecore.infrastructure.persistence.machine.wheeling.TrailerRepository;
 import br.com.drivecore.infrastructure.persistence.machine.wheeling.entities.TrailerEntity;
-import br.com.drivecore.infrastructure.persistence.specification.FilterCriteriaSpecification;
-import br.com.drivecore.infrastructure.persistence.specification.model.FilterCriteria;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 import static java.util.Objects.nonNull;
 
@@ -30,5 +32,9 @@ public class TrailerService {
         }
 
         return trailerRepository.findAll(pageable);
+    }
+
+    public TrailerEntity findById(UUID id) {
+        return trailerRepository.findById(id).orElseThrow(() -> new TrailerNotFoundException(id));
     }
 }

@@ -5,6 +5,7 @@ import br.com.drivecore.infrastructure.persistence.tire.entities.TirePositionEnt
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -19,5 +20,9 @@ public class TirePositionService {
 
     public Boolean checkIfTireIsAlreadyInUse(UUID tireId) {
         return tirePositionRepository.existsByTireAndInUse(tireId, true);
+    }
+
+    public List<TirePositionEntity> findAllTirePositions() {
+        return tirePositionRepository.findAll();
     }
 }

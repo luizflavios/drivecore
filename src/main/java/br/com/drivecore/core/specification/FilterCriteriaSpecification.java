@@ -1,6 +1,6 @@
-package br.com.drivecore.infrastructure.persistence.specification;
+package br.com.drivecore.core.specification;
 
-import br.com.drivecore.infrastructure.persistence.specification.model.FilterCriteria;
+import br.com.drivecore.core.specification.model.FilterCriteria;
 import jakarta.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

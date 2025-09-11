@@ -1,7 +1,7 @@
 package br.com.drivecore.application.authentication;
 
 import br.com.drivecore.controller.authentication.model.*;
-import br.com.drivecore.controller.model.ObjectReferenceDTO;
+import br.com.drivecore.controller.machine.wheeling.truck.model.model.ObjectReferenceDTO;
 import br.com.drivecore.domain.authentication.AuthenticationService;
 import br.com.drivecore.domain.authentication.mapper.AuthenticationMapper;
 import br.com.drivecore.domain.authentication.model.Authentication;

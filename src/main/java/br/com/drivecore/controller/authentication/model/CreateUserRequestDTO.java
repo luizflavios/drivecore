@@ -1,6 +1,6 @@
 package br.com.drivecore.controller.authentication.model;
 
-import br.com.drivecore.controller.model.ObjectReferenceDTO;
+import br.com.drivecore.controller.machine.wheeling.truck.model.model.ObjectReferenceDTO;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

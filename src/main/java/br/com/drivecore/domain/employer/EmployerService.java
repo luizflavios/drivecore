@@ -1,11 +1,11 @@
 package br.com.drivecore.domain.employer;
 
+import br.com.drivecore.core.specification.FilterCriteriaSpecification;
+import br.com.drivecore.core.specification.model.FilterCriteria;
 import br.com.drivecore.domain.employer.exception.EmployerNotFoundException;
 import br.com.drivecore.domain.employer.exception.EmployerNotLocatedByUsernameException;
 import br.com.drivecore.infrastructure.persistence.employer.EmployerRepository;
 import br.com.drivecore.infrastructure.persistence.employer.entities.EmployerEntity;
-import br.com.drivecore.infrastructure.persistence.specification.FilterCriteriaSpecification;
-import br.com.drivecore.infrastructure.persistence.specification.model.FilterCriteria;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

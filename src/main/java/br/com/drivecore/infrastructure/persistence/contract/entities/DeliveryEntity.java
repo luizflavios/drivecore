@@ -6,7 +6,6 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
-import java.util.Set;
 
 @Entity
 @Table(name = "deliveries")
@@ -33,10 +32,7 @@ public class DeliveryEntity extends ContractEntity {
     @Column(name = "final_kilometer")
     private Long finalKilometer;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "deliveries_trucks",
-            joinColumns = @JoinColumn(name = "delivery_id", referencedColumnName = "id", table = "deliveries"),
-            inverseJoinColumns = @JoinColumn(name = "truck_id", referencedColumnName = "id", table = "trucks"))
-    private Set<TruckEntity> trucks;
-
+    @ManyToOne
+    @JoinColumn(name = "truck_id")
+    private TruckEntity truck;
 }

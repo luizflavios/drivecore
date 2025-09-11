@@ -1,4 +1,4 @@
-package br.com.drivecore.infrastructure.persistence.specification.enums;
+package br.com.drivecore.core.specification.enums;
 
 public enum FilterCriteriaOperator {
     EQUAL,

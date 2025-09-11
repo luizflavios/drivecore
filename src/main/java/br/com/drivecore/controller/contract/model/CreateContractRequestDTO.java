@@ -1,7 +1,7 @@
 package br.com.drivecore.controller.contract.model;
 
 import br.com.drivecore.controller.contract.enums.ContractType;
-import br.com.drivecore.controller.model.ObjectReferenceDTO;
+import br.com.drivecore.controller.machine.wheeling.truck.model.model.ObjectReferenceDTO;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

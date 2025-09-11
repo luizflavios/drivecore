@@ -3,7 +3,7 @@ package br.com.drivecore.controller.machine.wheeling.trailer;
 import br.com.drivecore.application.machine.wheeling.trailer.TrailerApplicationService;
 import br.com.drivecore.controller.machine.wheeling.trailer.model.CreateTrailerRequestDTO;
 import br.com.drivecore.controller.machine.wheeling.trailer.model.TrailerResponseDTO;
-import br.com.drivecore.infrastructure.persistence.specification.model.FilterCriteria;
+import br.com.drivecore.core.specification.model.FilterCriteria;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -45,5 +45,9 @@ public class TrailerController {
 
         return new ResponseEntity<>(trailerResponseDTOS, OK);
     }
+
+    //TODO update
+    //TODO find complete detail
+    //TODO combinations
 
 }

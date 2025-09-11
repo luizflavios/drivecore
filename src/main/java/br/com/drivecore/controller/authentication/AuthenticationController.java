@@ -2,7 +2,7 @@ package br.com.drivecore.controller.authentication;
 
 import br.com.drivecore.application.authentication.AuthenticationApplicationService;
 import br.com.drivecore.controller.authentication.model.*;
-import br.com.drivecore.controller.model.ObjectReferenceDTO;
+import br.com.drivecore.controller.machine.wheeling.truck.model.model.ObjectReferenceDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;

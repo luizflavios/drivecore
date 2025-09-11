@@ -3,7 +3,7 @@ package br.com.drivecore.application.contract;
 import br.com.drivecore.application.attachment.AttachmentApplicationService;
 import br.com.drivecore.controller.attachment.model.AttachmentResponseDTO;
 import br.com.drivecore.controller.attachment.model.CreateAttachmentRequestDTO;
-import br.com.drivecore.controller.model.ObjectReferenceDTO;
+import br.com.drivecore.controller.machine.wheeling.truck.model.model.ObjectReferenceDTO;
 import br.com.drivecore.domain.contract.ContractService;
 import br.com.drivecore.domain.mapper.BaseMapper;
 import br.com.drivecore.infrastructure.persistence.attachment.entities.AttachmentEntity;

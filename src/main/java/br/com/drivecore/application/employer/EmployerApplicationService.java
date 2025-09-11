@@ -4,11 +4,11 @@ import br.com.drivecore.application.authentication.AuthenticationApplicationServ
 import br.com.drivecore.controller.employer.model.CreateEmployerRequestDTO;
 import br.com.drivecore.controller.employer.model.EmployerResponseDTO;
 import br.com.drivecore.controller.employer.model.UpdateEmployerRequestDTO;
+import br.com.drivecore.core.specification.model.FilterCriteria;
 import br.com.drivecore.domain.employer.EmployerService;
 import br.com.drivecore.domain.employer.mapper.EmployerMapper;
 import br.com.drivecore.infrastructure.persistence.authentication.entities.UserEntity;
 import br.com.drivecore.infrastructure.persistence.employer.entities.EmployerEntity;
-import br.com.drivecore.infrastructure.persistence.specification.model.FilterCriteria;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -4,7 +4,7 @@ import br.com.drivecore.application.employer.EmployerApplicationService;
 import br.com.drivecore.controller.employer.model.CreateEmployerRequestDTO;
 import br.com.drivecore.controller.employer.model.EmployerResponseDTO;
 import br.com.drivecore.controller.employer.model.UpdateEmployerRequestDTO;
-import br.com.drivecore.infrastructure.persistence.specification.model.FilterCriteria;
+import br.com.drivecore.core.specification.model.FilterCriteria;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;

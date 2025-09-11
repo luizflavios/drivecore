@@ -1,7 +1,6 @@
 package br.com.drivecore.controller.contract.delivery.model;
 
 import br.com.drivecore.controller.contract.model.CreateContractRequestDTO;
-import br.com.drivecore.controller.model.ObjectReferenceDTO;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -28,6 +27,6 @@ public class CreateDeliveryRequestDTO extends CreateContractRequestDTO {
 
     private Long finalKilometer;
 
-    private Set<ObjectReferenceDTO> trucks;
+    private UUID truckId;
 
 }

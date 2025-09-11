@@ -1,6 +1,6 @@
 package br.com.drivecore.controller.tire.model;
 
-import br.com.drivecore.controller.model.ObjectReferenceDTO;
+import br.com.drivecore.controller.machine.wheeling.truck.model.model.ObjectReferenceDTO;
 import br.com.drivecore.domain.tire.enums.TirePositionSide;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;

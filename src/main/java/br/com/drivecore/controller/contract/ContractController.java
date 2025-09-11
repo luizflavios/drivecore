@@ -2,7 +2,7 @@ package br.com.drivecore.controller.contract;
 
 import br.com.drivecore.application.contract.ContractApplicationService;
 import br.com.drivecore.controller.attachment.model.AttachmentResponseDTO;
-import br.com.drivecore.controller.model.ObjectReferenceDTO;
+import br.com.drivecore.controller.machine.wheeling.truck.model.model.ObjectReferenceDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -36,5 +36,7 @@ public class ContractController {
 
         return ResponseEntity.ok(attachmentResponseDTOS);
     }
+
+    //TODO expenses
 
 }

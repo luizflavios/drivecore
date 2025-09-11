@@ -1,6 +1,6 @@
-package br.com.drivecore.infrastructure.persistence.specification.model;
+package br.com.drivecore.core.specification.model;
 
-import br.com.drivecore.infrastructure.persistence.specification.enums.FilterCriteriaOperator;
+import br.com.drivecore.core.specification.enums.FilterCriteriaOperator;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 

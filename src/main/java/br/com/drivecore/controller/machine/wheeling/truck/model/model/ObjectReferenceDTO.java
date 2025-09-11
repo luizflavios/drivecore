@@ -1,4 +1,4 @@
-package br.com.drivecore.controller.model;
+package br.com.drivecore.controller.machine.wheeling.truck.model.model;
 
 
 import lombok.AllArgsConstructor;

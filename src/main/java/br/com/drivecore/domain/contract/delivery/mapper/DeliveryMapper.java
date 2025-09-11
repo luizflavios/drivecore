@@ -18,6 +18,7 @@ public interface DeliveryMapper {
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "createdBy", source = "createdBy")
+    @Mapping(target = "truck", ignore = true)
     DeliveryEntity toEntity(CreateDeliveryRequestDTO createDeliveryRequestDTO, EmployerEntity createdBy);
 
     DeliveryResponseDTO toContractResponseDTO(DeliveryEntity entity);
