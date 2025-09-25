@@ -1,6 +1,5 @@
 package br.com.drivecore.infrastructure.persistence.machine.wheeling.entities;
 
-import br.com.drivecore.domain.machine.wheeling.trailer.enums.TrailerType;
 import br.com.drivecore.infrastructure.persistence.machine.entities.MachineEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,14 +16,14 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @SuperBuilder
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 public class TrailerEntity extends MachineEntity {
 
     @Column(nullable = false, name = "license_plate")
     private String licensePlate;
 
-    @Column(nullable = false, name = "type")
-    private TrailerType trailerType;
+    @Column(nullable = false)
+    private Long mileage;
 
     @Column(name = "length_meters")
     private BigDecimal lengthMeters;

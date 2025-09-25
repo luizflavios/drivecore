@@ -18,11 +18,11 @@ import java.time.LocalDate;
 @EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 public class EmployerEntity extends BaseEntity {
 
-    @Column(nullable = false)
-    private String name;
+    @Column(nullable = false, name = "full_name")
+    private String fullName;
 
     @Column(nullable = false)
-    private String document;
+    private String socialNumber;
 
     @Column(nullable = false, name = "birth_date")
     private LocalDate birthDate;
@@ -30,7 +30,7 @@ public class EmployerEntity extends BaseEntity {
     @Column(nullable = false, name = "admission_date")
     private LocalDate admissionDate;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(unique = true, name = "user_id")
     private UserEntity user;
 

@@ -13,9 +13,11 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class UpdateEmployerRequestDTO {
 
-    private String name;
+    private String socialNumber;
 
-    private String document;
+    private String email;
+
+    private String fullName;
 
     private LocalDate birthDate;
 

@@ -1,6 +1,6 @@
 package br.com.drivecore.core.security;
 
-import br.com.drivecore.domain.authentication.provider.TokenProvider;
+import br.com.drivecore.infrastructure.authentication.provider.TokenProvider;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,7 +27,7 @@ public class JwtRequestFilter extends GenericFilter {
     private static final String AUTHORIZATION = "Authorization";
     private static final String BEARER = "Bearer ";
 
-    private final TokenProvider tokenProvider;
+    private final transient TokenProvider tokenProvider;
 
     @Override
     public void doFilter(ServletRequest servletRequest,

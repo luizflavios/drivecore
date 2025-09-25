@@ -2,7 +2,6 @@ package br.com.drivecore.controller.authentication;
 
 import br.com.drivecore.application.authentication.AuthenticationApplicationService;
 import br.com.drivecore.controller.authentication.model.*;
-import br.com.drivecore.controller.machine.wheeling.truck.model.model.ObjectReferenceDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -12,6 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.springframework.http.HttpStatus.*;
 
@@ -35,16 +35,51 @@ public class AuthenticationController {
     @PostMapping("/users")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Operation(summary = "Create user")
-    public ResponseEntity<ObjectReferenceDTO> createUser(@RequestBody @Valid CreateUserRequestDTO createUserRequestDTO) {
-        ObjectReferenceDTO objectReferenceDTO = authenticationApplicationService.createUser(createUserRequestDTO);
+    public ResponseEntity<UserResponseDTO> createUser(@RequestBody @Valid CreateUserRequestDTO createUserRequestDTO) {
+        UserResponseDTO userResponseDTO = authenticationApplicationService.createUser(createUserRequestDTO);
 
-        return new ResponseEntity<>(objectReferenceDTO, CREATED);
+        return new ResponseEntity<>(userResponseDTO, CREATED);
+    }
+
+    @PatchMapping("/users/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @Operation(summary = "Update user")
+    public ResponseEntity<Void> updateUser(@PathVariable UUID id, @RequestBody UpdateUserRequestDTO updateUserRequestDTO) {
+        authenticationApplicationService.updateUser(id, updateUserRequestDTO);
+
+        return new ResponseEntity<>(NO_CONTENT);
+    }
+
+    @GetMapping("/users/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @Operation(summary = "Get user detail")
+    public ResponseEntity<UserResponseDTO> getUserDetail(@PathVariable UUID id) {
+        UserResponseDTO userResponseDTO = authenticationApplicationService.getUserDetail(id);
+
+        return new ResponseEntity<>(userResponseDTO, OK);
+    }
+
+    @PostMapping("/users/{id}/password-reset")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @Operation(summary = "Reset user password")
+    public ResponseEntity<Void> resetUserPassword(@PathVariable UUID id) {
+        authenticationApplicationService.resetUserPassword(id);
+
+        return new ResponseEntity<>(NO_CONTENT);
     }
 
     @PatchMapping("/passwords")
     @Operation(summary = "Update password")
-    public ResponseEntity<Void> updatePassword(@RequestBody @Valid UpdatePasswordRequestDTO updatePasswordRequestDTO) {
-        authenticationApplicationService.updatePassword(updatePasswordRequestDTO);
+    public ResponseEntity<Void> updateUserPassword(@RequestBody @Valid UpdatePasswordRequestDTO updatePasswordRequestDTO) {
+        authenticationApplicationService.updateUserPassword(updatePasswordRequestDTO);
+
+        return new ResponseEntity<>(NO_CONTENT);
+    }
+
+    @PostMapping("/passwords-forget")
+    @Operation(summary = "Forget password")
+    public ResponseEntity<Void> forgetPassword(@RequestBody @Valid ForgetPasswordRequestDTO forgetPasswordRequestDTO) {
+        authenticationApplicationService.forgetPassword(forgetPasswordRequestDTO);
 
         return new ResponseEntity<>(NO_CONTENT);
     }

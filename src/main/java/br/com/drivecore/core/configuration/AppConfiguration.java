@@ -17,4 +17,7 @@ public class AppConfiguration {
     @Value("${API.MAIL.FROM}")
     private String apiMailFrom;
 
+    @Value("${API.PASSWORD.LENGTH:8}")
+    private int apiPasswordLength;
+
 }

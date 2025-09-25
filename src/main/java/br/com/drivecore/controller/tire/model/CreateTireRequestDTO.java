@@ -1,5 +1,6 @@
 package br.com.drivecore.controller.tire.model;
 
+import br.com.drivecore.domain.tire.enums.TireCondition;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -17,24 +18,26 @@ import java.time.LocalDate;
 public class CreateTireRequestDTO {
 
     @NotBlank
+    private String fireCode;
+
+    @NotBlank
     private String brand;
 
     @NotBlank
     private String model;
 
+    @NotBlank
+    private String size;
+
     @NotNull
-    private BigDecimal paidAmount;
+    private TireCondition tireCondition;
+
+    @NotNull
+    private BigDecimal price;
 
     @NotNull
     private LocalDate purchaseDate;
 
-    @NotNull
-    private Long mileage;
-
-    private LocalDate warrantyDate;
-
-
-    private Integer reconditioning;
-
+    private int retreading;
 
 }
