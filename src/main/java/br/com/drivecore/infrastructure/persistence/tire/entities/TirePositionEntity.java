@@ -1,7 +1,5 @@
 package br.com.drivecore.infrastructure.persistence.tire.entities;
 
-import br.com.drivecore.domain.tire.enums.TirePositionSide;
-import br.com.drivecore.infrastructure.persistence.employer.entities.EmployerEntity;
 import br.com.drivecore.infrastructure.persistence.generic.BaseEntity;
 import br.com.drivecore.infrastructure.persistence.machine.entities.MachineEntity;
 import jakarta.persistence.*;
@@ -15,26 +13,24 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Setter
 @SuperBuilder
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 public class TirePositionEntity extends BaseEntity {
 
     @ManyToOne
-    @JoinColumn(name = "tire_id", nullable = false)
+    @JoinColumn(nullable = false, name = "tire_id")
     private TireEntity tire;
 
     @ManyToOne
-    @JoinColumn(name = "machine_id", nullable = false)
+    @JoinColumn(nullable = false, name = "machine_id")
     private MachineEntity machine;
 
-    private TirePositionSide side;
-
-    private int axle;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "created_by", nullable = false, updatable = false)
-    private EmployerEntity createdBy;
-
-    @Column(name = "in_use")
+    @Column(nullable = false)
     private Boolean inUse;
+
+    @Column(nullable = false)
+    private int axle; // 0 - 8
+
+    @Column(nullable = false)
+    private int side; // 0 - external_left, 1 - internal_left, 2 - internal_right, 3 - external_right
 
 }

@@ -1,79 +1,82 @@
 package br.com.drivecore.application.employer;
 
 import br.com.drivecore.application.authentication.AuthenticationApplicationService;
+import br.com.drivecore.controller.authentication.model.CreateUserRequestDTO;
 import br.com.drivecore.controller.employer.model.CreateEmployerRequestDTO;
 import br.com.drivecore.controller.employer.model.EmployerResponseDTO;
 import br.com.drivecore.controller.employer.model.UpdateEmployerRequestDTO;
-import br.com.drivecore.core.specification.model.FilterCriteria;
+import br.com.drivecore.controller.model.FilteredAndPageableRequestDTO;
 import br.com.drivecore.domain.employer.EmployerService;
 import br.com.drivecore.domain.employer.mapper.EmployerMapper;
 import br.com.drivecore.infrastructure.persistence.authentication.entities.UserEntity;
 import br.com.drivecore.infrastructure.persistence.employer.entities.EmployerEntity;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.UUID;
+
+import static io.micrometer.common.util.StringUtils.isNotBlank;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class EmployerApplicationService {
 
-    private final AuthenticationApplicationService authenticationApplicationService;
     private final EmployerService employerService;
+    private final AuthenticationApplicationService authenticationApplicationService;
 
     @Transactional
-    public EmployerResponseDTO createEmployer(CreateEmployerRequestDTO createEmployerRequestDTO) {
-        UserEntity userEntity = authenticationApplicationService.createDomainUser(createEmployerRequestDTO.getUser());
+    public EmployerResponseDTO createEmployer(CreateEmployerRequestDTO requestDTO) {
+        UserEntity userEntity = authenticationApplicationService
+                .createUserEntity(new CreateUserRequestDTO(requestDTO.getSocialNumber(), requestDTO.getEmail()));
 
-        EmployerEntity employerEntity = EmployerMapper.INSTANCE.toEntity(createEmployerRequestDTO, userEntity);
-
-        employerService.saveEmployer(employerEntity);
-
-        log.info("Employer successfully created - {}", employerEntity.getId());
-
-        return EmployerMapper.INSTANCE.toEmployerResponseDTO(employerEntity);
-    }
-
-    public EmployerEntity getLoggedEmployer() {
-        UUID userId = authenticationApplicationService.getLoggedUserId();
-
-        return employerService.findByUserId(userId);
-    }
-
-    public Page<EmployerResponseDTO> listEmployersPageable(int page, int size, @Valid List<FilterCriteria> filterCriteria) {
-        Pageable pageable = PageRequest.of(page, size);
-
-        Page<EmployerEntity> employerEntityPage = employerService
-                .findEmployersPageableAndFilterable(pageable, filterCriteria);
-
-        log.info("Employers successfully list");
-
-        return employerEntityPage.map(EmployerMapper.INSTANCE::toEmployerResponseDTO);
-    }
-
-    public EmployerResponseDTO getEmployerDetail(UUID id) {
-        EmployerEntity employerEntity = employerService.findById(id);
-
-        return EmployerMapper.INSTANCE.toEmployerResponseDTO(employerEntity);
-    }
-
-    public EmployerResponseDTO updateEmployer(UUID id, UpdateEmployerRequestDTO updateEmployerRequestDTO) {
-        EmployerEntity employerEntity = employerService.findById(id);
-
-        EmployerMapper.INSTANCE.copyProperties(employerEntity, updateEmployerRequestDTO);
+        EmployerEntity employerEntity = EmployerMapper.INSTANCE.toEntity(requestDTO, userEntity);
 
         employerService.saveEmployer(employerEntity);
 
-        log.info("Employer successfully updated - {}", id);
+        log.info("Employer {} successfully created", employerEntity.getId());
 
-        return EmployerMapper.INSTANCE.toEmployerResponseDTO(employerEntity);
+        return EmployerMapper.INSTANCE.toResponseDTO(employerEntity);
     }
+
+    public EmployerResponseDTO getEmployerDetail(UUID employerId) {
+        EmployerEntity employerEntity = employerService.findById(employerId);
+
+        return EmployerMapper.INSTANCE.toResponseDTO(employerEntity);
+    }
+
+    public void updateEmployer(UUID id, UpdateEmployerRequestDTO updateEmployerRequestDTO) {
+        EmployerEntity employerEntity = employerService.findById(id);
+
+        EmployerMapper.INSTANCE.updateEntity(employerEntity, updateEmployerRequestDTO);
+
+        if (isNotBlank(updateEmployerRequestDTO.getSocialNumber()) && employerEntity.getSocialNumber()
+                .compareTo(updateEmployerRequestDTO.getSocialNumber()) != 0) {
+            String socialNumber = updateEmployerRequestDTO.getSocialNumber();
+
+            employerEntity.setSocialNumber(socialNumber);
+            employerEntity.getUser().setUsername(socialNumber);
+        }
+
+        employerService.saveEmployer(employerEntity);
+    }
+
+    public void deleteEmployer(UUID id) {
+        employerService.deleteEmployer(id);
+
+        log.info("Employer {} successfully deleted", id);
+    }
+
+    public Page<EmployerResponseDTO> getEmployers(FilteredAndPageableRequestDTO filteredAndPageableRequestDTO) {
+        Page<EmployerEntity> employerEntityPage = employerService.listEmployerPageableAndFiltered(
+                filteredAndPageableRequestDTO.getPageRequest(),
+                filteredAndPageableRequestDTO.getFilters()
+        );
+
+        return employerEntityPage.map(EmployerMapper.INSTANCE::toResponseDTO);
+    }
+
 }

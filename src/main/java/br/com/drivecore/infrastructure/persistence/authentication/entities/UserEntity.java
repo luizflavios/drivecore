@@ -34,7 +34,7 @@ public class UserEntity extends BaseEntity implements UserDetails {
     private String password;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private UserStatus status;
 
     @ManyToMany(fetch = FetchType.EAGER)

@@ -16,10 +16,10 @@ import java.util.UUID;
 public class EmployerResponseDTO {
 
     private UUID id;
-    private String name;
-    private String document;
+    private String socialNumber;
+    private String fullName;
     private LocalDate birthDate;
     private LocalDate admissionDate;
     private LocalDateTime createdAt;
-    
+
 }

@@ -4,7 +4,6 @@ import br.com.drivecore.domain.authentication.UserDetailImplService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -25,7 +24,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WebSecurityConfig {
 
-    private final UserDetailImplService userDetailImplService;
+    private final UserDetailImplService userService;
     private final JwtRequestFilter jwtRequestFilter;
     private final JwtEntryPoint jwtEntryPoint;
 
@@ -39,10 +38,9 @@ public class WebSecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-
     @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
-        var authProvider = new DaoAuthenticationProvider(userDetailImplService);
+    public DaoAuthenticationProvider daoAuthenticationProvider() {
+        var authProvider = new DaoAuthenticationProvider(userService);
 
         authProvider.setPasswordEncoder(passwordEncoder());
 
@@ -63,12 +61,16 @@ public class WebSecurityConfig {
                 }))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, "/auth").permitAll()
-                        .requestMatchers(HttpMethod.PATCH, "/auth/passwords").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/actuator/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/swagger-ui/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/v3/api-docs/**").permitAll()
-                        .anyRequest().authenticated()
+//                        .requestMatchers(POST, "/auth").permitAll()
+//                        .requestMatchers(PATCH, "/auth/passwords").permitAll()
+//                        .requestMatchers(POST, "/auth/passwords-forget").permitAll()
+//                        //Infra e Docs
+//                        .requestMatchers(GET, "/actuator/**").permitAll()
+//                        .requestMatchers(GET, "/swagger-ui/**").permitAll()
+//                        .requestMatchers(GET, "/v3/api-docs/**").permitAll()
+//                        .anyRequest().authenticated()
+
+                                .anyRequest().permitAll()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         ;

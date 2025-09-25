@@ -5,10 +5,7 @@ import br.com.drivecore.infrastructure.persistence.authentication.entities.RoleE
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -16,8 +13,11 @@ public class RoleService {
 
     private final RoleRepository roleRepository;
 
-    public Set<RoleEntity> fetchRolesByIds(List<UUID> ids) {
-        return new HashSet<>(roleRepository.findAllById(ids));
+    public List<RoleEntity> findAllRoles() {
+        return roleRepository.findAll();
     }
 
+    public List<RoleEntity> findBasicRoles() {
+        return roleRepository.findBasicRoles();
+    }
 }

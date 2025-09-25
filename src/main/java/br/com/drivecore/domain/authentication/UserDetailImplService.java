@@ -1,6 +1,7 @@
 package br.com.drivecore.domain.authentication;
 
 import br.com.drivecore.infrastructure.persistence.authentication.UserRepository;
+import br.com.drivecore.infrastructure.persistence.authentication.entities.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,9 +19,7 @@ public class UserDetailImplService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        var userEntity = userRepository
-                .findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException(format("%s does not exists", username)));
+        UserEntity userEntity = getUserEntityByUsername(username);
 
         return new User(
                 userEntity.getId().toString(),
@@ -31,5 +30,11 @@ public class UserDetailImplService implements UserDetailsService {
                 userEntity.isAccountNonLocked(),
                 userEntity.getRoles()
         );
+    }
+
+    private UserEntity getUserEntityByUsername(String username) {
+        return userRepository
+                .findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(format("%s does not exists", username)));
     }
 }

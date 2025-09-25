@@ -2,10 +2,9 @@ package br.com.drivecore.domain.employer;
 
 import br.com.drivecore.core.specification.FilterCriteriaSpecification;
 import br.com.drivecore.core.specification.model.FilterCriteria;
-import br.com.drivecore.domain.employer.exception.EmployerNotFoundException;
-import br.com.drivecore.domain.employer.exception.EmployerNotLocatedByUsernameException;
 import br.com.drivecore.infrastructure.persistence.employer.EmployerRepository;
 import br.com.drivecore.infrastructure.persistence.employer.entities.EmployerEntity;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,34 +13,27 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;
 
-import static java.util.Objects.nonNull;
-
 @Service
 @RequiredArgsConstructor
 public class EmployerService {
 
     private final EmployerRepository employerRepository;
 
-    public void saveEmployer(EmployerEntity employer) {
-        employerRepository.save(employer);
+    public void saveEmployer(EmployerEntity employerEntity) {
+        employerRepository.save(employerEntity);
     }
 
-    public EmployerEntity findByUserId(UUID userId) {
-        return employerRepository
-                .findByUserId(userId)
-                .orElseThrow(() -> new EmployerNotLocatedByUsernameException(userId));
+    public EmployerEntity findById(UUID employerId) {
+        return employerRepository.findById(employerId).orElseThrow(() -> new EntityNotFoundException(employerId.toString()));
     }
 
-    public Page<EmployerEntity> findEmployersPageableAndFilterable(Pageable pageable, List<FilterCriteria> filterCriteria) {
-        if (nonNull(filterCriteria) && !filterCriteria.isEmpty()) {
-            return employerRepository.findAll(new FilterCriteriaSpecification<>(filterCriteria), pageable);
-        }
-
-        return employerRepository.findAll(pageable);
+    public Page<EmployerEntity> listEmployerPageableAndFiltered(Pageable pageable, List<FilterCriteria> filterCriteria) {
+        return filterCriteria != null && !filterCriteria.isEmpty() ?
+                employerRepository.findAll(new FilterCriteriaSpecification<>(filterCriteria), pageable) :
+                employerRepository.findAll(pageable);
     }
 
-    public EmployerEntity findById(UUID id) {
-        return employerRepository.findById(id).orElseThrow(() -> new EmployerNotFoundException(id));
+    public void deleteEmployer(UUID id) {
+        employerRepository.deleteById(id);
     }
-
 }

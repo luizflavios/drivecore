@@ -14,16 +14,23 @@ import java.util.Set;
 @Getter
 @Setter
 @SuperBuilder
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 public class TruckEntity extends MachineEntity {
 
     @Column(nullable = false, name = "license_plate")
     private String licensePlate;
 
-    private int year;
+    @Column(nullable = false, name = "model_year")
+    private int modelYear;
+
+    @Column(nullable = false, name = "manufacture_year")
+    private int manufactureYear;
 
     @Column(name = "horse_power")
     private int horsePower;
+
+    @Column(nullable = false)
+    private Long mileage;
 
     @OneToMany(mappedBy = "truck", fetch = FetchType.LAZY)
     private Set<TruckTrailerCombinationEntity> combinations;

@@ -1,13 +1,10 @@
 package br.com.drivecore.controller.authentication.model;
 
-import br.com.drivecore.controller.machine.wheeling.truck.model.model.ObjectReferenceDTO;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.Set;
 
 @Getter
 @Setter
@@ -23,6 +20,9 @@ public class CreateUserRequestDTO {
 
     private String password;
 
-    private Set<ObjectReferenceDTO> roles;
+    public CreateUserRequestDTO(String socialNumber, String email) {
+        this.username = socialNumber;
+        this.email = email;
+    }
 
 }

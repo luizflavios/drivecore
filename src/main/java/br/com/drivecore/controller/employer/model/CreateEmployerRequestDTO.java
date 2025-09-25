@@ -1,7 +1,5 @@
 package br.com.drivecore.controller.employer.model;
 
-import br.com.drivecore.controller.authentication.model.CreateUserRequestDTO;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -18,18 +16,18 @@ import java.time.LocalDate;
 public class CreateEmployerRequestDTO {
 
     @NotBlank
-    private String name;
+    private String socialNumber;
 
     @NotBlank
-    private String document;
+    private String email;
+
+    @NotBlank
+    private String fullName;
 
     @NotNull
     private LocalDate birthDate;
 
     @NotNull
     private LocalDate admissionDate;
-
-    @Valid
-    private CreateUserRequestDTO user;
 
 }

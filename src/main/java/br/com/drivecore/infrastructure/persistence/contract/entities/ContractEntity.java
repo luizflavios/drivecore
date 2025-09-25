@@ -1,6 +1,6 @@
 package br.com.drivecore.infrastructure.persistence.contract.entities;
 
-import br.com.drivecore.controller.contract.enums.ContractType;
+import br.com.drivecore.domain.contract.enums.ContractType;
 import br.com.drivecore.infrastructure.persistence.attachment.entities.AttachmentEntity;
 import br.com.drivecore.infrastructure.persistence.employer.entities.EmployerEntity;
 import br.com.drivecore.infrastructure.persistence.expense.entities.ExpenseEntity;
@@ -20,7 +20,7 @@ import java.util.Set;
 @Getter
 @Setter
 @SuperBuilder
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 public class ContractEntity extends BaseEntity {
 
     private BigDecimal commission;
@@ -38,7 +38,7 @@ public class ContractEntity extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "responsible_id", referencedColumnName = "id", table = "employers"))
     private Set<EmployerEntity> responsible;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinTable(name = "contracts_expenses",
             joinColumns = @JoinColumn(name = "contract_id", referencedColumnName = "id", table = "contracts"),
             inverseJoinColumns = @JoinColumn(name = "expense_id", referencedColumnName = "id", table = "expenses"))
@@ -50,7 +50,7 @@ public class ContractEntity extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "attachment_id", referencedColumnName = "id", table = "attachments"))
     private Set<AttachmentEntity> attachments;
 
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ContractType type;
 

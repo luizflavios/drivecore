@@ -1,11 +1,7 @@
 package br.com.drivecore.core.exception;
 
-import br.com.drivecore.controller.contract.delivery.exception.DeliveryNotFoundException;
 import br.com.drivecore.core.exception.model.ApiExceptionErrorDTO;
-import br.com.drivecore.domain.contract.delivery.ContractNotFoundException;
-import br.com.drivecore.domain.employer.exception.EmployerNotFoundException;
-import br.com.drivecore.domain.employer.exception.EmployerNotLocatedByUsernameException;
-import br.com.drivecore.domain.tire.exception.TireInUseException;
+import br.com.drivecore.domain.tire.exception.AlreadyExistsTirePositionException;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -124,44 +120,12 @@ public class ApiExceptionHandler {
         return new ResponseEntity<>(apiExceptionErrorDTO, NOT_FOUND);
     }
 
-    @ExceptionHandler(EmployerNotLocatedByUsernameException.class)
-    public ResponseEntity<ApiExceptionErrorDTO> employerNotLocatedByUsernameExceptionHandler(EmployerNotLocatedByUsernameException employerNotLocatedByUsernameException) {
-        ApiExceptionErrorDTO apiExceptionErrorDTO = new ApiExceptionErrorDTO(employerNotLocatedByUsernameException.getClass().getSimpleName(),
-                employerNotLocatedByUsernameException.getMessage());
+    @ExceptionHandler(AlreadyExistsTirePositionException.class)
+    public ResponseEntity<ApiExceptionErrorDTO> alreadyExistsTirePositionExceptionHandler(AlreadyExistsTirePositionException alreadyExistsTirePositionException) {
+        ApiExceptionErrorDTO apiExceptionErrorDTO = new ApiExceptionErrorDTO(alreadyExistsTirePositionException.getClass().getSimpleName(),
+                alreadyExistsTirePositionException.getMessage());
 
-        return new ResponseEntity<>(apiExceptionErrorDTO, NOT_FOUND);
-    }
-
-    @ExceptionHandler(EmployerNotFoundException.class)
-    public ResponseEntity<ApiExceptionErrorDTO> employerNotFoundExceptionHandler(EmployerNotFoundException employerNotFoundException) {
-        ApiExceptionErrorDTO apiExceptionErrorDTO = new ApiExceptionErrorDTO(employerNotFoundException.getClass().getSimpleName(),
-                employerNotFoundException.getMessage());
-
-        return new ResponseEntity<>(apiExceptionErrorDTO, NOT_FOUND);
-    }
-
-    @ExceptionHandler(ContractNotFoundException.class)
-    public ResponseEntity<ApiExceptionErrorDTO> contractNotFoundExceptionHandler(ContractNotFoundException contractNotFoundException) {
-        ApiExceptionErrorDTO apiExceptionErrorDTO = new ApiExceptionErrorDTO(contractNotFoundException.getClass().getSimpleName(),
-                contractNotFoundException.getMessage());
-
-        return new ResponseEntity<>(apiExceptionErrorDTO, NOT_FOUND);
-    }
-
-    @ExceptionHandler(DeliveryNotFoundException.class)
-    public ResponseEntity<ApiExceptionErrorDTO> deliveryNotFoundExceptionHandler(DeliveryNotFoundException deliveryNotFoundException) {
-        ApiExceptionErrorDTO apiExceptionErrorDTO = new ApiExceptionErrorDTO(deliveryNotFoundException.getClass().getSimpleName(),
-                deliveryNotFoundException.getMessage());
-
-        return new ResponseEntity<>(apiExceptionErrorDTO, NOT_FOUND);
-    }
-
-    @ExceptionHandler(TireInUseException.class)
-    public ResponseEntity<ApiExceptionErrorDTO> tireInUseExceptionHandler(TireInUseException tireInUseException) {
-        ApiExceptionErrorDTO apiExceptionErrorDTO = new ApiExceptionErrorDTO(tireInUseException.getClass().getSimpleName(),
-                tireInUseException.getMessage());
-
-        return new ResponseEntity<>(apiExceptionErrorDTO, CONFLICT);
+        return new ResponseEntity<>(apiExceptionErrorDTO, UNPROCESSABLE_ENTITY);
     }
 
 }

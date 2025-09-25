@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @SuperBuilder
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 public class ExpenseEntity extends BaseEntity {
 
     @Column(nullable = false)

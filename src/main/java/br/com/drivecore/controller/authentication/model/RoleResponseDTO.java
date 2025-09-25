@@ -14,7 +14,7 @@ import java.util.UUID;
 public class RoleResponseDTO {
 
     private UUID id;
-    private String name;
+    private String authority;
     private String description;
 
 }

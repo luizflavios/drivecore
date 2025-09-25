@@ -1,13 +1,13 @@
 package br.com.drivecore.application.authentication;
 
 import br.com.drivecore.controller.authentication.model.*;
-import br.com.drivecore.controller.machine.wheeling.truck.model.model.ObjectReferenceDTO;
 import br.com.drivecore.domain.authentication.AuthenticationService;
+import br.com.drivecore.domain.authentication.RoleService;
+import br.com.drivecore.domain.authentication.UserService;
 import br.com.drivecore.domain.authentication.mapper.AuthenticationMapper;
+import br.com.drivecore.domain.authentication.mapper.RoleMapper;
+import br.com.drivecore.domain.authentication.mapper.UserMapper;
 import br.com.drivecore.domain.authentication.model.Authentication;
-import br.com.drivecore.domain.communication.CommunicationService;
-import br.com.drivecore.domain.communication.model.MailDTO;
-import br.com.drivecore.domain.mapper.BaseMapper;
 import br.com.drivecore.infrastructure.persistence.authentication.entities.RoleEntity;
 import br.com.drivecore.infrastructure.persistence.authentication.entities.UserEntity;
 import jakarta.validation.Valid;
@@ -15,13 +15,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
-
-import static br.com.drivecore.application.authentication.constants.AuthenticationApplicationServiceConstants.WELCOME_SUBJECT;
-import static br.com.drivecore.application.authentication.constants.AuthenticationApplicationServiceConstants.buildWelcomeTextWithTemporaryCredentials;
-import static io.micrometer.common.util.StringUtils.isNotBlank;
-import static java.util.Collections.emptyList;
 
 @Service
 @Slf4j
@@ -29,67 +26,74 @@ import static java.util.Collections.emptyList;
 public class AuthenticationApplicationService {
 
     private final AuthenticationService authenticationService;
-    private final CommunicationService communicationService;
+    private final UserService userService;
+    private final RoleService roleService;
 
     public AuthenticationResponseDTO authenticate(AuthenticationRequestDTO authenticationRequestDTO) {
         Authentication authentication = authenticationService.authenticateByUsernameAndPassword(
                 authenticationRequestDTO.getUsername(), authenticationRequestDTO.getPassword()
         );
 
-        log.info("User successfully authenticate - {}", authentication.user().getUsername());
-
         return AuthenticationMapper.INSTANCE.toAuthenticationResponseDTO(authentication);
     }
 
-    public ObjectReferenceDTO createUser(CreateUserRequestDTO createUserRequestDTO) {
-        UserEntity user = createDomainUser(createUserRequestDTO);
+    public UserResponseDTO createUser(@Valid CreateUserRequestDTO createUserRequestDTO) {
+        UserEntity user = createUserEntity(createUserRequestDTO);
 
-        log.info("User successfully created - {}", user.getId());
+        log.info("User {} has successfully created", user.getId());
 
-        return BaseMapper.INSTANCE.toIdReferenceDTO(user);
+        return UserMapper.INSTANCE.toUserResponseDTO(user);
     }
 
-    public UserEntity createDomainUser(CreateUserRequestDTO createUserRequestDTO) {
-        UserEntity user = AuthenticationMapper.INSTANCE.toUserEntity(createUserRequestDTO);
+    public UserEntity createUserEntity(CreateUserRequestDTO createUserRequestDTO) {
+        Set<RoleEntity> basicRoles = new HashSet<>(roleService.findBasicRoles());
 
-        authenticationService.createUser(user);
+        UserEntity user = UserMapper.INSTANCE.toUserEntity(createUserRequestDTO, basicRoles);
 
-        if (isNotBlank(user.getTemporaryPassword())) {
-            sendMailWithTemporaryCredentials(user.getEmail(), user.getUsername(), user.getTemporaryPassword());
-        }
+        userService.createUser(user);
 
         return user;
     }
 
-    public UUID getLoggedUserId() {
-        return UUID.fromString(authenticationService.getCurrentSub());
+    public void updateUser(UUID id, @Valid UpdateUserRequestDTO updateUserRequestDTO) {
+        UserEntity user = userService.getUserEntityById(id);
+
+        UserMapper.INSTANCE.updateUserEntity(user, updateUserRequestDTO);
+
+        userService.updateUser(user);
+
+        log.info("User {} has successfully updated", id);
     }
 
+    public UserResponseDTO getUserDetail(UUID id) {
+        UserEntity user = userService.getUserEntityById(id);
 
-    private void sendMailWithTemporaryCredentials(String email, String username, String credentials) {
-        MailDTO mailDTO = new MailDTO(
-                email,
-                WELCOME_SUBJECT,
-                buildWelcomeTextWithTemporaryCredentials(username, credentials),
-                emptyList()
-        );
+        return UserMapper.INSTANCE.toUserResponseDTO(user);
+    }
 
-        communicationService.sendEmail(mailDTO);
+    public void resetUserPassword(UUID id) {
+        userService.resetUserPassword(id);
 
-        log.info("Welcome email with temporary credentials sent");
+        log.info("User {} has password successfully reset", id);
+    }
+
+    public void updateUserPassword(@Valid UpdatePasswordRequestDTO updatePasswordRequestDTO) {
+        userService.updatePassword(updatePasswordRequestDTO.getUsername(), updatePasswordRequestDTO.getPassword());
+
+        log.info("Username {} has password successfully updated", updatePasswordRequestDTO.getUsername());
     }
 
     public List<RoleResponseDTO> listRoles() {
-        List<RoleEntity> roles = authenticationService.findAllRoles();
+        log.info("Fetching all roles");
 
-        return roles.stream()
-                .map(AuthenticationMapper.INSTANCE::toRoleResponseDTO)
+        return roleService
+                .findAllRoles()
+                .stream()
+                .map(RoleMapper.INSTANCE::toRoleResponseDTO)
                 .toList();
     }
 
-    public void updatePassword(@Valid UpdatePasswordRequestDTO updatePasswordRequestDTO) {
-        authenticationService.updatePassword(updatePasswordRequestDTO.getUsername(), updatePasswordRequestDTO.getPassword());
-
-        log.info("Password successfully updated - username {}", updatePasswordRequestDTO.getUsername());
+    public void forgetPassword(ForgetPasswordRequestDTO forgetPasswordRequestDTO) {
+        userService.forgetPassword(forgetPasswordRequestDTO.getUsername());
     }
 }

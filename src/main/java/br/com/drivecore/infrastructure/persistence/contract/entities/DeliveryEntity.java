@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @SuperBuilder
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 public class DeliveryEntity extends ContractEntity {
 
     @Column(nullable = false)
