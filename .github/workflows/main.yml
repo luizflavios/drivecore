@@ -61,7 +61,7 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
-            cd /etc/icontainer/docker/drivecore
+            cd /etc/icontainer/docker/compose/drivecore
             # Atualiza a imagem no docker-compose.yml ou usa a tag
             docker-compose pull
             docker-compose up -d
