@@ -21,6 +21,6 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: | 
-            luizflavios/drivecore:${{ github.run_number }}
-            luizflavios/drivecore:latest
+            luizflavios/drivercore:${{ github.run_number }}
+            luizflavios/drivercore:latest
                         
