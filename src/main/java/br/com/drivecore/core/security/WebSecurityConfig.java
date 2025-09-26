@@ -19,6 +19,8 @@ import org.springframework.web.cors.CorsConfiguration;
 
 import java.util.List;
 
+import static org.springframework.http.HttpMethod.*;
+
 @Configuration
 @EnableMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
@@ -61,16 +63,14 @@ public class WebSecurityConfig {
                 }))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-//                        .requestMatchers(POST, "/auth").permitAll()
-//                        .requestMatchers(PATCH, "/auth/passwords").permitAll()
-//                        .requestMatchers(POST, "/auth/passwords-forget").permitAll()
-//                        //Infra e Docs
-//                        .requestMatchers(GET, "/actuator/**").permitAll()
-//                        .requestMatchers(GET, "/swagger-ui/**").permitAll()
-//                        .requestMatchers(GET, "/v3/api-docs/**").permitAll()
-//                        .anyRequest().authenticated()
-
-                                .anyRequest().permitAll()
+                        .requestMatchers(POST, "/auth").permitAll()
+                        .requestMatchers(PATCH, "/auth/passwords").permitAll()
+                        .requestMatchers(POST, "/auth/passwords-forget").permitAll()
+                        //Infra e Docs
+                        .requestMatchers(GET, "/actuator/**").permitAll()
+                        .requestMatchers(GET, "/swagger-ui/**").permitAll()
+                        .requestMatchers(GET, "/v3/api-docs/**").permitAll()
+                        .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         ;
