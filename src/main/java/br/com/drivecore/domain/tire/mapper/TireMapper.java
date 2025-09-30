@@ -3,6 +3,7 @@ package br.com.drivecore.domain.tire.mapper;
 import br.com.drivecore.controller.machine.model.MachineResponseDTO;
 import br.com.drivecore.controller.tire.model.*;
 import br.com.drivecore.domain.tire.enums.TireCondition;
+import br.com.drivecore.domain.tire.model.TireReport;
 import br.com.drivecore.infrastructure.persistence.machine.entities.MachineEntity;
 import br.com.drivecore.infrastructure.persistence.tire.entities.TireEntity;
 import br.com.drivecore.infrastructure.persistence.tire.entities.TirePositionEntity;
@@ -49,5 +50,7 @@ public interface TireMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     TireRetreadingEntity toTireRetreadingEntity(TireEntity tire);
+
+    TireReport toTireReport(TireResponseDTO tireResponseDTO);
 
 }

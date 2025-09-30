@@ -37,7 +37,7 @@ public class TireService {
         return tireRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(id.toString()));
     }
 
-    public Page<TireEntity> listEmployerPageableAndFiltered(Pageable pageable, List<FilterCriteria> filterCriteria) {
+    public Page<TireEntity> listTirePageableAndFiltered(Pageable pageable, List<FilterCriteria> filterCriteria) {
         return filterCriteria != null && !filterCriteria.isEmpty() ?
                 tireRepository.findAll(new FilterCriteriaSpecification<>(filterCriteria), pageable) :
                 tireRepository.findAll(pageable);
@@ -75,4 +75,5 @@ public class TireService {
     public void saveTireRetreading(TireRetreadingEntity tireRetreadingEntity) {
         tireRetreadingRepository.save(tireRetreadingEntity);
     }
+
 }

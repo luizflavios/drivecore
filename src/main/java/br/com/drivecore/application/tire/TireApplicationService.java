@@ -3,6 +3,7 @@ package br.com.drivecore.application.tire;
 import br.com.drivecore.controller.model.FilteredAndPageableRequestDTO;
 import br.com.drivecore.controller.tire.model.*;
 import br.com.drivecore.domain.machine.MachineService;
+import br.com.drivecore.domain.report.ReportService;
 import br.com.drivecore.domain.tire.TireService;
 import br.com.drivecore.domain.tire.exception.AlreadyExistsTirePositionException;
 import br.com.drivecore.domain.tire.mapper.TireMapper;
@@ -11,11 +12,14 @@ import br.com.drivecore.infrastructure.persistence.tire.entities.TireEntity;
 import br.com.drivecore.infrastructure.persistence.tire.entities.TirePositionEntity;
 import br.com.drivecore.infrastructure.persistence.tire.entities.TireRetreadingEntity;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
@@ -29,6 +33,7 @@ public class TireApplicationService {
 
     private final TireService tireService;
     private final MachineService machineService;
+    private final ReportService reportService;
 
     public TireResponseDTO createTire(CreateTireRequestDTO createTireRequestDTO) {
         TireEntity tireEntity = TireMapper.INSTANCE.toEntity(createTireRequestDTO);
@@ -65,7 +70,7 @@ public class TireApplicationService {
     }
 
     public Page<TireResponseDTO> getTires(FilteredAndPageableRequestDTO filteredAndPageableRequestDTO) {
-        Page<TireEntity> employerEntityPage = tireService.listEmployerPageableAndFiltered(
+        Page<TireEntity> employerEntityPage = tireService.listTirePageableAndFiltered(
                 filteredAndPageableRequestDTO.getPageRequest(),
                 filteredAndPageableRequestDTO.getFilters()
         );
@@ -162,4 +167,25 @@ public class TireApplicationService {
         log.info("Retreading {} successfully added to tire {}", tireRetreadingEntity.getId(), tireId);
     }
 
+    @SneakyThrows
+    public byte[] generateTiresReport(FilteredAndPageableRequestDTO filteredAndPageableRequestDTO) {
+        try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+
+            reportService.generateExcel(
+                    out,
+                    (page, size) -> {
+                        filteredAndPageableRequestDTO.initPagination(page, size);
+
+                        return getTires(filteredAndPageableRequestDTO)
+                                .map(TireMapper.INSTANCE::toTireReport)
+                                .stream().toList();
+                    },
+                    10000000
+            );
+
+            return out.toByteArray();
+        } catch (Exception e) {
+            throw new IOException("Erro ao gerar relatório", e);
+        }
+    }
 }

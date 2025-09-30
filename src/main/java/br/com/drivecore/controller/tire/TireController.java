@@ -3,11 +3,16 @@ package br.com.drivecore.controller.tire;
 import br.com.drivecore.application.tire.TireApplicationService;
 import br.com.drivecore.controller.model.FilteredAndPageableRequestDTO;
 import br.com.drivecore.controller.tire.model.*;
+import br.com.drivecore.domain.report.ReportService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +28,8 @@ import static org.springframework.http.HttpStatus.*;
 public class TireController {
 
     private final TireApplicationService tireApplicationService;
+
+    private final ReportService reportService;
 
     @PostMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -106,4 +113,16 @@ public class TireController {
         return new ResponseEntity<>(NO_CONTENT);
     }
 
+    @PostMapping("/reports")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @Operation(summary = "Tires Report")
+    public ResponseEntity<Resource> generateTiresReport(@RequestBody FilteredAndPageableRequestDTO filteredAndPageableRequestDTO) {
+        byte[] fileBytes = tireApplicationService.generateTiresReport(filteredAndPageableRequestDTO);
+
+        return ResponseEntity.accepted()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=pneus.xlsx")
+                .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+                .contentLength(fileBytes.length)
+                .body(new ByteArrayResource(fileBytes));
+    }
 }

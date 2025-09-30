@@ -12,6 +12,8 @@ import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 
+import static java.util.Objects.isNull;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -28,6 +30,15 @@ public class FilteredAndPageableRequestDTO {
     public PageRequest getPageRequest() {
         return pagination != null ?
                 PageRequest.of(pagination.getPage(), pagination.getSize()) : PageRequest.of(0, 10);
+    }
+
+    public void initPagination(int page, int size) {
+        if (isNull(pagination)) {
+            this.pagination = new Pagination(page, size);
+        } else {
+            this.pagination.setPage(page);
+            this.pagination.setSize(size);
+        }
     }
 
     @AllArgsConstructor
