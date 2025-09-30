@@ -18,4 +18,4 @@ COPY --from=build /app/target/drivecore-1.0.0.jar /app/drivecore-1.0.0.jar
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "/app/drivecore-1.0.0.jar"]
+ENTRYPOINT ["java", "-Djava.awt.headless=true", "-jar", "/app/drivecore-1.0.0.jar"]
