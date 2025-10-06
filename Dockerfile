@@ -10,6 +10,13 @@ COPY src ./src
 
 RUN ["mvn", "clean", "package", "-DskipTests"]
 
+RUN apk add --no-cache \
+    fontconfig \
+    ttf-dejavu \
+    ttf-droid \
+    ttf-freefont \
+    ttf-liberation
+
 FROM amazoncorretto:21-alpine3.21-jdk AS runtime
 
 WORKDIR /app
