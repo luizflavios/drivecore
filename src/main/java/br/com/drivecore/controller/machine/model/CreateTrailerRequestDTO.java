@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateTrailerRequestDTO {
+public class CreateTrailerRequestDTO extends CreateMachineRequestDTO {
 
     @NotBlank
     private String licensePlate;

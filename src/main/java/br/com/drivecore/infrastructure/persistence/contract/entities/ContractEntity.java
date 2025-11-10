@@ -2,7 +2,6 @@ package br.com.drivecore.infrastructure.persistence.contract.entities;
 
 import br.com.drivecore.domain.contract.enums.ContractType;
 import br.com.drivecore.infrastructure.persistence.attachment.entities.AttachmentEntity;
-import br.com.drivecore.infrastructure.persistence.employer.entities.EmployerEntity;
 import br.com.drivecore.infrastructure.persistence.expense.entities.ExpenseEntity;
 import br.com.drivecore.infrastructure.persistence.generic.BaseEntity;
 import jakarta.persistence.*;
@@ -27,16 +26,6 @@ public class ContractEntity extends BaseEntity {
 
     @Column(nullable = false, name = "contract_value")
     private BigDecimal contractValue;
-
-    @ManyToOne
-    @JoinColumn(name = "created_by", nullable = false, updatable = false)
-    private EmployerEntity createdBy;
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "contracts_responsible",
-            joinColumns = @JoinColumn(name = "contract_id", referencedColumnName = "id", table = "contracts"),
-            inverseJoinColumns = @JoinColumn(name = "responsible_id", referencedColumnName = "id", table = "employers"))
-    private Set<EmployerEntity> responsible;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinTable(name = "contracts_expenses",

@@ -5,8 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
@@ -16,10 +16,16 @@ import java.util.UUID;
 public class EmployerResponseDTO {
 
     private UUID id;
-    private String socialNumber;
     private String fullName;
+    private String email;
+    private String socialNumber;
     private LocalDate birthDate;
     private LocalDate admissionDate;
-    private LocalDateTime createdAt;
+    private String driverLicense;
+    private LocalDate driverLicenseExpiryDate;
+    private LocalDate medicalExamValidityDate;
+    private LocalDate toxicologicalExamValidityDate;
+    private BigDecimal commissionPercentage;
+    private boolean active;
 
 }

@@ -39,7 +39,7 @@ public class TruckApplicationService {
     }
 
     public Page<TruckResponseDTO> getTrucks(FilteredAndPageableRequestDTO filteredAndPageableRequestDTO) {
-        Page<TruckEntity> employerEntityPage = truckService.listEmployerPageableAndFiltered(
+        Page<TruckEntity> employerEntityPage = truckService.listTruckPageableAndFiltered(
                 filteredAndPageableRequestDTO.getPageRequest(),
                 filteredAndPageableRequestDTO.getFilters()
         );

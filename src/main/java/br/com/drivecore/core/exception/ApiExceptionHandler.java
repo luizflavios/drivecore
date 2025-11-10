@@ -1,6 +1,7 @@
 package br.com.drivecore.core.exception;
 
 import br.com.drivecore.core.exception.model.ApiExceptionErrorDTO;
+import br.com.drivecore.domain.machine.wheeling.exception.InvalidTruckTrailerCombinationException;
 import br.com.drivecore.domain.tire.exception.AlreadyExistsTirePositionException;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.persistence.EntityNotFoundException;
@@ -124,6 +125,14 @@ public class ApiExceptionHandler {
     public ResponseEntity<ApiExceptionErrorDTO> alreadyExistsTirePositionExceptionHandler(AlreadyExistsTirePositionException alreadyExistsTirePositionException) {
         ApiExceptionErrorDTO apiExceptionErrorDTO = new ApiExceptionErrorDTO(alreadyExistsTirePositionException.getClass().getSimpleName(),
                 alreadyExistsTirePositionException.getMessage());
+
+        return new ResponseEntity<>(apiExceptionErrorDTO, UNPROCESSABLE_ENTITY);
+    }
+
+    @ExceptionHandler(InvalidTruckTrailerCombinationException.class)
+    public ResponseEntity<ApiExceptionErrorDTO> invalidTruckTrailerCombinationExceptionHandler(InvalidTruckTrailerCombinationException invalidTruckTrailerCombinationException) {
+        ApiExceptionErrorDTO apiExceptionErrorDTO = new ApiExceptionErrorDTO(invalidTruckTrailerCombinationException.getClass().getSimpleName(),
+                invalidTruckTrailerCombinationException.getMessage());
 
         return new ResponseEntity<>(apiExceptionErrorDTO, UNPROCESSABLE_ENTITY);
     }

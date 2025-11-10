@@ -61,4 +61,8 @@ public class UserEntity extends BaseEntity implements UserDetails {
         return getStatus() != INACTIVE;
     }
 
+    public boolean isAdmin() {
+        return getRoles().stream().anyMatch(role -> role.getAuthority().toLowerCase().contains("admin"));
+    }
+
 }

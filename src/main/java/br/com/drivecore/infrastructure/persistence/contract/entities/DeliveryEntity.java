@@ -1,6 +1,6 @@
 package br.com.drivecore.infrastructure.persistence.contract.entities;
 
-import br.com.drivecore.infrastructure.persistence.machine.wheeling.entities.TruckEntity;
+import br.com.drivecore.infrastructure.persistence.machine.wheeling.entities.TruckTrailerCombinationEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -33,6 +33,6 @@ public class DeliveryEntity extends ContractEntity {
     private Long finalKilometer;
 
     @ManyToOne
-    @JoinColumn(name = "truck_id")
-    private TruckEntity truck;
+    @JoinColumn(name = "truck_trailer_combination_id", nullable = false)
+    private TruckTrailerCombinationEntity truckTrailerCombination;
 }

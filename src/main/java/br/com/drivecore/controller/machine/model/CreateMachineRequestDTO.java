@@ -7,24 +7,25 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateTruckRequestDTO extends CreateMachineRequestDTO {
+public class CreateMachineRequestDTO {
 
     @NotBlank
-    private String licensePlate;
+    private String brand;
+
+    @NotBlank
+    private String model;
 
     @NotNull
-    private int modelYear;
+    private BigDecimal paidAmount;
 
     @NotNull
-    private int manufactureYear;
-
-    @NotNull
-    private long mileage;
-
-    private int horsePower;
+    private LocalDate purchaseDate;
 
 }

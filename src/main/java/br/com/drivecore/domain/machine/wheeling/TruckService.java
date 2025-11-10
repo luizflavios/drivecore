@@ -27,7 +27,7 @@ public class TruckService {
         return truckRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(id.toString()));
     }
 
-    public Page<TruckEntity> listEmployerPageableAndFiltered(Pageable pageable, List<FilterCriteria> filterCriteria) {
+    public Page<TruckEntity> listTruckPageableAndFiltered(Pageable pageable, List<FilterCriteria> filterCriteria) {
         return filterCriteria != null && !filterCriteria.isEmpty() ?
                 truckRepository.findAll(new FilterCriteriaSpecification<>(filterCriteria), pageable) :
                 truckRepository.findAll(pageable);

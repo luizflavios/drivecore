@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Getter
@@ -29,5 +30,18 @@ public class CreateEmployerRequestDTO {
 
     @NotNull
     private LocalDate admissionDate;
+
+    private String driverLicense;
+
+    private LocalDate driverLicenseExpiryDate;
+
+    private LocalDate medicalExamValidityDate;
+
+    private LocalDate toxicologicalExamValidityDate;
+
+    private BigDecimal commissionPercentage;
+
+    @NotNull
+    private boolean active;
 
 }

@@ -1,5 +1,10 @@
 package br.com.drivecore.domain.authentication.enums;
 
 public enum UserStatus {
-    ACTIVE, INACTIVE, CONFIGURATION
+    ACTIVE, INACTIVE, CONFIGURATION;
+
+    public boolean isActive() {
+        return this == ACTIVE || this == CONFIGURATION;
+    }
+
 }

@@ -18,6 +18,8 @@ public interface EmployerMapper {
     @Mapping(target = "user", source = "user")
     EmployerEntity toEntity(CreateEmployerRequestDTO createUserRequestDTO, UserEntity user);
 
+    @Mapping(target = "active", expression = "java(employerEntity.getUser().getStatus().isActive())")
+    @Mapping(target = "email", source = "user.email")
     EmployerResponseDTO toResponseDTO(EmployerEntity employerEntity);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)

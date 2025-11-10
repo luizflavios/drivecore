@@ -33,7 +33,7 @@ public class MachineEntity extends BaseEntity {
     private LocalDate purchaseDate;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, name = "machine_type")
     private MachineType machineType;
 
 }

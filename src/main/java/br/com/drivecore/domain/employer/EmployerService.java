@@ -2,6 +2,7 @@ package br.com.drivecore.domain.employer;
 
 import br.com.drivecore.core.specification.FilterCriteriaSpecification;
 import br.com.drivecore.core.specification.model.FilterCriteria;
+import br.com.drivecore.infrastructure.persistence.authentication.entities.UserEntity;
 import br.com.drivecore.infrastructure.persistence.employer.EmployerRepository;
 import br.com.drivecore.infrastructure.persistence.employer.entities.EmployerEntity;
 import jakarta.persistence.EntityNotFoundException;
@@ -31,6 +32,14 @@ public class EmployerService {
         return filterCriteria != null && !filterCriteria.isEmpty() ?
                 employerRepository.findAll(new FilterCriteriaSpecification<>(filterCriteria), pageable) :
                 employerRepository.findAll(pageable);
+    }
+
+    public long countActiveEmployers() {
+        return employerRepository.countByUserStatusActive();
+    }
+
+    public EmployerEntity findByUser(UserEntity user) {
+        return employerRepository.findByUser(user).orElseThrow(() -> new EntityNotFoundException(user.getId().toString()));
     }
 
     public void deleteEmployer(UUID id) {
