@@ -2,6 +2,7 @@ package br.com.drivecore.application.authentication;
 
 import br.com.drivecore.controller.authentication.model.*;
 import br.com.drivecore.domain.authentication.AuthenticationService;
+import br.com.drivecore.domain.authentication.OtpService;
 import br.com.drivecore.domain.authentication.RoleService;
 import br.com.drivecore.domain.authentication.UserService;
 import br.com.drivecore.domain.authentication.mapper.AuthenticationMapper;
@@ -14,6 +15,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
@@ -28,6 +30,7 @@ public class AuthenticationApplicationService {
     private final AuthenticationService authenticationService;
     private final UserService userService;
     private final RoleService roleService;
+    private final OtpService otpService;
 
     public AuthenticationResponseDTO authenticate(AuthenticationRequestDTO authenticationRequestDTO) {
         Authentication authentication = authenticationService.authenticateByUsernameAndPassword(
@@ -71,18 +74,6 @@ public class AuthenticationApplicationService {
         return UserMapper.INSTANCE.toUserResponseDTO(user);
     }
 
-    public void resetUserPassword(UUID id) {
-        userService.resetUserPassword(id);
-
-        log.info("User {} has password successfully reset", id);
-    }
-
-    public void updateUserPassword(@Valid UpdatePasswordRequestDTO updatePasswordRequestDTO) {
-        userService.updatePassword(updatePasswordRequestDTO.getUsername(), updatePasswordRequestDTO.getPassword());
-
-        log.info("Username {} has password successfully updated", updatePasswordRequestDTO.getUsername());
-    }
-
     public List<RoleResponseDTO> listRoles() {
         log.info("Fetching all roles");
 
@@ -93,7 +84,28 @@ public class AuthenticationApplicationService {
                 .toList();
     }
 
+    @Transactional
     public void forgetPassword(ForgetPasswordRequestDTO forgetPasswordRequestDTO) {
-        userService.forgetPassword(forgetPasswordRequestDTO.getUsername());
+        UserEntity user = userService.getUserEntityByUsername(forgetPasswordRequestDTO.getUsername());
+
+        otpService.createOtp(user);
+
+        userService.putUserOnConfigurationSituation(user);
+
+        log.info("OTP has been successfully created for user id {}", user.getId());
+    }
+
+    public ValidateOtpResponseDTO validateOtp(ValidateOtpRequestDTO validateOtpRequestDTO) {
+        UserEntity user = userService.getUserEntityByUsername(validateOtpRequestDTO.getUsername());
+
+        Boolean isValid = otpService.verifyOtpCode(user, validateOtpRequestDTO.getOtp());
+
+        return new ValidateOtpResponseDTO(isValid);
+    }
+
+    public void updateUserPassword(@Valid UpdatePasswordRequestDTO updatePasswordRequestDTO) {
+        userService.updatePassword(updatePasswordRequestDTO.getUsername(), updatePasswordRequestDTO.getPassword());
+
+        log.info("Username {} has password successfully updated", updatePasswordRequestDTO.getUsername());
     }
 }

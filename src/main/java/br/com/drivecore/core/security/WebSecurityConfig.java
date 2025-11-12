@@ -19,7 +19,8 @@ import org.springframework.web.cors.CorsConfiguration;
 
 import java.util.List;
 
-import static org.springframework.http.HttpMethod.*;
+import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
 
 @Configuration
 @EnableMethodSecurity(prePostEnabled = true)
@@ -64,8 +65,7 @@ public class WebSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(POST, "/auth").permitAll()
-                        .requestMatchers(PATCH, "/auth/passwords").permitAll()
-                        .requestMatchers(POST, "/auth/passwords-forget").permitAll()
+                        .requestMatchers("/auth/passwords-forget/**").permitAll()
                         //Infra e Docs
                         .requestMatchers(GET, "/actuator/**").permitAll()
                         .requestMatchers(GET, "/swagger-ui/**").permitAll()

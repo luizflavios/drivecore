@@ -32,6 +32,31 @@ public class AuthenticationController {
         return ResponseEntity.ok(authenticationResponseDTO);
     }
 
+    @PostMapping("/passwords-forget/otp")
+    @Operation(summary = "Forget password - Otp generation")
+    public ResponseEntity<Void> forgetPassword(@RequestBody @Valid ForgetPasswordRequestDTO forgetPasswordRequestDTO) {
+        authenticationApplicationService.forgetPassword(forgetPasswordRequestDTO);
+
+        return new ResponseEntity<>(NO_CONTENT);
+    }
+
+    @PostMapping("/passwords-forget/otp/validation")
+    @Operation(summary = "Validate Otp")
+    public ResponseEntity<ValidateOtpResponseDTO> validateOtp(@RequestBody ValidateOtpRequestDTO validateOtpRequestDTO) {
+        ValidateOtpResponseDTO validateOtpResponseDTO = authenticationApplicationService.validateOtp(validateOtpRequestDTO);
+
+        return ResponseEntity.ok(validateOtpResponseDTO);
+    }
+
+    @PatchMapping("/passwords-forget/update")
+    @Operation(summary = "Update password")
+    public ResponseEntity<Void> updateUserPassword(@RequestBody @Valid UpdatePasswordRequestDTO updatePasswordRequestDTO) {
+        authenticationApplicationService.updateUserPassword(updatePasswordRequestDTO);
+
+        return new ResponseEntity<>(NO_CONTENT);
+    }
+
+
     @PostMapping("/users")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Operation(summary = "Create user")
@@ -57,31 +82,6 @@ public class AuthenticationController {
         UserResponseDTO userResponseDTO = authenticationApplicationService.getUserDetail(id);
 
         return new ResponseEntity<>(userResponseDTO, OK);
-    }
-
-    @PostMapping("/users/{id}/password-reset")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @Operation(summary = "Reset user password")
-    public ResponseEntity<Void> resetUserPassword(@PathVariable UUID id) {
-        authenticationApplicationService.resetUserPassword(id);
-
-        return new ResponseEntity<>(NO_CONTENT);
-    }
-
-    @PatchMapping("/passwords")
-    @Operation(summary = "Update password")
-    public ResponseEntity<Void> updateUserPassword(@RequestBody @Valid UpdatePasswordRequestDTO updatePasswordRequestDTO) {
-        authenticationApplicationService.updateUserPassword(updatePasswordRequestDTO);
-
-        return new ResponseEntity<>(NO_CONTENT);
-    }
-
-    @PostMapping("/passwords-forget")
-    @Operation(summary = "Forget password")
-    public ResponseEntity<Void> forgetPassword(@RequestBody @Valid ForgetPasswordRequestDTO forgetPasswordRequestDTO) {
-        authenticationApplicationService.forgetPassword(forgetPasswordRequestDTO);
-
-        return new ResponseEntity<>(NO_CONTENT);
     }
 
     @GetMapping("/roles")

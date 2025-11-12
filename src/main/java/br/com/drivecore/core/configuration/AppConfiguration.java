@@ -20,4 +20,7 @@ public class AppConfiguration {
     @Value("${API.PASSWORD.LENGTH:8}")
     private int apiPasswordLength;
 
+    @Value("${OTP.MAX.ATTEMPTS:5}")
+    private int otpMaxAttempts;
+
 }

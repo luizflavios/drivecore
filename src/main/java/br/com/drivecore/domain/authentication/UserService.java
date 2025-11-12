@@ -22,9 +22,8 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 @RequiredArgsConstructor
 public class UserService {
 
-    private static final String WELCOME = "Seja bem vindo";
+    private static final String WELCOME = "Transportadora TL - Seja bem vindo";
     private static final String WELCOME_TEMPLATE = "welcome-email";
-    private static final String FORGET_PASSWORD_TEMPLATE = "forget-password-email";
     private static final String PASSWORD = "password";
 
     private final UserRepository userRepository;
@@ -61,7 +60,7 @@ public class UserService {
         saveUser(user);
     }
 
-    private UserEntity getUserEntityByUsername(String username) {
+    public UserEntity getUserEntityByUsername(String username) {
         return userRepository
                 .findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(format("%s does not exists", username)));
@@ -69,34 +68,22 @@ public class UserService {
 
     private void checkUserPasswordRequirements(UserEntity user) {
         if (isBlank(user.getPassword())) {
-            generateUserTemporaryPassword(user);
+            generateUserPassword(user);
         } else {
             String password = passwordProvider.encodePassword(user.getPassword());
 
-            user.setStatus(ACTIVE);
-
             user.setPassword(password);
         }
+
+        user.setStatus(ACTIVE);
     }
 
-    private void generateUserTemporaryPassword(UserEntity user) {
+    private void generateUserPassword(UserEntity user) {
         String tempPassword = passwordProvider.generateTempPassword();
 
         user.setPassword(passwordProvider.encodePassword(tempPassword));
 
-        user.setStatus(CONFIGURATION);
-
         user.setTemporaryPassword(tempPassword);
-    }
-
-    public void resetUserPassword(UUID id) {
-        UserEntity user = getUserEntityById(id);
-
-        generateUserTemporaryPassword(user);
-
-        saveUser(user);
-
-        sendTemporaryPasswordEmail(user);
     }
 
     private void sendWelcomeEmail(UserEntity user) {
@@ -104,17 +91,6 @@ public class UserService {
                 user.getEmail(),
                 WELCOME,
                 WELCOME_TEMPLATE,
-                Map.of(PASSWORD, user.getTemporaryPassword())
-        );
-
-        emailSenderProvider.sendEmail(emailDTO);
-    }
-
-    private void sendTemporaryPasswordEmail(UserEntity user) {
-        EmailDTO emailDTO = new EmailDTO(
-                user.getEmail(),
-                WELCOME,
-                FORGET_PASSWORD_TEMPLATE,
                 Map.of(PASSWORD, user.getTemporaryPassword())
         );
 
@@ -131,13 +107,9 @@ public class UserService {
         saveUser(user);
     }
 
-    public void forgetPassword(String username) {
-        UserEntity user = getUserEntityByUsername(username);
-
-        generateUserTemporaryPassword(user);
+    public void putUserOnConfigurationSituation(UserEntity user) {
+        user.setStatus(CONFIGURATION);
 
         saveUser(user);
-
-        sendTemporaryPasswordEmail(user);
     }
 }

@@ -1,9 +1,12 @@
 package br.com.drivecore.core.exception;
 
 import br.com.drivecore.core.exception.model.ApiExceptionErrorDTO;
+import br.com.drivecore.domain.authentication.exception.OtpErrorException;
+import br.com.drivecore.domain.authentication.exception.OtpMaxAttemptsExceededException;
 import br.com.drivecore.domain.machine.wheeling.exception.InvalidTruckTrailerCombinationException;
 import br.com.drivecore.domain.tire.exception.AlreadyExistsTirePositionException;
 import io.jsonwebtoken.ExpiredJwtException;
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
@@ -121,6 +124,14 @@ public class ApiExceptionHandler {
         return new ResponseEntity<>(apiExceptionErrorDTO, NOT_FOUND);
     }
 
+    @ExceptionHandler(EntityExistsException.class)
+    public ResponseEntity<ApiExceptionErrorDTO> entityExistsExceptionHandler(EntityExistsException entityExistsException) {
+        ApiExceptionErrorDTO apiExceptionErrorDTO = new ApiExceptionErrorDTO(entityExistsException.getClass().getSimpleName(),
+                entityExistsException.getMessage());
+
+        return new ResponseEntity<>(apiExceptionErrorDTO, CONFLICT);
+    }
+
     @ExceptionHandler(AlreadyExistsTirePositionException.class)
     public ResponseEntity<ApiExceptionErrorDTO> alreadyExistsTirePositionExceptionHandler(AlreadyExistsTirePositionException alreadyExistsTirePositionException) {
         ApiExceptionErrorDTO apiExceptionErrorDTO = new ApiExceptionErrorDTO(alreadyExistsTirePositionException.getClass().getSimpleName(),
@@ -136,5 +147,22 @@ public class ApiExceptionHandler {
 
         return new ResponseEntity<>(apiExceptionErrorDTO, UNPROCESSABLE_ENTITY);
     }
+
+    @ExceptionHandler(OtpMaxAttemptsExceededException.class)
+    public ResponseEntity<ApiExceptionErrorDTO> otpMaxAttemptsExceededExceptionHandler(OtpMaxAttemptsExceededException otpMaxAttemptsExceededException) {
+        ApiExceptionErrorDTO apiExceptionErrorDTO = new ApiExceptionErrorDTO(otpMaxAttemptsExceededException.getClass().getSimpleName(),
+                otpMaxAttemptsExceededException.getMessage());
+
+        return new ResponseEntity<>(apiExceptionErrorDTO, UNPROCESSABLE_ENTITY);
+    }
+
+    @ExceptionHandler(OtpErrorException.class)
+    public ResponseEntity<ApiExceptionErrorDTO> otpGenerateErrorExceptionHandler(OtpErrorException otpErrorException) {
+        ApiExceptionErrorDTO apiExceptionErrorDTO = new ApiExceptionErrorDTO(otpErrorException.getClass().getSimpleName(),
+                otpErrorException.getMessage());
+
+        return new ResponseEntity<>(apiExceptionErrorDTO, INTERNAL_SERVER_ERROR);
+    }
+
 
 }
