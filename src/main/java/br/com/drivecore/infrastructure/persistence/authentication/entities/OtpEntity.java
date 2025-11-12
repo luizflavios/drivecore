@@ -52,7 +52,7 @@ public class OtpEntity {
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    @Column(nullable = false, updatable = false, name = "updated_at")
+    @Column(nullable = false, name = "updated_at")
     private LocalDateTime updatedAt;
 
 }
