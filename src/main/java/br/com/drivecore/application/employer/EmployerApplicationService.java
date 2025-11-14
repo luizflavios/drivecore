@@ -6,6 +6,7 @@ import br.com.drivecore.controller.employer.model.CreateEmployerRequestDTO;
 import br.com.drivecore.controller.employer.model.EmployerResponseDTO;
 import br.com.drivecore.controller.employer.model.UpdateEmployerRequestDTO;
 import br.com.drivecore.controller.model.FilteredAndPageableRequestDTO;
+import br.com.drivecore.domain.authentication.enums.UserStatus;
 import br.com.drivecore.domain.employer.EmployerService;
 import br.com.drivecore.domain.employer.mapper.EmployerMapper;
 import br.com.drivecore.infrastructure.persistence.authentication.entities.UserEntity;
@@ -59,6 +60,10 @@ public class EmployerApplicationService {
 
             employerEntity.setSocialNumber(socialNumber);
             employerEntity.getUser().setUsername(socialNumber);
+        }
+
+        if (employerEntity.getUser().getStatus().isActive() != updateEmployerRequestDTO.isActive()) {
+            employerEntity.getUser().setStatus(updateEmployerRequestDTO.isActive() ? UserStatus.ACTIVE : UserStatus.INACTIVE);
         }
 
         employerService.saveEmployer(employerEntity);

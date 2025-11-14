@@ -3,12 +3,13 @@ package br.com.drivecore.domain.employer.mapper;
 import br.com.drivecore.controller.employer.model.CreateEmployerRequestDTO;
 import br.com.drivecore.controller.employer.model.EmployerResponseDTO;
 import br.com.drivecore.controller.employer.model.UpdateEmployerRequestDTO;
+import br.com.drivecore.domain.authentication.enums.UserStatus;
 import br.com.drivecore.infrastructure.persistence.authentication.entities.UserEntity;
 import br.com.drivecore.infrastructure.persistence.employer.entities.EmployerEntity;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
-@Mapper
+@Mapper(imports = {UserStatus.class})
 public interface EmployerMapper {
 
     EmployerMapper INSTANCE = Mappers.getMapper(EmployerMapper.class);
