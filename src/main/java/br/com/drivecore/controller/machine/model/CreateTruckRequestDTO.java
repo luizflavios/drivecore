@@ -1,7 +1,6 @@
 package br.com.drivecore.controller.machine.model;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,15 +15,10 @@ public class CreateTruckRequestDTO extends CreateMachineRequestDTO {
     @NotBlank
     private String licensePlate;
 
-    @NotNull
-    private int modelYear;
-
-    @NotNull
-    private int manufactureYear;
-
-    @NotNull
     private long mileage;
 
     private int horsePower;
+
+    private int axles;
 
 }

@@ -1,7 +1,5 @@
 package br.com.drivecore.controller.machine.model;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,16 +14,16 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class CreateMachineRequestDTO {
 
-    @NotBlank
     private String brand;
 
-    @NotBlank
     private String model;
 
-    @NotNull
     private BigDecimal paidAmount;
 
-    @NotNull
     private LocalDate purchaseDate;
+
+    private Integer modelYear;
+
+    private int manufactureYear;
 
 }

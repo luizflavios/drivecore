@@ -20,17 +20,14 @@ public class TruckEntity extends MachineEntity {
     @Column(nullable = false, name = "license_plate")
     private String licensePlate;
 
-    @Column(nullable = false, name = "model_year")
-    private int modelYear;
-
-    @Column(nullable = false, name = "manufacture_year")
-    private int manufactureYear;
-
-    @Column(name = "horse_power")
+    @Column(name = "horse_power", nullable = false)
     private int horsePower;
 
     @Column(nullable = false)
-    private Long mileage;
+    private long mileage;
+
+    @Column(nullable = false)
+    private int axles;
 
     @OneToMany(mappedBy = "truck", fetch = FetchType.LAZY)
     private Set<TruckTrailerCombinationEntity> combinations;

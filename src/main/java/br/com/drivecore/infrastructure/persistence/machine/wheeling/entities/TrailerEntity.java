@@ -19,6 +19,8 @@ import java.math.BigDecimal;
 @EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 public class TrailerEntity extends MachineEntity {
 
+    private int axles;
+
     @Column(nullable = false, name = "license_plate")
     private String licensePlate;
 
@@ -33,11 +35,5 @@ public class TrailerEntity extends MachineEntity {
 
     @Column(name = "height_meters")
     private BigDecimal heightMeters;
-
-    @Column(name = "tare_weight_kg")
-    private BigDecimal tareWeightKg;
-
-    @Column(name = "max_payload_kg")
-    private BigDecimal maxPayloadKg;
 
 }

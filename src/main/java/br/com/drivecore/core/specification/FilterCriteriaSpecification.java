@@ -2,7 +2,6 @@ package br.com.drivecore.core.specification;
 
 import br.com.drivecore.core.specification.model.FilterCriteria;
 import jakarta.persistence.criteria.*;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -15,11 +14,8 @@ import java.util.List;
 import java.util.UUID;
 
 @Slf4j
-@RequiredArgsConstructor
 @SuppressWarnings({"unchecked", "rawtypes"})
-public class FilterCriteriaSpecification<T> implements Specification<T> {
-
-    private final List<FilterCriteria> criteriaList;
+public record FilterCriteriaSpecification<T>(List<FilterCriteria> criteriaList) implements Specification<T> {
 
     @Override
     public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder cb) {

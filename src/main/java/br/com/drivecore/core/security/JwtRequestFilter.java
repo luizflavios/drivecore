@@ -29,6 +29,10 @@ public class JwtRequestFilter extends GenericFilter {
 
     private final transient TokenProvider tokenProvider;
 
+    private static boolean isLoginRequest(HttpServletRequest httpRequest) {
+        return httpRequest.getRequestURI().equals("/auth") && httpRequest.getMethod().equals("POST");
+    }
+
     @Override
     public void doFilter(ServletRequest servletRequest,
                          ServletResponse servletResponse,
@@ -81,7 +85,8 @@ public class JwtRequestFilter extends GenericFilter {
     }
 
     private boolean filterAlreadyExecuted(HttpServletRequest httpRequest) {
-        if (httpRequest.getAttribute(EXECUTED_FILTER) != null) {
+        if (httpRequest.getAttribute(EXECUTED_FILTER) != null
+                || isLoginRequest(httpRequest)) {
             return true;
         } else {
             httpRequest.setAttribute(EXECUTED_FILTER, true);

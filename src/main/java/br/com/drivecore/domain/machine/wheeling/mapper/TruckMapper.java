@@ -3,12 +3,13 @@ package br.com.drivecore.domain.machine.wheeling.mapper;
 import br.com.drivecore.controller.machine.model.CreateTruckRequestDTO;
 import br.com.drivecore.controller.machine.model.TruckResponseDTO;
 import br.com.drivecore.controller.machine.model.UpdateTruckRequestDTO;
+import br.com.drivecore.domain.machine.enums.MachineStatus;
 import br.com.drivecore.domain.machine.enums.MachineType;
 import br.com.drivecore.infrastructure.persistence.machine.wheeling.entities.TruckEntity;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
-@Mapper(imports = {MachineType.class})
+@Mapper(imports = {MachineType.class, MachineStatus.class})
 public interface TruckMapper {
 
     TruckMapper INSTANCE = Mappers.getMapper(TruckMapper.class);
@@ -16,6 +17,7 @@ public interface TruckMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "machineType", expression = "java(MachineType.TRUCK)")
+    @Mapping(target = "machineStatus", expression = "java(MachineStatus.ACTIVE)")
     TruckEntity toEntity(CreateTruckRequestDTO createTruckRequestDTO);
 
     TruckResponseDTO toResponseDTO(TruckEntity truck);

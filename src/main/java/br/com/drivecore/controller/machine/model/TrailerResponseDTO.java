@@ -6,16 +6,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class TrailerResponseDTO {
+public class TrailerResponseDTO extends MachineResponseDTO {
 
-    private UUID id;
 
     private String licensePlate;
 
@@ -27,10 +24,6 @@ public class TrailerResponseDTO {
 
     private BigDecimal heightMeters;
 
-    private BigDecimal tareWeightKg;
+    private int axles;
 
-    private BigDecimal maxPayloadKg;
-
-    private LocalDateTime createdAt;
-    
 }

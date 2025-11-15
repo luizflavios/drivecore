@@ -1,5 +1,6 @@
 package br.com.drivecore.infrastructure.persistence.machine.entities;
 
+import br.com.drivecore.domain.machine.enums.MachineStatus;
 import br.com.drivecore.domain.machine.enums.MachineType;
 import br.com.drivecore.infrastructure.persistence.generic.BaseEntity;
 import jakarta.persistence.*;
@@ -20,20 +21,28 @@ import java.time.LocalDate;
 @EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 public class MachineEntity extends BaseEntity {
 
-    @Column(nullable = false)
     private String brand;
 
-    @Column(nullable = false)
     private String model;
 
-    @Column(nullable = false, name = "paid_amount")
+    @Column(name = "model_year")
+    private int modelYear;
+
+    @Column(name = "manufacture_year")
+    private int manufactureYear;
+
+    @Column(name = "paid_amount")
     private BigDecimal paidAmount;
 
-    @Column(nullable = false, name = "purchase_date")
+    @Column(name = "purchase_date")
     private LocalDate purchaseDate;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "machine_type")
     private MachineType machineType;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, name = "machine_status")
+    private MachineStatus machineStatus;
 
 }
