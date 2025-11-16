@@ -8,7 +8,6 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
 @Entity
 @Table(name = "machines")
@@ -25,6 +24,9 @@ public class MachineEntity extends BaseEntity {
 
     private String model;
 
+    @Column(nullable = false, name = "license_plate")
+    private String licensePlate;
+
     @Column(name = "model_year")
     private int modelYear;
 
@@ -33,9 +35,6 @@ public class MachineEntity extends BaseEntity {
 
     @Column(name = "paid_amount")
     private BigDecimal paidAmount;
-
-    @Column(name = "purchase_date")
-    private LocalDate purchaseDate;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "machine_type")

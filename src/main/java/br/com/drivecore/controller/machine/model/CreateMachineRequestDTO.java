@@ -1,12 +1,12 @@
 package br.com.drivecore.controller.machine.model;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -20,7 +20,8 @@ public class CreateMachineRequestDTO {
 
     private BigDecimal paidAmount;
 
-    private LocalDate purchaseDate;
+    @NotBlank
+    private String licensePlate;
 
     private Integer modelYear;
 

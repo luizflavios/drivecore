@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -26,7 +25,7 @@ public class MachineResponseDTO {
     private int manufactureYear;
     private MachineStatus machineStatus;
     private BigDecimal paidAmount;
-    private LocalDate purchaseDate;
+    private String licensePlate;
     private LocalDateTime createdAt;
 
 

@@ -11,10 +11,14 @@ import lombok.Setter;
 @NoArgsConstructor
 public class TruckResponseDTO extends MachineResponseDTO {
 
-    private String licensePlate;
-    private int modelYear;
-    private int horsePower;
     private long mileage;
+    
     private int axles;
+
+    private String chassi;
+
+    private String renavam;
+
+    private int currentYearIpva;
 
 }

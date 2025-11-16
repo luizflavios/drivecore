@@ -1,12 +1,9 @@
 package br.com.drivecore.controller.machine.model;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.math.BigDecimal;
 
 @Getter
 @Setter
@@ -14,17 +11,14 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class CreateTrailerRequestDTO extends CreateMachineRequestDTO {
 
-    @NotBlank
-    private String licensePlate;
-
     private long mileage;
 
-    private BigDecimal lengthMeters;
-
-    private BigDecimal widthMeters;
-
-    private BigDecimal heightMeters;
-
     private int axles;
+
+    private String chassi;
+
+    private String renavam;
+
+    private int currentYearIpva;
 
 }

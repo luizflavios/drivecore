@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -18,13 +17,14 @@ public class UpdateTruckRequestDTO {
     private String brand;
     private String model;
     private BigDecimal paidAmount;
-    private LocalDate purchaseDate;
     private String licensePlate;
     private int modelYear;
     private long mileage;
     private int manufactureYear;
-    private int horsePower;
     private int axles;
+    private String chassi;
+    private String renavam;
+    private int currentYearIpva;
     private MachineStatus machineStatus;
 
 }

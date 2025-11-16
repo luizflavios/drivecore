@@ -17,17 +17,18 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 public class TruckEntity extends MachineEntity {
 
-    @Column(nullable = false, name = "license_plate")
-    private String licensePlate;
-
-    @Column(name = "horse_power", nullable = false)
-    private int horsePower;
-
     @Column(nullable = false)
     private long mileage;
 
     @Column(nullable = false)
     private int axles;
+
+    private String chassi;
+
+    private String renavam;
+
+    @Column(name = "current_year_ipva")
+    private int currentYearIpva;
 
     @OneToMany(mappedBy = "truck", fetch = FetchType.LAZY)
     private Set<TruckTrailerCombinationEntity> combinations;

@@ -7,8 +7,6 @@ import jakarta.persistence.Table;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import java.math.BigDecimal;
-
 @Entity
 @Table(name = "trailers")
 @AllArgsConstructor
@@ -21,19 +19,15 @@ public class TrailerEntity extends MachineEntity {
 
     private int axles;
 
-    @Column(nullable = false, name = "license_plate")
-    private String licensePlate;
-
     @Column(nullable = false)
     private Long mileage;
 
-    @Column(name = "length_meters")
-    private BigDecimal lengthMeters;
+    private String chassi;
 
-    @Column(name = "width_meters")
-    private BigDecimal widthMeters;
+    private String renavam;
 
-    @Column(name = "height_meters")
-    private BigDecimal heightMeters;
+    @Column(name = "current_year_ipva")
+    private int currentYearIpva;
+
 
 }
