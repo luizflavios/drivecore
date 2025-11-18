@@ -1,19 +1,20 @@
 package br.com.drivecore.infrastructure.persistence.tire.entities;
 
+import br.com.drivecore.domain.tire.enums.TireEventType;
 import br.com.drivecore.infrastructure.persistence.generic.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 @Entity
-@Table(name = "tires_retreadings")
+@Table(name = "tires_histories")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
-public class TireRetreadingEntity extends BaseEntity {
+public class TireHistoryEntity extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(nullable = false, name = "tire_id")
@@ -21,5 +22,18 @@ public class TireRetreadingEntity extends BaseEntity {
 
     @Column(nullable = false)
     private Long mileage;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tire_event_type", nullable = false)
+    private TireEventType type;
+
+    @Column(name = "license_plate")
+    private String licensePlate;
+
+    private String position;
+
+    private String observation;
+
+    private String workshop;
 
 }

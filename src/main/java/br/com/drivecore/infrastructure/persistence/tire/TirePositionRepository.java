@@ -1,6 +1,7 @@
 package br.com.drivecore.infrastructure.persistence.tire;
 
 import br.com.drivecore.infrastructure.persistence.machine.entities.MachineEntity;
+import br.com.drivecore.infrastructure.persistence.tire.entities.TireEntity;
 import br.com.drivecore.infrastructure.persistence.tire.entities.TirePositionEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -8,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -25,4 +27,6 @@ public interface TirePositionRepository extends JpaRepository<TirePositionEntity
     Boolean existsTirePositionInUse(UUID machineId, UUID tireId, int axle, int side);
 
     List<TirePositionEntity> findByMachineAndInUseOrderByAxleAscSideAsc(MachineEntity machineEntity, Boolean aTrue);
+
+    Optional<TirePositionEntity> findByTire(TireEntity tire);
 }

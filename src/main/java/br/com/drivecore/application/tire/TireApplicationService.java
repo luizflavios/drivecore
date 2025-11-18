@@ -5,12 +5,13 @@ import br.com.drivecore.controller.tire.model.*;
 import br.com.drivecore.domain.machine.MachineService;
 import br.com.drivecore.domain.report.ReportService;
 import br.com.drivecore.domain.tire.TireService;
+import br.com.drivecore.domain.tire.enums.TireEventType;
 import br.com.drivecore.domain.tire.exception.AlreadyExistsTirePositionException;
 import br.com.drivecore.domain.tire.mapper.TireMapper;
 import br.com.drivecore.infrastructure.persistence.machine.entities.MachineEntity;
 import br.com.drivecore.infrastructure.persistence.tire.entities.TireEntity;
+import br.com.drivecore.infrastructure.persistence.tire.entities.TireHistoryEntity;
 import br.com.drivecore.infrastructure.persistence.tire.entities.TirePositionEntity;
-import br.com.drivecore.infrastructure.persistence.tire.entities.TireRetreadingEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -20,8 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static java.lang.Boolean.TRUE;
@@ -35,6 +36,28 @@ public class TireApplicationService {
     private final MachineService machineService;
     private final ReportService reportService;
 
+    public Page<SummaryTireResponseDTO> getSummaryTires(FilteredAndPageableRequestDTO filteredAndPageableRequestDTO) {
+        return tireService.listSummaryTirePageableAndFiltered(
+                filteredAndPageableRequestDTO.getPageRequest()
+        );
+    }
+
+    public TireResponseDTO getTireDetail(UUID id) {
+        TireEntity tireEntity = tireService.findById(id);
+
+        TireResponseDTO tireResponseDTO = TireMapper.INSTANCE.toResponseDTO(tireEntity);
+
+        Optional<TirePositionEntity> tirePositionEntityOptional = tireService.findTirePositionByTire(tireEntity);
+
+        tirePositionEntityOptional.ifPresent(tirePositionEntity -> {
+            tireResponseDTO.setLicensePlate(tirePositionEntity.getMachine().getLicensePlate());
+            tireResponseDTO.setMachineId(tirePositionEntity.getMachine().getId());
+            tireResponseDTO.setEquipmentPosition(String.format("%d-%s", tirePositionEntity.getAxle(), tirePositionEntity.getSide()));
+        });
+
+        return tireResponseDTO;
+    }
+
     public TireResponseDTO createTire(CreateTireRequestDTO createTireRequestDTO) {
         TireEntity tireEntity = TireMapper.INSTANCE.toEntity(createTireRequestDTO);
 
@@ -45,37 +68,13 @@ public class TireApplicationService {
         return TireMapper.INSTANCE.toResponseDTO(tireEntity);
     }
 
-    public TireResponseDTO getTireDetail(UUID id) {
-        TireEntity tireEntity = tireService.findById(id);
-
-        TireResponseDTO tireResponseDTO = TireMapper.INSTANCE.toResponseDTO(tireEntity);
-
-        addRetreadingInfo(tireEntity, tireResponseDTO);
-
-        return tireResponseDTO;
-    }
-
-    private void addRetreadingInfo(TireEntity tireEntity, TireResponseDTO tireResponseDTO) {
-        if (!tireEntity.getRetreads().isEmpty()) {
-            tireEntity.getRetreads()
-                    .stream()
-                    .max(Comparator.comparing(TireRetreadingEntity::getCreatedAt))
-                    .map(TireRetreadingEntity::getMileage)
-                    .ifPresent(tireResponseDTO::setTotalMileage);
-
-            tireResponseDTO.setTotalMileage(tireEntity.getMileage() + tireResponseDTO.getTotalMileage());
-
-            tireResponseDTO.setRetreadingCount(tireEntity.getRetreads().size());
-        }
-    }
-
     public Page<TireResponseDTO> getTires(FilteredAndPageableRequestDTO filteredAndPageableRequestDTO) {
-        Page<TireEntity> employerEntityPage = tireService.listTirePageableAndFiltered(
+        Page<TireEntity> tireEntityPage = tireService.listTirePageableAndFiltered(
                 filteredAndPageableRequestDTO.getPageRequest(),
                 filteredAndPageableRequestDTO.getFilters()
         );
 
-        return employerEntityPage.map(TireMapper.INSTANCE::toResponseDTO);
+        return tireEntityPage.map(TireMapper.INSTANCE::toResponseDTO);
     }
 
     public void updateTire(UUID id, UpdateTireRequestDTO updateTireRequestDTO) {
@@ -94,6 +93,7 @@ public class TireApplicationService {
         log.info("Tire {} successfully deleted", id);
     }
 
+    @Transactional
     public TirePositionResponseDTO addTirePositionToMachine(CreateTirePositionRequestDTO createTirePositionRequestDTO) {
         checkIfExistsTirePositionInUse(
                 createTirePositionRequestDTO.getMachineId(),
@@ -107,14 +107,30 @@ public class TireApplicationService {
         MachineEntity machineEntity = machineService.findById(createTirePositionRequestDTO.getMachineId());
 
         TirePositionEntity tirePositionEntity = TireMapper.INSTANCE.toTirePositionEntity(
-                tireEntity, machineEntity, createTirePositionRequestDTO.getAxle(), createTirePositionRequestDTO.getSide()
+                tireEntity, machineEntity, createTirePositionRequestDTO.getAxle(), null
         );
 
         tireService.saveTirePosition(tirePositionEntity);
 
+        buildAndSaveTireEvent(tireEntity, Optional.ofNullable(tirePositionEntity),
+                new CreateTireHistoryRequestDTO(TireEventType.INSTALLATION));
+
         log.info("Tire Position {} successfully created", tirePositionEntity.getId());
 
         return TireMapper.INSTANCE.toTirePositionEntityResponseDTO(tirePositionEntity);
+    }
+
+    private void buildAndSaveTireEvent(TireEntity tireEntity,
+                                       Optional<TirePositionEntity> tirePositionEntity,
+                                       CreateTireHistoryRequestDTO createTireHistoryRequestDTO) {
+
+        TireHistoryEntity tireHistoryEntity = buildTireHistoryWithDetails(
+                createTireHistoryRequestDTO,
+                tireEntity,
+                tirePositionEntity
+        );
+
+        tireService.saveTireHistory(tireHistoryEntity);
     }
 
     private void checkIfExistsTirePositionInUse(UUID machineId, UUID tireId, int axle, int side) {
@@ -146,25 +162,18 @@ public class TireApplicationService {
         return TireMapper.INSTANCE.toTirePositionByMachineResponseDTO(machineEntity, tirePositionEntityList);
     }
 
-    public void inactivateTirePosition(UUID tirePositionId) {
-        tireService.inactivateTirePosition(tirePositionId);
+    @Transactional
+    public void inactivateTirePosition(UUID tirePositionId, InactivateTirePositionRequestDTO inactivateTirePositionRequestDTO) {
+        TirePositionEntity tirePositionEntity = tireService.findTirePositionById(tirePositionId);
+
+        TireEntity tireEntity = tirePositionEntity.getTire();
+
+        buildAndSaveTireEvent(tireEntity, Optional.of(tirePositionEntity),
+                new CreateTireHistoryRequestDTO(inactivateTirePositionRequestDTO.getEventType()));
+
+        tireService.inactivateTirePosition(tirePositionEntity);
 
         log.info("Tire Position {} successfully inactivated", tirePositionId);
-    }
-
-    @Transactional
-    public void addRetreadingToTire(UUID tireId) {
-        TireEntity tireEntity = tireService.findById(tireId);
-
-        TireRetreadingEntity tireRetreadingEntity = TireMapper.INSTANCE.toTireRetreadingEntity(tireEntity);
-
-        tireService.saveTireRetreading(tireRetreadingEntity);
-
-        tireEntity.setMileage(0L);
-
-        tireService.saveTire(tireEntity);
-
-        log.info("Retreading {} successfully added to tire {}", tireRetreadingEntity.getId(), tireId);
     }
 
     @SneakyThrows
@@ -187,5 +196,33 @@ public class TireApplicationService {
         } catch (Exception e) {
             throw new IOException("Erro ao gerar relatório", e);
         }
+    }
+
+    @Transactional
+    public void addEventToTireHistory(UUID tireId,
+                                      CreateTireHistoryRequestDTO createTireHistoryRequestDTO) {
+        TireEntity tireEntity = tireService.findById(tireId);
+
+        Optional<TirePositionEntity> tirePositionEntityOptional =
+                tireService.findTirePositionByTire(tireEntity);
+
+        buildAndSaveTireEvent(tireEntity, tirePositionEntityOptional, createTireHistoryRequestDTO);
+
+        log.info("Event {} successfully added to tire {}",
+                createTireHistoryRequestDTO.getType(), tireId);
+    }
+
+    private TireHistoryEntity buildTireHistoryWithDetails(CreateTireHistoryRequestDTO createTireHistoryRequestDTO,
+                                                          TireEntity tireEntity,
+                                                          Optional<TirePositionEntity> tirePositionEntityOptional) {
+
+        TireHistoryEntity tireHistoryEntity = TireMapper.INSTANCE.toTireHistoryEntity(tireEntity, createTireHistoryRequestDTO);
+
+        tirePositionEntityOptional.ifPresent(tirePositionEntity -> {
+            tireHistoryEntity.setPosition(String.format("%d-%s", tirePositionEntity.getAxle(), tirePositionEntity.getSide()));
+            tireHistoryEntity.setLicensePlate(tirePositionEntity.getMachine().getLicensePlate());
+        });
+
+        return tireHistoryEntity;
     }
 }

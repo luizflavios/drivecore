@@ -1,6 +1,7 @@
 package br.com.drivecore.infrastructure.persistence.tire.entities;
 
 import br.com.drivecore.domain.tire.enums.TireCondition;
+import br.com.drivecore.domain.tire.enums.TireStatus;
 import br.com.drivecore.infrastructure.persistence.generic.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -20,32 +21,33 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 public class TireEntity extends BaseEntity {
 
-    @Column(name = "fire_code", nullable = false, unique = true)
+    @Column(name = "purchase_date")
+    private LocalDate purchaseDate;
+
+    @Column(name = "manufacture_year")
+    private int manufactureYear;
+
+    private String manufacturer;
+
+    @Column(name = "fire_code", unique = true)
     private String fireCode;
 
-    @Column(nullable = false)
-    private String brand;
-
-    @Column(nullable = false)
-    private String model;
-
-    @Column(nullable = false)
-    private String size;
+    @Column(columnDefinition = "TEXT")
+    private String observation;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "tire_condition", nullable = false)
     private TireCondition tireCondition;
 
-    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tire_status", nullable = false)
+    private TireStatus tireStatus;
+
     private BigDecimal price;
 
-    @Column(name = "purchase_date", nullable = false)
-    private LocalDate purchaseDate;
-
-    @Column(nullable = false)
     private Long mileage;
 
     @OneToMany(mappedBy = "tire", fetch = FetchType.EAGER)
-    private Set<TireRetreadingEntity> retreads;
+    private Set<TireHistoryEntity> history;
 
 }

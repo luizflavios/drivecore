@@ -2,36 +2,30 @@ package br.com.drivecore.controller.tire.model;
 
 import br.com.drivecore.domain.tire.enums.TireCondition;
 import br.com.drivecore.domain.tire.enums.TireStatus;
+import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.util.UUID;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateTireRequestDTO {
+public class SummaryTireResponseDTO {
 
-    private LocalDate purchaseDate;
-
-    private int manufactureYear;
-
-    private String manufacturer;
+    private UUID id;
 
     private String fireCode;
-
-    private String observation;
-
+    private String manufacturer;
+    private int manufactureYear;
+    private Long mileage;
     private TireCondition tireCondition;
-
     private TireStatus tireStatus;
 
-    private BigDecimal price;
-
-    private Long mileage;
+    @Nullable
+    private String licensePlate;
 
 }

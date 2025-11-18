@@ -52,8 +52,8 @@ public class TireController {
     @PostMapping("/list")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Operation(summary = "List tires")
-    public ResponseEntity<Page<TireResponseDTO>> getTires(@RequestBody @Valid FilteredAndPageableRequestDTO filters) {
-        Page<TireResponseDTO> tireResponseDTOS = tireApplicationService.getTires(filters);
+    public ResponseEntity<Page<SummaryTireResponseDTO>> getTires(@RequestBody @Valid FilteredAndPageableRequestDTO filters) {
+        Page<SummaryTireResponseDTO> tireResponseDTOS = tireApplicationService.getSummaryTires(filters);
 
         return new ResponseEntity<>(tireResponseDTOS, OK);
     }
@@ -98,17 +98,9 @@ public class TireController {
     @PatchMapping("/tires-positions/{tirePositionId}/inactivate")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Operation(summary = "Inactivate tire position")
-    public ResponseEntity<Void> inactivateTirePosition(@PathVariable UUID tirePositionId) {
-        tireApplicationService.inactivateTirePosition(tirePositionId);
-
-        return new ResponseEntity<>(NO_CONTENT);
-    }
-
-    @PostMapping("/{tireId}/retreading")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @Operation(summary = "Add retreading to tire")
-    public ResponseEntity<Void> addRetreadingToTire(@PathVariable UUID tireId) {
-        tireApplicationService.addRetreadingToTire(tireId);
+    public ResponseEntity<Void> inactivateTirePosition(@PathVariable UUID tirePositionId,
+                                                       @RequestBody @Valid InactivateTirePositionRequestDTO inactivateTirePositionRequestDTO) {
+        tireApplicationService.inactivateTirePosition(tirePositionId, inactivateTirePositionRequestDTO);
 
         return new ResponseEntity<>(NO_CONTENT);
     }
@@ -124,5 +116,14 @@ public class TireController {
                 .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
                 .contentLength(fileBytes.length)
                 .body(new ByteArrayResource(fileBytes));
+    }
+
+    @PostMapping("/{tireId}/history")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @Operation(summary = "Add event to tire history")
+    public ResponseEntity<Void> addEventToTireHistory(@PathVariable UUID tireId, @RequestBody @Valid CreateTireHistoryRequestDTO createTireHistoryRequestDTO) {
+        tireApplicationService.addEventToTireHistory(tireId, createTireHistoryRequestDTO);
+
+        return new ResponseEntity<>(NO_CONTENT);
     }
 }

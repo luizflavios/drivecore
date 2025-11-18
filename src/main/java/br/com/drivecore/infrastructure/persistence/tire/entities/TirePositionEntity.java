@@ -1,5 +1,6 @@
 package br.com.drivecore.infrastructure.persistence.tire.entities;
 
+import br.com.drivecore.domain.tire.enums.TireSide;
 import br.com.drivecore.infrastructure.persistence.generic.BaseEntity;
 import br.com.drivecore.infrastructure.persistence.machine.entities.MachineEntity;
 import jakarta.persistence.*;
@@ -30,7 +31,8 @@ public class TirePositionEntity extends BaseEntity {
     @Column(nullable = false)
     private int axle; // 0 - 8
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private int side; // 0 - external_left, 1 - internal_left, 2 - internal_right, 3 - external_right
+    private TireSide side;
 
 }
