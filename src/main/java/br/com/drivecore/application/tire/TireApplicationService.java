@@ -5,6 +5,7 @@ import br.com.drivecore.controller.tire.model.*;
 import br.com.drivecore.domain.machine.MachineService;
 import br.com.drivecore.domain.report.ReportService;
 import br.com.drivecore.domain.tire.TireService;
+import br.com.drivecore.domain.tire.enums.TireCondition;
 import br.com.drivecore.domain.tire.enums.TireEventType;
 import br.com.drivecore.domain.tire.exception.AlreadyExistsTirePositionException;
 import br.com.drivecore.domain.tire.mapper.TireMapper;
@@ -222,6 +223,18 @@ public class TireApplicationService {
             tireHistoryEntity.setPosition(String.format("%d-%s", tirePositionEntity.getAxle(), tirePositionEntity.getSide()));
             tireHistoryEntity.setLicensePlate(tirePositionEntity.getMachine().getLicensePlate());
         });
+
+        if (createTireHistoryRequestDTO.getType().equals(TireEventType.RECAP)) {
+            switch (tireEntity.getTireCondition()) {
+                case NEW -> tireEntity.setTireCondition(TireCondition.RECAPPED);
+                case RECAPPED ->
+                        tireEntity.setTireCondition(TireCondition.TWO_TIMES_RECAPPED);
+                case TWO_TIMES_RECAPPED, SCRAPPED ->
+                        tireEntity.setTireCondition(TireCondition.SCRAPPED);
+            }
+
+            tireService.saveTire(tireEntity);
+        }
 
         return tireHistoryEntity;
     }
