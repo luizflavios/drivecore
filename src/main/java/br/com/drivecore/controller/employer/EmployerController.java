@@ -3,6 +3,7 @@ package br.com.drivecore.controller.employer;
 import br.com.drivecore.application.employer.EmployerApplicationService;
 import br.com.drivecore.controller.employer.model.CreateEmployerRequestDTO;
 import br.com.drivecore.controller.employer.model.EmployerResponseDTO;
+import br.com.drivecore.controller.employer.model.SummaryEmployerResponseDTO;
 import br.com.drivecore.controller.employer.model.UpdateEmployerRequestDTO;
 import br.com.drivecore.controller.model.FilteredAndPageableRequestDTO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 import static org.springframework.http.HttpStatus.*;
@@ -43,6 +45,16 @@ public class EmployerController {
         EmployerResponseDTO employerResponseDTO = employerApplicationService.getEmployerDetail(id);
 
         return new ResponseEntity<>(employerResponseDTO, OK);
+    }
+
+    @GetMapping("/summary")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @Operation(summary = "Get employers summary")
+    public ResponseEntity<List<SummaryEmployerResponseDTO>> getSummaryEmployer() {
+        List<SummaryEmployerResponseDTO> summaryEmployerResponseDTOList =
+                employerApplicationService.getSummaryEmployer();
+
+        return new ResponseEntity<>(summaryEmployerResponseDTOList, OK);
     }
 
     @PostMapping("/list")

@@ -42,10 +42,13 @@ public class TruckTrailerCombinationService {
         return truckTrailerCombinationRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(id.toString()));
     }
 
-    public void finishTruckTrailerCombination(UUID truckTrailerCombinationId) {
+    public void finishTruckTrailerCombination(UUID truckTrailerCombinationId, Long finalMileage, LocalDateTime finishedAt) {
         TruckTrailerCombinationEntity truckTrailerCombination = findById(truckTrailerCombinationId);
 
-        truckTrailerCombination.setFinishedAt(LocalDateTime.now());
+        truckTrailerCombination.setFinishedAt(finishedAt != null ? finishedAt :
+                LocalDateTime.now());
+        truckTrailerCombination.setFinalMileage(finalMileage);
+
 
         saveTruckTrailerCombination(truckTrailerCombination);
     }

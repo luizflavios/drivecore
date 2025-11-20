@@ -1,9 +1,7 @@
 package br.com.drivecore.controller.machine;
 
 import br.com.drivecore.application.machine.TruckTrailerCombinationApplicationService;
-import br.com.drivecore.controller.machine.model.CreateTruckTrailerCombinationRequestDTO;
-import br.com.drivecore.controller.machine.model.TrailerResponseDTO;
-import br.com.drivecore.controller.machine.model.TruckTrailerCombinationResponseDTO;
+import br.com.drivecore.controller.machine.model.*;
 import br.com.drivecore.controller.model.FilteredAndPageableRequestDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -14,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 import static org.springframework.http.HttpStatus.*;
@@ -54,13 +53,43 @@ public class TruckTrailerCombinationController {
         return new ResponseEntity<>(truckTrailerCombinationResponseDTOS, OK);
     }
 
+    @PatchMapping("/{truckTrailerCombinationId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @Operation(summary = "Update truck-trailer combination")
+    public ResponseEntity<Void> updateTruckTrailerCombination(@PathVariable UUID truckTrailerCombinationId,
+                                                              @RequestBody @Valid UpdateTruckTrailerCombinationRequestDTO updateTruckTrailerCombinationRequestDTO) {
+        truckTrailerCombinationApplicationService.updateTruckTrailerCombination(truckTrailerCombinationId, updateTruckTrailerCombinationRequestDTO);
+
+        return new ResponseEntity<>(NO_CONTENT);
+    }
+
     @PostMapping("/{truckTrailerCombinationId}/finish")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Operation(summary = "Finish truck-trailer combination")
-    public ResponseEntity<Page<TrailerResponseDTO>> finishTruckTrailerCombination(@PathVariable UUID truckTrailerCombinationId) {
-        truckTrailerCombinationApplicationService.finishTruckTrailerCombination(truckTrailerCombinationId);
+    public ResponseEntity<Page<TrailerResponseDTO>> finishTruckTrailerCombination(@PathVariable UUID truckTrailerCombinationId, @RequestBody @Valid FinishTruckTrailerCombinationRequestDTO finishTruckTrailerCombinationRequestDTO) {
+        truckTrailerCombinationApplicationService.finishTruckTrailerCombination(truckTrailerCombinationId, finishTruckTrailerCombinationRequestDTO);
 
         return new ResponseEntity<>(NO_CONTENT);
+    }
+
+    @GetMapping("/trucks/available")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @Operation(summary = "Get trucks available to couple")
+    public ResponseEntity<List<SummaryMachineResponseDTO>> getAvailableTrucks() {
+        List<SummaryMachineResponseDTO> summaryEmployerResponseDTOList =
+                truckTrailerCombinationApplicationService.getAvailableTrucks();
+
+        return new ResponseEntity<>(summaryEmployerResponseDTOList, OK);
+    }
+
+    @GetMapping("/trailers/available")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @Operation(summary = "Get trailers available to couple")
+    public ResponseEntity<List<SummaryMachineResponseDTO>> getAvailableTrailers() {
+        List<SummaryMachineResponseDTO> summaryEmployerResponseDTOList =
+                truckTrailerCombinationApplicationService.getAvailableTrailers();
+
+        return new ResponseEntity<>(summaryEmployerResponseDTOList, OK);
     }
 
 }

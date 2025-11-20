@@ -1,5 +1,6 @@
 package br.com.drivecore.infrastructure.persistence.machine.wheeling.entities;
 
+import br.com.drivecore.infrastructure.persistence.employer.entities.EmployerEntity;
 import br.com.drivecore.infrastructure.persistence.generic.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -24,6 +25,16 @@ public class TruckTrailerCombinationEntity extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "trailer_id", nullable = false)
     private TrailerEntity trailer;
+
+    @ManyToOne
+    @JoinColumn(name = "employer_id")
+    private EmployerEntity employer;
+
+    @Column(name = "initial_mileage", nullable = false)
+    private Long initialMileage;
+
+    @Column(name = "final_mileage")
+    private Long finalMileage;
 
     @Column(name = "finished_at")
     private LocalDateTime finishedAt;

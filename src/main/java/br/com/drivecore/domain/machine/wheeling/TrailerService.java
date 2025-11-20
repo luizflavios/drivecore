@@ -37,4 +37,7 @@ public class TrailerService {
         trailerRepository.deleteById(id);
     }
 
+    public List<TrailerEntity> findAvailableTrailersToCoupling() {
+        return trailerRepository.findAvailableTrailersToCoupling();
+    }
 }

@@ -4,6 +4,7 @@ import br.com.drivecore.application.authentication.AuthenticationApplicationServ
 import br.com.drivecore.controller.authentication.model.CreateUserRequestDTO;
 import br.com.drivecore.controller.employer.model.CreateEmployerRequestDTO;
 import br.com.drivecore.controller.employer.model.EmployerResponseDTO;
+import br.com.drivecore.controller.employer.model.SummaryEmployerResponseDTO;
 import br.com.drivecore.controller.employer.model.UpdateEmployerRequestDTO;
 import br.com.drivecore.controller.model.FilteredAndPageableRequestDTO;
 import br.com.drivecore.domain.authentication.enums.UserStatus;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 
 import static io.micrometer.common.util.StringUtils.isNotBlank;
@@ -84,4 +86,7 @@ public class EmployerApplicationService {
         return employerEntityPage.map(EmployerMapper.INSTANCE::toResponseDTO);
     }
 
+    public List<SummaryEmployerResponseDTO> getSummaryEmployer() {
+        return employerService.getSummaryEmployer();
+    }
 }

@@ -1,5 +1,6 @@
 package br.com.drivecore.controller.machine.model;
 
+import br.com.drivecore.controller.employer.model.SummaryEmployerResponseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +19,13 @@ public class TruckTrailerCombinationResponseDTO {
 
     private TruckResponseDTO truck;
 
+    private SummaryEmployerResponseDTO employer;
+
     private TrailerResponseDTO trailer;
+
+    private Long initialMileage;
+
+    private Long finalMileage;
 
     private LocalDateTime createdAt;
 

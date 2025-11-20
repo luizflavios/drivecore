@@ -15,7 +15,8 @@ import java.util.UUID;
 
 @Slf4j
 @SuppressWarnings({"unchecked", "rawtypes"})
-public record FilterCriteriaSpecification<T>(List<FilterCriteria> criteriaList) implements Specification<T> {
+public record FilterCriteriaSpecification<T>(
+        List<FilterCriteria> criteriaList) implements Specification<T> {
 
     @Override
     public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
@@ -32,7 +33,25 @@ public record FilterCriteriaSpecification<T>(List<FilterCriteria> criteriaList) 
 
                 switch (criteria.operator()) {
 
-                    case EQUAL -> predicates.add(cb.equal(field, value));
+                    case EQUAL -> {
+                        if (value == null) {
+                            predicates.add(cb.isNull(field));
+                        } else {
+                            predicates.add(cb.equal(field, value));
+                        }
+                    }
+
+                    case NOT_EQUAL -> {
+                        if (value == null) {
+                            predicates.add(cb.isNotNull(field));
+                        } else {
+                            predicates.add(cb.notEqual(field, value));
+                        }
+                    }
+
+                    case IS_NULL -> predicates.add(cb.isNull(field));
+
+                    case IS_NOT_NULL -> predicates.add(cb.isNotNull(field));
 
                     case LIKE -> {
                         if (fieldType != String.class) {

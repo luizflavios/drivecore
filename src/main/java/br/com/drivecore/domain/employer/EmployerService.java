@@ -1,5 +1,6 @@
 package br.com.drivecore.domain.employer;
 
+import br.com.drivecore.controller.employer.model.SummaryEmployerResponseDTO;
 import br.com.drivecore.core.specification.FilterCriteriaSpecification;
 import br.com.drivecore.core.specification.model.FilterCriteria;
 import br.com.drivecore.infrastructure.persistence.authentication.entities.UserEntity;
@@ -44,5 +45,9 @@ public class EmployerService {
 
     public void deleteEmployer(UUID id) {
         employerRepository.deleteById(id);
+    }
+
+    public List<SummaryEmployerResponseDTO> getSummaryEmployer() {
+        return employerRepository.findAllSummary();
     }
 }

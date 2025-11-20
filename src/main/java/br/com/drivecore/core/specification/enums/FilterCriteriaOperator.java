@@ -7,5 +7,8 @@ public enum FilterCriteriaOperator {
     GREATER_THAN_OR_EQUAL_TO,
     LESS_THAN,
     LESS_THAN_OR_EQUAL_TO,
-    IN
+    NOT_EQUAL,
+    IN,
+    IS_NULL,
+    IS_NOT_NULL
 }

@@ -37,4 +37,7 @@ public class TruckService {
         truckRepository.deleteById(id);
     }
 
+    public List<TruckEntity> findAvailableTrucksToCoupling() {
+        return truckRepository.findAvailableTrucksToCoupling();
+    }
 }
