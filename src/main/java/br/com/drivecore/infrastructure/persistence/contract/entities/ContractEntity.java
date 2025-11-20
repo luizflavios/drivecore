@@ -2,6 +2,7 @@ package br.com.drivecore.infrastructure.persistence.contract.entities;
 
 import br.com.drivecore.domain.contract.enums.ContractType;
 import br.com.drivecore.infrastructure.persistence.attachment.entities.AttachmentEntity;
+import br.com.drivecore.infrastructure.persistence.employer.entities.EmployerEntity;
 import br.com.drivecore.infrastructure.persistence.expense.entities.ExpenseEntity;
 import br.com.drivecore.infrastructure.persistence.generic.BaseEntity;
 import jakarta.persistence.*;
@@ -22,12 +23,15 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 public class ContractEntity extends BaseEntity {
 
+    @Column(nullable = false, name = "reference_number", unique = true)
+    private Long referenceNumber;
+
     private BigDecimal commission;
 
     @Column(nullable = false, name = "contract_value")
     private BigDecimal contractValue;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "contracts_expenses",
             joinColumns = @JoinColumn(name = "contract_id", referencedColumnName = "id", table = "contracts"),
             inverseJoinColumns = @JoinColumn(name = "expense_id", referencedColumnName = "id", table = "expenses"))
@@ -38,6 +42,10 @@ public class ContractEntity extends BaseEntity {
             joinColumns = @JoinColumn(name = "contract_id", referencedColumnName = "id", table = "contracts"),
             inverseJoinColumns = @JoinColumn(name = "attachment_id", referencedColumnName = "id", table = "attachments"))
     private Set<AttachmentEntity> attachments;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "employer_id", nullable = false)
+    private EmployerEntity employer;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

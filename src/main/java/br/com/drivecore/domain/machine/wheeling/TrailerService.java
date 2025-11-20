@@ -40,4 +40,8 @@ public class TrailerService {
     public List<TrailerEntity> findAvailableTrailersToCoupling() {
         return trailerRepository.findAvailableTrailersToCoupling();
     }
+
+    public List<TrailerRepository.TrailerSummary> findAllSummary() {
+        return trailerRepository.findAllSummary();
+    }
 }

@@ -1,12 +1,13 @@
 package br.com.drivecore.infrastructure.persistence.expense.entities;
 
-import br.com.drivecore.infrastructure.persistence.employer.entities.EmployerEntity;
+import br.com.drivecore.domain.contract.enums.ExpenseType;
 import br.com.drivecore.infrastructure.persistence.generic.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "expenses")
@@ -21,11 +22,12 @@ public class ExpenseEntity extends BaseEntity {
     @Column(nullable = false)
     private BigDecimal amount;
 
-    @Column(nullable = false)
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "created_by", nullable = false, updatable = false)
-    private EmployerEntity createdBy;
+    private LocalDate date;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, name = "expense_type")
+    private ExpenseType expenseType;
 
 }

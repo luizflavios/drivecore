@@ -1,5 +1,6 @@
 package br.com.drivecore.infrastructure.persistence.contract.entities;
 
+import br.com.drivecore.domain.contract.delivery.enums.DeliveryStatus;
 import br.com.drivecore.infrastructure.persistence.machine.wheeling.entities.TruckTrailerCombinationEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -18,6 +19,9 @@ import java.time.LocalDate;
 public class DeliveryEntity extends ContractEntity {
 
     @Column(nullable = false)
+    private String origin;
+
+    @Column(nullable = false)
     private String destiny;
 
     @Column(name = "start_date")
@@ -26,11 +30,15 @@ public class DeliveryEntity extends ContractEntity {
     @Column(name = "final_date")
     private LocalDate finalDate;
 
-    @Column(name = "initial_kilometer")
-    private Long initialKilometer;
+    @Column(name = "initial_mileage")
+    private Long initialMileage;
 
-    @Column(name = "final_kilometer")
-    private Long finalKilometer;
+    @Column(name = "final_mileage")
+    private Long finalMileage;
+
+    @Column(name = "delivery_status", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private DeliveryStatus deliveryStatus;
 
     @ManyToOne
     @JoinColumn(name = "truck_trailer_combination_id", nullable = false)
