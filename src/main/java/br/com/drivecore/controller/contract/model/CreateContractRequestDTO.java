@@ -14,8 +14,6 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class CreateContractRequestDTO {
 
-    private BigDecimal commission;
-
     @NotNull
     private BigDecimal contractValue;
 

@@ -2,6 +2,7 @@ package br.com.drivecore.controller.machine;
 
 import br.com.drivecore.application.machine.TruckApplicationService;
 import br.com.drivecore.controller.machine.model.CreateTruckRequestDTO;
+import br.com.drivecore.controller.machine.model.SummaryMachineResponseDTO;
 import br.com.drivecore.controller.machine.model.TruckResponseDTO;
 import br.com.drivecore.controller.machine.model.UpdateTruckRequestDTO;
 import br.com.drivecore.controller.model.FilteredAndPageableRequestDTO;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 import static org.springframework.http.HttpStatus.*;
@@ -70,6 +72,15 @@ public class TruckController {
         truckApplicationService.deleteTruck(id);
 
         return new ResponseEntity<>(NO_CONTENT);
+    }
+
+    @GetMapping("/summary/all")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @Operation(summary = "Get all trucks summary")
+    public ResponseEntity<List<SummaryMachineResponseDTO>> getAllTrucksSummary() {
+        List<SummaryMachineResponseDTO> summaryList = truckApplicationService.getAllTrucksSummary();
+
+        return new ResponseEntity<>(summaryList, OK);
     }
 
 }

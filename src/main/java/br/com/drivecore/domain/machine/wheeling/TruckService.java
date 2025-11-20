@@ -40,4 +40,8 @@ public class TruckService {
     public List<TruckEntity> findAvailableTrucksToCoupling() {
         return truckRepository.findAvailableTrucksToCoupling();
     }
+
+    public List<TruckRepository.TruckSummary> findAllSummary() {
+        return truckRepository.findAllSummary();
+    }
 }

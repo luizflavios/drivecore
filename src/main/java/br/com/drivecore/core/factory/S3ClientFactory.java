@@ -17,7 +17,8 @@ public class S3ClientFactory {
     @Bean
     public S3Client s3Client() {
         return S3Client.builder()
-                .endpointOverride(URI.create("http://localhost:4566")) // LocalStack
+                .endpointOverride(URI.create("https://localhost:4566")) //
+                // LocalStack
                 .region(Region.US_EAST_1) // pode ser qualquer uma
                 .forcePathStyle(true)
                 .credentialsProvider(

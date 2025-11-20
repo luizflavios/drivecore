@@ -13,5 +13,8 @@ public interface DeliveryRepository extends JpaRepository<DeliveryEntity, UUID>,
 
     @Query("select count(d) from DeliveryEntity d where d.finalDate is null")
     long countByFinalDateNull();
-    
+
+    @Query("select coalesce(max(c.referenceNumber), 0) from ContractEntity c")
+    long getMaxReferenceNumber();
+
 }

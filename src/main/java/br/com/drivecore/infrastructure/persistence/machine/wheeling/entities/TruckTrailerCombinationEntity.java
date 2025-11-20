@@ -27,7 +27,7 @@ public class TruckTrailerCombinationEntity extends BaseEntity {
     private TrailerEntity trailer;
 
     @ManyToOne
-    @JoinColumn(name = "employer_id")
+    @JoinColumn(name = "employer_id", nullable = false)
     private EmployerEntity employer;
 
     @Column(name = "initial_mileage", nullable = false)

@@ -50,4 +50,5 @@ public class EmployerService {
     public List<SummaryEmployerResponseDTO> getSummaryEmployer() {
         return employerRepository.findAllSummary();
     }
+
 }
