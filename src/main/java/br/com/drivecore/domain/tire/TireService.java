@@ -3,6 +3,7 @@ package br.com.drivecore.domain.tire;
 import br.com.drivecore.controller.tire.model.SummaryTireResponseDTO;
 import br.com.drivecore.core.specification.FilterCriteriaSpecification;
 import br.com.drivecore.core.specification.model.FilterCriteria;
+import br.com.drivecore.domain.tire.enums.TireSide;
 import br.com.drivecore.infrastructure.persistence.machine.entities.MachineEntity;
 import br.com.drivecore.infrastructure.persistence.tire.TireHistoryRepository;
 import br.com.drivecore.infrastructure.persistence.tire.TirePositionRepository;
@@ -49,11 +50,16 @@ public class TireService {
         return tireRepository.getSummaryTires(pageable);
     }
 
+    public Page<SummaryTireResponseDTO> listAvailableTiresForNewPositions(Pageable pageable) {
+        return tireRepository.getAvailableTiresForNewPositions(pageable);
+    }
+
     public void deleteTire(UUID id) {
         tireRepository.deleteById(id);
     }
 
-    public Boolean existsTirePositionInUse(UUID machineId, UUID tireId, int axle, int side) {
+    public Boolean existsTirePositionInUse(UUID machineId, UUID tireId,
+                                           int axle, TireSide side) {
         return tirePositionRepository.existsTirePositionInUse(machineId, tireId, axle, side);
     }
 

@@ -7,6 +7,7 @@ import br.com.drivecore.domain.report.ReportService;
 import br.com.drivecore.domain.tire.TireService;
 import br.com.drivecore.domain.tire.enums.TireCondition;
 import br.com.drivecore.domain.tire.enums.TireEventType;
+import br.com.drivecore.domain.tire.enums.TireSide;
 import br.com.drivecore.domain.tire.exception.AlreadyExistsTirePositionException;
 import br.com.drivecore.domain.tire.mapper.TireMapper;
 import br.com.drivecore.infrastructure.persistence.machine.entities.MachineEntity;
@@ -39,6 +40,12 @@ public class TireApplicationService {
 
     public Page<SummaryTireResponseDTO> getSummaryTires(FilteredAndPageableRequestDTO filteredAndPageableRequestDTO) {
         return tireService.listSummaryTirePageableAndFiltered(
+                filteredAndPageableRequestDTO.getPageRequest()
+        );
+    }
+
+    public Page<SummaryTireResponseDTO> getAvailableTiresForNewPositions(FilteredAndPageableRequestDTO filteredAndPageableRequestDTO) {
+        return tireService.listAvailableTiresForNewPositions(
                 filteredAndPageableRequestDTO.getPageRequest()
         );
     }
@@ -108,7 +115,9 @@ public class TireApplicationService {
         MachineEntity machineEntity = machineService.findById(createTirePositionRequestDTO.getMachineId());
 
         TirePositionEntity tirePositionEntity = TireMapper.INSTANCE.toTirePositionEntity(
-                tireEntity, machineEntity, createTirePositionRequestDTO.getAxle(), null
+                tireEntity, machineEntity,
+                createTirePositionRequestDTO.getAxle(),
+                createTirePositionRequestDTO.getSide()
         );
 
         tireService.saveTirePosition(tirePositionEntity);
@@ -134,7 +143,8 @@ public class TireApplicationService {
         tireService.saveTireHistory(tireHistoryEntity);
     }
 
-    private void checkIfExistsTirePositionInUse(UUID machineId, UUID tireId, int axle, int side) {
+    private void checkIfExistsTirePositionInUse(UUID machineId, UUID tireId,
+                                                int axle, TireSide side) {
         var alreadyExistsTirePositionWithSameParameters = tireService.existsTirePositionInUse(
                 machineId,
                 tireId,

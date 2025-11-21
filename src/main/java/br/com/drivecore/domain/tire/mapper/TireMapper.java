@@ -1,6 +1,5 @@
 package br.com.drivecore.domain.tire.mapper;
 
-import br.com.drivecore.controller.machine.model.MachineResponseDTO;
 import br.com.drivecore.controller.tire.model.*;
 import br.com.drivecore.domain.tire.enums.TireCondition;
 import br.com.drivecore.domain.tire.enums.TireSide;
@@ -41,12 +40,11 @@ public interface TireMapper {
     @Mapping(target = "inUse", constant = "true")
     TirePositionEntity toTirePositionEntity(TireEntity tire, MachineEntity machine, int axle, TireSide side);
 
-    @Mapping(target = "side", expression = "java(tirePositionEntity.getSide().ordinal())")
+    @Mapping(target = "side", expression = "java(tirePositionEntity.getSide())")
     TirePositionResponseDTO toTirePositionEntityResponseDTO(TirePositionEntity tirePositionEntity);
 
     default TirePositionByMachineResponseDTO toTirePositionByMachineResponseDTO(MachineEntity machineEntity, List<TirePositionEntity> tirePositionEntityList) {
         return TirePositionByMachineResponseDTO.builder()
-                .machine(new MachineResponseDTO(machineEntity.getId(), machineEntity.getMachineType()))
                 .tiresPositions(tirePositionEntityList.stream().map(this::toTirePositionEntityResponseDTO).toList())
                 .build();
     }
