@@ -31,4 +31,6 @@ public interface TirePositionRepository extends JpaRepository<TirePositionEntity
     List<TirePositionEntity> findByMachineAndInUseOrderByAxleAscSideAsc(MachineEntity machineEntity, Boolean aTrue);
 
     Optional<TirePositionEntity> findByTire(TireEntity tire);
+
+    Optional<TirePositionEntity> findByTireAndInUseTrue(TireEntity tire);
 }

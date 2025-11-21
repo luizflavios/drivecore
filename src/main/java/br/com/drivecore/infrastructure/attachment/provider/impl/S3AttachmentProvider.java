@@ -63,7 +63,7 @@ public record S3AttachmentProvider(S3Client s3Client,
             s3Client.putObject(putRequest, RequestBody.fromBytes(content));
             log.info("Arquivo com metadados enviado com sucesso para S3: s3://{}/{}", bucket, key);
 
-            return key;
+            return generatePresignedUrl(bucket, key);
 
         } catch (Exception e) {
             log.error("Erro ao fazer upload com metadados para S3: {}", e.getMessage(), e);

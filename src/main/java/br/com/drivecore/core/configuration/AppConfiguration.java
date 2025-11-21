@@ -23,4 +23,10 @@ public class AppConfiguration {
     @Value("${OTP.MAX.ATTEMPTS:5}")
     private int otpMaxAttempts;
 
+    @Value("${AWS.ACCESS.KEY}")
+    private String awsAccessKeyId;
+
+    @Value("${AWS.SECRET.ACCESS}")
+    private String awsSecretAccessKey;
+
 }

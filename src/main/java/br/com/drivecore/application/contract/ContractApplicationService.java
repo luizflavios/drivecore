@@ -1,6 +1,7 @@
 package br.com.drivecore.application.contract;
 
 import br.com.drivecore.controller.contract.model.*;
+import br.com.drivecore.core.configuration.AppConfiguration;
 import br.com.drivecore.domain.attachment.mapper.AttachmentMapper;
 import br.com.drivecore.domain.attachment.mapper.AttachmentService;
 import br.com.drivecore.domain.attachment.service.AttachmentS3Service;
@@ -12,7 +13,6 @@ import br.com.drivecore.infrastructure.persistence.contract.entities.ContractEnt
 import br.com.drivecore.infrastructure.persistence.expense.entities.ExpenseEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,9 +30,7 @@ public class ContractApplicationService {
     private final ExpenseService expenseService;
     private final AttachmentService attachmentService;
     private final AttachmentS3Service attachmentS3Service;
-
-    @Value("${aws.s3.bucket:driveco-attachments}")
-    private String s3Bucket;
+    private final AppConfiguration appConfiguration;
 
     @Transactional
     public CreateContractExpenseResponseDTO createContractExpense(UUID id,
@@ -73,7 +71,7 @@ public class ContractApplicationService {
 
         String returnedS3Key = attachmentS3Service.uploadFileAndGetKey(
                 fileContent,
-                s3Bucket,
+                appConfiguration.getApiBucketName(),
                 s3Key,
                 contentType,
                 metadata

@@ -4,7 +4,10 @@ import lombok.Getter;
 
 @Getter
 public enum ReportNameEnum {
-    COUPLING_HISTORY("coupling_history", "Histórico de Acoplamento");
+    COUPLING_HISTORY("coupling_history", "Histórico de Acoplamento"),
+    WORK_ORDERS("work_orders", "Ordens de Trabalho"),
+    TIRES("tires", "Relatório de Pneus"),
+    DRIVERS("drivers", "Relatório de Motoristas");
 
     private final String code;
     private final String description;

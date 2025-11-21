@@ -4,6 +4,9 @@ import br.com.drivecore.domain.report.enums.ReportNameEnum;
 import br.com.drivecore.domain.report.exception.InvalidReportTypeException;
 import br.com.drivecore.domain.report.strategy.ReportStrategy;
 import br.com.drivecore.domain.report.strategy.impl.CouplingHistoryReportStrategy;
+import br.com.drivecore.domain.report.strategy.impl.DriversReportStrategy;
+import br.com.drivecore.domain.report.strategy.impl.TiresReportStrategy;
+import br.com.drivecore.domain.report.strategy.impl.WorkOrdersReportStrategy;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -18,6 +21,9 @@ import org.springframework.stereotype.Component;
 public class ReportStrategyFactory {
 
     private final CouplingHistoryReportStrategy couplingHistoryReportStrategy;
+    private final WorkOrdersReportStrategy workOrdersReportStrategy;
+    private final TiresReportStrategy tiresReportStrategy;
+    private final DriversReportStrategy driversReportStrategy;
 
     /**
      * Retorna a estratégia de relatório correspondente ao tipo fornecido.
@@ -34,6 +40,19 @@ public class ReportStrategyFactory {
                 log.debug("Estratégia selecionada: CouplingHistoryReportStrategy");
                 yield couplingHistoryReportStrategy;
             }
+            case WORK_ORDERS -> {
+                log.debug("Estratégia selecionada: WorkOrdersReportStrategy");
+                yield workOrdersReportStrategy;
+            }
+            case TIRES -> {
+                log.debug("Estratégia selecionada: TiresReportStrategy");
+                yield tiresReportStrategy;
+            }
+            case DRIVERS -> {
+                log.debug("Estratégia selecionada: DriversReportStrategy");
+                yield driversReportStrategy;
+            }
+            default -> null;
         };
 
         if (strategy == null) {
@@ -59,4 +78,3 @@ public class ReportStrategyFactory {
         }
     }
 }
-
