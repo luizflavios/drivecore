@@ -20,4 +20,16 @@ public interface TrailerRepository extends JpaRepository<TrailerEntity, UUID>, J
             )
             """)
     List<TrailerEntity> findAvailableTrailersToCoupling();
+
+    @Query("""
+            SELECT t.id as id, t.licensePlate as licensePlate
+            FROM TrailerEntity t
+            """)
+    List<TrailerSummary> findAllSummary();
+
+    interface TrailerSummary {
+        UUID getId();
+
+        String getLicensePlate();
+    }
 }

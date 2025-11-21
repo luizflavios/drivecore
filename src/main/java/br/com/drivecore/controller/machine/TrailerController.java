@@ -2,6 +2,7 @@ package br.com.drivecore.controller.machine;
 
 import br.com.drivecore.application.machine.TrailerApplicationService;
 import br.com.drivecore.controller.machine.model.CreateTrailerRequestDTO;
+import br.com.drivecore.controller.machine.model.SummaryMachineResponseDTO;
 import br.com.drivecore.controller.machine.model.TrailerResponseDTO;
 import br.com.drivecore.controller.machine.model.UpdateTrailerRequestDTO;
 import br.com.drivecore.controller.model.FilteredAndPageableRequestDTO;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 import static org.springframework.http.HttpStatus.*;
@@ -70,6 +72,15 @@ public class TrailerController {
         trailerApplicationService.deleteTrailer(id);
 
         return new ResponseEntity<>(NO_CONTENT);
+    }
+
+    @GetMapping("/summary/all")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @Operation(summary = "Get all trailers summary")
+    public ResponseEntity<List<SummaryMachineResponseDTO>> getAllTrailersSummary() {
+        List<SummaryMachineResponseDTO> summaryList = trailerApplicationService.getAllTrailersSummary();
+
+        return new ResponseEntity<>(summaryList, OK);
     }
 
 }

@@ -1,6 +1,7 @@
 package br.com.drivecore.application.machine;
 
 import br.com.drivecore.controller.machine.model.CreateTrailerRequestDTO;
+import br.com.drivecore.controller.machine.model.SummaryMachineResponseDTO;
 import br.com.drivecore.controller.machine.model.TrailerResponseDTO;
 import br.com.drivecore.controller.machine.model.UpdateTrailerRequestDTO;
 import br.com.drivecore.controller.model.FilteredAndPageableRequestDTO;
@@ -13,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -63,4 +65,9 @@ public class TrailerApplicationService {
         log.info("Trailer {} successfully deleted", id);
     }
 
+    public List<SummaryMachineResponseDTO> getAllTrailersSummary() {
+        return trailerService.findAllSummary().stream()
+                .map(summary -> new SummaryMachineResponseDTO(summary.getId(), summary.getLicensePlate()))
+                .toList();
+    }
 }

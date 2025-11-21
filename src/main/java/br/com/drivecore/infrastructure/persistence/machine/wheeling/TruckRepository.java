@@ -20,4 +20,16 @@ public interface TruckRepository extends JpaRepository<TruckEntity, UUID>, JpaSp
             )
             """)
     List<TruckEntity> findAvailableTrucksToCoupling();
+
+    @Query("""
+            SELECT t.id as id, t.licensePlate as licensePlate
+            FROM TruckEntity t
+            """)
+    List<TruckSummary> findAllSummary();
+
+    interface TruckSummary {
+        UUID getId();
+
+        String getLicensePlate();
+    }
 }

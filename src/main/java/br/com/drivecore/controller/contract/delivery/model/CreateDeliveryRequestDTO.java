@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
 import java.util.UUID;
 
 @Getter
@@ -18,11 +17,10 @@ import java.util.UUID;
 public class CreateDeliveryRequestDTO extends CreateContractRequestDTO {
 
     @NotBlank
+    private String origin;
+
+    @NotBlank
     private String destiny;
-
-    private LocalDate startDate;
-
-    private LocalDate finalDate;
 
     @NotNull
     private UUID truckTrailerCombinationId;

@@ -21,8 +21,19 @@ public interface EmployerRepository extends JpaRepository<EmployerEntity, UUID>,
     @Query("select count(e) from EmployerEntity e where e.user.status = 'ACTIVE'")
     long countByUserStatusActive();
 
-    @Query("select new br.com.drivecore.controller.employer.model" +
-            ".SummaryEmployerResponseDTO(e.id, e.fullName) from " +
-            "EmployerEntity e order by e.createdAt desc")
+    @Query("""
+            select new br.com.drivecore.controller.employer.model.SummaryEmployerResponseDTO(
+                e.id,
+                e.fullName,
+                e.commissionPercentage,
+                (select t.id from TruckTrailerCombinationEntity t 
+                 where t.employer = e and t.finishedAt is null 
+                 order by t.createdAt desc limit 1),
+                (select concat(t.truck.licensePlate, ' - ', t.trailer.licensePlate) from TruckTrailerCombinationEntity t 
+                 where t.employer = e and t.finishedAt is null 
+                 order by t.createdAt desc limit 1)
+            ) from EmployerEntity e
+            order by e.createdAt desc
+            """)
     List<SummaryEmployerResponseDTO> findAllSummary();
 }
