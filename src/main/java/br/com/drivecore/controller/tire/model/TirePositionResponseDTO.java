@@ -1,6 +1,6 @@
 package br.com.drivecore.controller.tire.model;
 
-import br.com.drivecore.controller.model.ObjectReferenceDTO;
+import br.com.drivecore.domain.tire.enums.TireSide;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,10 +16,10 @@ public class TirePositionResponseDTO {
 
     private UUID id;
 
-    private ObjectReferenceDTO tire;
+    private SummaryTireResponseDTO tire;
 
     private int axle;
 
-    private int side;
+    private TireSide side;
 
 }

@@ -1,5 +1,6 @@
 package br.com.drivecore.infrastructure.persistence.tire;
 
+import br.com.drivecore.domain.tire.enums.TireSide;
 import br.com.drivecore.infrastructure.persistence.machine.entities.MachineEntity;
 import br.com.drivecore.infrastructure.persistence.tire.entities.TireEntity;
 import br.com.drivecore.infrastructure.persistence.tire.entities.TirePositionEntity;
@@ -24,7 +25,8 @@ public interface TirePositionRepository extends JpaRepository<TirePositionEntity
                   AND tp.axle = :axle
                   AND tp.side = :side
             """)
-    Boolean existsTirePositionInUse(UUID machineId, UUID tireId, int axle, int side);
+    Boolean existsTirePositionInUse(UUID machineId, UUID tireId, int axle,
+                                    TireSide side);
 
     List<TirePositionEntity> findByMachineAndInUseOrderByAxleAscSideAsc(MachineEntity machineEntity, Boolean aTrue);
 

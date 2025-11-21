@@ -58,6 +58,15 @@ public class TireController {
         return new ResponseEntity<>(tireResponseDTOS, OK);
     }
 
+    @PostMapping("/available-for-new-positions")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @Operation(summary = "List available tires for new positions")
+    public ResponseEntity<Page<SummaryTireResponseDTO>> getAvailableTiresForNewPositions(@RequestBody @Valid FilteredAndPageableRequestDTO filters) {
+        Page<SummaryTireResponseDTO> tireResponseDTOS = tireApplicationService.getAvailableTiresForNewPositions(filters);
+
+        return new ResponseEntity<>(tireResponseDTOS, OK);
+    }
+
     @PatchMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Operation(summary = "Update tire")

@@ -31,4 +31,21 @@ public interface TireRepository extends JpaRepository<TireEntity, UUID>, JpaSpec
             """)
     Page<SummaryTireResponseDTO> getSummaryTires(Pageable pageable);
 
+    @Query(value = """
+            SELECT new br.com.drivecore.controller.tire.model.SummaryTireResponseDTO(
+                t.id,
+                t.fireCode,
+                t.manufacturer,
+                t.manufactureYear,
+                t.mileage,
+                t.tireCondition,
+                t.tireStatus,
+                case when m is not null then m.licensePlate end
+            )
+            FROM TireEntity t
+            LEFT JOIN TirePositionEntity tp on tp.tire = t AND tp.inUse = true
+            LEFT JOIN MachineEntity m on tp.machine = m
+            WHERE tp.id IS NULL
+            """)
+    Page<SummaryTireResponseDTO> getAvailableTiresForNewPositions(Pageable pageable);
 }
